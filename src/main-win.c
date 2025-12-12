@@ -72,6 +72,8 @@
  */
 
 #include "angband.h"
+#include "controller.h"
+#include "steam_integration.h"
 
 
 #ifdef WINDOWS
@@ -1904,17 +1906,28 @@ static errr Term_xtra_win_event(int v)
 	/* Wait for an event */
 	if (v)
 	{
+		/* Poll Controller */
+		controller_check();
+
 		/* Block */
-		if (GetMessage(&msg, NULL, 0, 0))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+		}
+		else
+		{
+			/* Sleep briefly to avoid high CPU usage if just waiting */
+			Sleep(10);
 		}
 	}
 
 	/* Check for an event */
 	else
 	{
+		/* Poll Controller */
+		controller_check();
+
 		/* Check */
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{

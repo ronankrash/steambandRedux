@@ -1,0 +1,10 @@
+^C:\USERS\BKARS\GIT\STEAMBANDREDUX\BUILD\CMAKEFILES\9653804CFC80CFADE77D3E6F04E0BD3C\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/bkars/git/steambandRedux -BC:/Users/bkars/git/steambandRedux/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/bkars/git/steambandRedux/build/SteambandRedux.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

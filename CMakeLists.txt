@@ -6,18 +6,22 @@ set(CMAKE_C_STANDARD 99)
 # Define macros for Windows build
 if(WIN32)
     add_definitions(-DWINDOWS -DWIN32 -D_WIN32_WINNT=0x0501)
+    # Suppress MSVC C4996 warnings for unsafe string functions (legacy code)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
 # Include directories
 include_directories(src)
 
 # Source files
+# Note: xxxload1.c is excluded - it references missing artifact constants and is legacy code
 set(SOURCES
     src/birth.c
     src/cave.c
     src/classpower.c
     src/cmd-attk.c
     src/cmd-book.c
+    src/controller.c
     src/cmd-item.c
     src/cmd-know.c
     src/cmd-misc.c
@@ -29,6 +33,7 @@ set(SOURCES
     src/init2.c
     src/level.c
     src/load2.c
+    src/logging.c
     src/melee1.c
     src/melee2.c
     src/monster1.c
@@ -43,6 +48,7 @@ set(SOURCES
     src/spells1.c
     src/spells2.c
     src/spells3.c
+    src/steam_integration.c
     src/store.c
     src/tables.c
     src/util.c
@@ -51,7 +57,6 @@ set(SOURCES
     src/wizard2.c
     src/xtra1.c
     src/xtra2.c
-    src/xxxload1.c
     src/xxxrandart.c
     src/z-form.c
     src/z-rand.c
@@ -65,7 +70,7 @@ if(WIN32)
     # Resource file would go here if we had it: src/angband.rc
     
     # Libraries needed for Windows
-    set(LIBS kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32 winmm)
+    set(LIBS kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32 winmm xinput)
 else()
     # Logic for other platforms (e.g. ncurses)
     list(APPEND SOURCES src/main-gcu.c src/main.c)
@@ -76,5 +81,13 @@ endif()
 
 add_executable(SteambandRedux WIN32 ${SOURCES})
 target_link_libraries(SteambandRedux ${LIBS})
+
+# Tests
+add_executable(UnitTests
+    src/tests/main_test.c
+    src/tests/test_logging.c
+    src/logging.c
+)
+target_link_libraries(UnitTests ${LIBS})
 
 

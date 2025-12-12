@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\bkars\git\steambandRedux\build\CMakeFiles\9653804cfc80cfade77d3e6f04e0bd3c\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{03268EDF-3BDB-3192-81C0-D80E7325BFEB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
