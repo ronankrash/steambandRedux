@@ -74,6 +74,7 @@
 #include "angband.h"
 #include "controller.h"
 #include "steam_integration.h"
+#include "logging.h"
 
 
 #ifdef WINDOWS
@@ -4689,9 +4690,10 @@ static void hack_quit(cptr str)
  */
 static void hook_plog(cptr str)
 {
-	/* Warning */
+	/* Log user message at INFO level */
 	if (str)
 	{
+		LOG_I("User message: %s", str);
 		MessageBox(data[0].w, str, "Warning",
 		           MB_ICONEXCLAMATION | MB_OK);
 	}
@@ -4710,9 +4712,10 @@ static void hook_quit(cptr str)
 #endif /* USE_SOUND */
 
 
-	/* Give a warning */
+	/* Log quit message at INFO level */
 	if (str)
 	{
+		LOG_I("Quit: %s", str);
 		MessageBox(data[0].w, str, "Error",
 		           MB_ICONEXCLAMATION | MB_OK | MB_ICONSTOP);
 	}
@@ -4789,9 +4792,29 @@ static void hook_quit(cptr str)
 	cleanup_angband();
 #endif /* HAS_CLEANUP */
 
+	/* Close logging before exit */
+	log_close();
+	
 	exit(0);
 }
 
+
+/*
+ * Display fatal error message and crash (see "z-util.c")
+ */
+static void hook_core(cptr str)
+{
+	/* Log fatal error at FATAL level before crash */
+	if (str)
+	{
+		LOG_F("FATAL ERROR: %s", str);
+		/* Flush logs immediately */
+		log_close();
+	}
+	
+	/* Call hook_quit for cleanup */
+	hook_quit(str);
+}
 
 
 /*** Initialize ***/
@@ -5056,6 +5079,62 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	quit_aux = hack_quit;
 	core_aux = hack_quit;
 
+	/* Initialize logging early - before init_stuff() */
+	{
+		char log_path[1024];
+		char exe_path[1024];
+		int i;
+		
+		/* Get executable path */
+		if (GetModuleFileName(hInstance, exe_path, sizeof(exe_path)) > 0) {
+			exe_path[sizeof(exe_path) - 1] = '\0';
+			
+			/* Find last backslash */
+			i = strlen(exe_path);
+			for (; i > 0; i--) {
+				if (exe_path[i] == '\\') {
+					break;
+				}
+			}
+			
+			/* Construct log file path: exe_dir/lib/logs/steamband.log */
+			if (i > 0) {
+				exe_path[i + 1] = '\0';
+				snprintf(log_path, sizeof(log_path), "%slib\\logs\\steamband.log", exe_path);
+				log_path[sizeof(log_path) - 1] = '\0';
+			} else {
+				snprintf(log_path, sizeof(log_path), "lib\\logs\\steamband.log");
+				log_path[sizeof(log_path) - 1] = '\0';
+			}
+			
+			log_init(log_path);
+			LOG_I("Logging initialized: %s", log_path);
+		} else {
+			/* Fallback: use relative path */
+			log_init("lib\\logs\\steamband.log");
+			LOG_I("Logging initialized (fallback path)");
+		}
+		
+		/* Read log level from environment variable if set */
+		{
+			const char *env_level = getenv("STEAMBAND_LOG_LEVEL");
+			if (env_level) {
+				if (strcmp(env_level, "DEBUG") == 0) {
+					log_set_level(LOG_DEBUG);
+				} else if (strcmp(env_level, "INFO") == 0) {
+					log_set_level(LOG_INFO);
+				} else if (strcmp(env_level, "WARN") == 0) {
+					log_set_level(LOG_WARN);
+				} else if (strcmp(env_level, "ERROR") == 0) {
+					log_set_level(LOG_ERROR);
+				} else if (strcmp(env_level, "FATAL") == 0) {
+					log_set_level(LOG_FATAL);
+				}
+				LOG_I("Log level set from environment: %s", env_level);
+			}
+		}
+	}
+
 	/* Prepare the filepaths */
 	init_stuff();
 
@@ -5094,7 +5173,7 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	/* Activate hooks */
 	plog_aux = hook_plog;
 	quit_aux = hook_quit;
-	core_aux = hook_quit;
+	core_aux = hook_core; /* Use separate core hook for FATAL logging */
 
 	/* Set the system suffix */
 	ANGBAND_SYS = "win";
