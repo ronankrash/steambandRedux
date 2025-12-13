@@ -62,8 +62,13 @@ cmake --build build --config Release
 cd build/Debug
 ./SteambandRedux.exe
 
-# Run unit tests
+# Run unit tests (method 1: direct execution)
+cd build/Debug
 ./UnitTests.exe
+
+# Run unit tests (method 2: via CMake ctest)
+cd build
+ctest -C Debug --output-on-failure
 ```
 
 ### Logging
@@ -232,6 +237,15 @@ This project maintains the original Angband/Steamband license. See the original 
 - **Product Roadmap:** [agent-os/product/roadmap.md](agent-os/product/roadmap.md)
 - **Tech Stack:** [agent-os/product/tech-stack.md](agent-os/product/tech-stack.md)
 - **Original README:** [readme.txt](readme.txt)
+
+## Testing
+
+The project uses the Unity testing framework for unit tests. Tests are located in `src/tests/` and can be run via:
+
+- **Direct execution**: `build/Debug/UnitTests.exe`
+- **CMake ctest**: `cd build && ctest -C Debug --output-on-failure`
+
+See the [Testing Guide](docs/TESTING.md) for detailed information on writing and running tests.
 
 ## Status Badges
 

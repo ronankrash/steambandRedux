@@ -12,6 +12,7 @@ endif()
 
 # Include directories
 include_directories(src)
+include_directories(third_party/unity/src)
 
 # Source files
 # Note: xxxload1.c is excluded - it references missing artifact constants and is legacy code
@@ -82,12 +83,34 @@ endif()
 add_executable(SteambandRedux WIN32 ${SOURCES})
 target_link_libraries(SteambandRedux ${LIBS})
 
+# Unity Testing Framework
+set(UNITY_SOURCES
+    third_party/unity/src/unity.c
+)
+
 # Tests
 add_executable(UnitTests
     src/tests/main_test.c
     src/tests/test_logging.c
+    src/tests/test_unity_infrastructure.c
+    src/tests/unity_integration.c
     src/logging.c
+    ${UNITY_SOURCES}
 )
 target_link_libraries(UnitTests ${LIBS})
+
+# Unity Test Runner (for Unity framework tests)
+add_executable(UnityTestRunner
+    src/tests/unity_test_runner.c
+    src/tests/test_unity_infrastructure.c
+    src/tests/unity_integration.c
+    ${UNITY_SOURCES}
+)
+target_link_libraries(UnityTestRunner ${LIBS})
+
+# Enable CTest
+enable_testing()
+add_test(NAME UnitTests COMMAND UnitTests)
+add_test(NAME UnityTestRunner COMMAND UnityTestRunner)
 
 

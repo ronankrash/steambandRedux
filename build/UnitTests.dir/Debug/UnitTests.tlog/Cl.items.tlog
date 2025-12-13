@@ -1,3 +1,6 @@
 C:\Users\bkars\git\steambandRedux\src\tests\main_test.c;C:\Users\bkars\git\steambandRedux\build\UnitTests.dir\Debug\main_test.obj
 C:\Users\bkars\git\steambandRedux\src\tests\test_logging.c;C:\Users\bkars\git\steambandRedux\build\UnitTests.dir\Debug\test_logging.obj
+C:\Users\bkars\git\steambandRedux\src\tests\test_unity_infrastructure.c;C:\Users\bkars\git\steambandRedux\build\UnitTests.dir\Debug\test_unity_infrastructure.obj
+C:\Users\bkars\git\steambandRedux\src\tests\unity_integration.c;C:\Users\bkars\git\steambandRedux\build\UnitTests.dir\Debug\unity_integration.obj
 C:\Users\bkars\git\steambandRedux\src\logging.c;C:\Users\bkars\git\steambandRedux\build\UnitTests.dir\Debug\logging.obj
+C:\Users\bkars\git\steambandRedux\third_party\unity\src\unity.c;C:\Users\bkars\git\steambandRedux\build\UnitTests.dir\Debug\unity.obj
