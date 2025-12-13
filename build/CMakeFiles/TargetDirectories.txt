@@ -1,4 +1,6 @@
 C:/Users/bkars/git/steambandRedux/build/CMakeFiles/SteambandRedux.dir
 C:/Users/bkars/git/steambandRedux/build/CMakeFiles/UnitTests.dir
+C:/Users/bkars/git/steambandRedux/build/CMakeFiles/UnityTestRunner.dir
+C:/Users/bkars/git/steambandRedux/build/CMakeFiles/RUN_TESTS.dir
 C:/Users/bkars/git/steambandRedux/build/CMakeFiles/ALL_BUILD.dir
 C:/Users/bkars/git/steambandRedux/build/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,44 @@
+Start testing: Dec 12 19:55 Pacific Standard Time
+----------------------------------------------------------
+1/1 Testing: UnitTests
+1/1 Test: UnitTests
+Command: "C:/Users/bkars/git/steambandRedux/build/Debug/UnitTests.exe"
+Directory: C:/Users/bkars/git/steambandRedux/build
+"UnitTests" start time: Dec 12 19:55 Pacific Standard Time
+Output:
+----------------------------------------------------------
+Running test_log_level_enum...
+PASSED
+Running test_log_level_filtering...
+PASSED
+Running test_message_formatting...
+PASSED
+Running test_printf_formatting...
+PASSED
+Running test_buffer_overflow_protection...
+PASSED
+Running test_convenience_macros...
+PASSED
+Running test_file_logging_creation...
+PASSED
+Running test_directory_creation...
+PASSED
+Running test_log_rotation...
+PASSED
+Running test_thread_safety_basic...
+PASSED
+Running test_logging_init...
+PASSED
+
+Tests run: 11
+Tests passed: 11
+Tests failed: 0
+<end of output>
+Test time =   0.31 sec
+----------------------------------------------------------
+Test Passed.
+"UnitTests" end time: Dec 12 19:55 Pacific Standard Time
+"UnitTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 12 19:55 Pacific Standard Time
