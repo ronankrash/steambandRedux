@@ -4,6 +4,8 @@ C:\Users\bkars\git\steambandRedux\src\classpower.c;C:\Users\bkars\git\steambandR
 C:\Users\bkars\git\steambandRedux\src\cmd-attk.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\cmd-attk.obj
 C:\Users\bkars\git\steambandRedux\src\cmd-book.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\cmd-book.obj
 C:\Users\bkars\git\steambandRedux\src\controller.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\controller.obj
+C:\Users\bkars\git\steambandRedux\src\controller_menu.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\controller_menu.obj
+C:\Users\bkars\git\steambandRedux\src\controller_config_menu.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\controller_config_menu.obj
 C:\Users\bkars\git\steambandRedux\src\cmd-item.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\cmd-item.obj
 C:\Users\bkars\git\steambandRedux\src\cmd-know.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\cmd-know.obj
 C:\Users\bkars\git\steambandRedux\src\cmd-misc.c;C:\Users\bkars\git\steambandRedux\build\SteambandRedux.dir\Debug\cmd-misc.obj

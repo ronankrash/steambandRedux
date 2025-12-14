@@ -1,5 +1,7 @@
 /* File: controller.c */
 #include "controller.h"
+#include "controller_menu.h"
+#include "controller_config_menu.h"
 #include "angband.h"
 #include "logging.h"
 #include <windows.h>
@@ -7,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>  /* For atan2() */
+#include <ctype.h>  /* For isspace() */
 
 /* Note: XInput library is linked via CMakeLists.txt, so pragma comment is not needed */
 
@@ -18,6 +21,8 @@ static bool g_connected = FALSE;
 static bool g_previous_connected = FALSE; /* Track previous state for change detection */
 static DWORD g_last_packet = 0;
 static bool g_logging_enabled = TRUE; /* Controller logging enabled by default */
+static DWORD g_back_button_press_time = 0; /* Track BACK button for menu activation */
+static bool g_back_button_was_pressed = FALSE;
 
 /*
  * Button mappings
@@ -97,6 +102,10 @@ void controller_init(void) {
             LOG_I("Controller initialized: No controller detected (port 0)");
         }
     }
+    
+    /* Initialize menu systems */
+    controller_menu_init();
+    controller_config_menu_init();
 }
 
 /*
@@ -196,6 +205,83 @@ int controller_check(void) {
             g_state = state;
         }
         
+        /* Check if config menu is active - handle config menu input first */
+        if (controller_config_menu_is_active()) {
+            if (controller_config_menu_check()) {
+                return TRUE; /* Config menu handled input */
+            }
+        }
+        
+        /* Check if command menu is active - handle menu input */
+        if (controller_menu_is_active()) {
+            if (controller_menu_check()) {
+                return TRUE; /* Menu handled input */
+            }
+        }
+        
+        /* Check for config menu activation: BACK button triple-press (within 500ms each) */
+        static DWORD g_back_press_times[3] = {0, 0, 0};
+        static int g_back_press_count = 0;
+        bool back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
+        if (back_pressed && !g_back_button_was_pressed) {
+            /* Back button just pressed */
+            DWORD time_since_last = (g_back_press_count > 0) ? (now - g_back_press_times[g_back_press_count - 1]) : 1000;
+            if (time_since_last < 500 && g_back_press_count > 0) {
+                g_back_press_times[g_back_press_count++] = now;
+                if (g_back_press_count >= 3) {
+                    /* Triple-press detected - toggle config menu */
+                    if (controller_config_menu_is_active()) {
+                        controller_config_menu_hide();
+                    } else {
+                        controller_config_menu_show();
+                    }
+                    g_back_press_count = 0;
+                    g_back_button_press_time = 0;
+                }
+            } else {
+                /* Reset counter */
+                g_back_press_count = 1;
+                g_back_press_times[0] = now;
+            }
+            g_back_button_was_pressed = TRUE;
+        } else if (!back_pressed && g_back_button_was_pressed) {
+            /* Back button released */
+            g_back_button_was_pressed = FALSE;
+            /* Reset counter after delay */
+            if (g_back_press_count > 0 && (now - g_back_press_times[g_back_press_count - 1]) > 500) {
+                g_back_press_count = 0;
+            }
+        }
+        
+        /* Check for command menu activation: BACK button double-press (within 500ms) */
+        if (!controller_config_menu_is_active()) {
+            back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
+            if (back_pressed && !g_back_button_was_pressed) {
+                /* Back button just pressed */
+                DWORD time_since_last = now - g_back_button_press_time;
+                if (time_since_last < 500 && g_back_button_press_time > 0) {
+                    /* Double-press detected - toggle command menu */
+                    if (controller_menu_is_active()) {
+                        controller_menu_hide();
+                    } else {
+                        controller_menu_show();
+                    }
+                    g_back_button_press_time = 0; /* Reset */
+                } else {
+                    g_back_button_press_time = now;
+                }
+                g_back_button_was_pressed = TRUE;
+            } else if (!back_pressed && g_back_button_was_pressed) {
+                /* Back button released */
+                g_back_button_was_pressed = FALSE;
+            }
+        }
+        
+        /* If any menu is active, don't process normal button mappings */
+        if (controller_menu_is_active() || controller_config_menu_is_active()) {
+            return FALSE;
+        }
+        
         /* Check buttons */
         for (i = 0; g_mapping[i].button != 0; i++) {
             bool current_pressed = (state.Gamepad.wButtons & g_mapping[i].button) != 0;
@@ -250,3 +336,268 @@ int controller_check(void) {
     return handled;
 }
 
+/*
+ * Get button name from button code
+ * Returns button name string for config file
+ */
+static const char* get_button_name_internal(WORD button) {
+    switch (button) {
+        case XINPUT_GAMEPAD_A: return "A";
+        case XINPUT_GAMEPAD_B: return "B";
+        case XINPUT_GAMEPAD_X: return "X";
+        case XINPUT_GAMEPAD_Y: return "Y";
+        case XINPUT_GAMEPAD_DPAD_UP: return "DPAD_UP";
+        case XINPUT_GAMEPAD_DPAD_DOWN: return "DPAD_DOWN";
+        case XINPUT_GAMEPAD_DPAD_LEFT: return "DPAD_LEFT";
+        case XINPUT_GAMEPAD_DPAD_RIGHT: return "DPAD_RIGHT";
+        case XINPUT_GAMEPAD_START: return "START";
+        case XINPUT_GAMEPAD_BACK: return "BACK";
+        case XINPUT_GAMEPAD_LEFT_SHOULDER: return "LB";
+        case XINPUT_GAMEPAD_RIGHT_SHOULDER: return "RB";
+        default: return NULL;
+    }
+}
+
+/*
+ * Get button code from button name
+ * Returns button code, or 0 if not found
+ */
+static WORD get_button_code_internal(const char* name) {
+    if (streq(name, "A")) return XINPUT_GAMEPAD_A;
+    if (streq(name, "B")) return XINPUT_GAMEPAD_B;
+    if (streq(name, "X")) return XINPUT_GAMEPAD_X;
+    if (streq(name, "Y")) return XINPUT_GAMEPAD_Y;
+    if (streq(name, "DPAD_UP")) return XINPUT_GAMEPAD_DPAD_UP;
+    if (streq(name, "DPAD_DOWN")) return XINPUT_GAMEPAD_DPAD_DOWN;
+    if (streq(name, "DPAD_LEFT")) return XINPUT_GAMEPAD_DPAD_LEFT;
+    if (streq(name, "DPAD_RIGHT")) return XINPUT_GAMEPAD_DPAD_RIGHT;
+    if (streq(name, "START")) return XINPUT_GAMEPAD_START;
+    if (streq(name, "BACK")) return XINPUT_GAMEPAD_BACK;
+    if (streq(name, "LB")) return XINPUT_GAMEPAD_LEFT_SHOULDER;
+    if (streq(name, "RB")) return XINPUT_GAMEPAD_RIGHT_SHOULDER;
+    return 0;
+}
+
+/*
+ * Load controller button mappings from config file
+ * Format: button_name:key_code:repeat_delay:repeat_rate
+ * Comments start with #, blank lines are ignored
+ */
+void controller_load_config(void) {
+    FILE *fp;
+    char buf[1024];
+    char fname[1024];
+    int i;
+    extern cptr ANGBAND_DIR_USER;  /* From variable.c */
+    
+    /* Build config file path */
+    if (!ANGBAND_DIR_USER) {
+        /* Paths not initialized yet, use defaults */
+        if (g_logging_enabled) {
+            LOG_I("Controller config: ANGBAND_DIR_USER not initialized, using default mappings");
+        }
+        return;
+    }
+    
+    path_build(fname, sizeof(fname), ANGBAND_DIR_USER, "controller.prf");
+    
+    /* Open config file */
+    fp = my_fopen(fname, "r");
+    if (!fp) {
+        /* Config file doesn't exist, use defaults */
+        if (g_logging_enabled) {
+            LOG_I("Controller config: Config file not found, using default mappings");
+        }
+        return;
+    }
+    
+    /* Parse config file */
+    while (0 == my_fgets(fp, buf, sizeof(buf))) {
+        char *line = buf;
+        char *button_name, *key_str, *delay_str, *rate_str;
+        WORD button_code;
+        int key_code, repeat_delay, repeat_rate;
+        
+        /* Skip leading whitespace */
+        while (isspace(*line)) line++;
+        
+        /* Skip empty lines */
+        if (!*line) continue;
+        
+        /* Skip comments */
+        if (*line == '#') continue;
+        
+        /* Parse line: button_name:key_code:repeat_delay:repeat_rate */
+        button_name = line;
+        
+        /* Find colon separators */
+        key_str = strchr(line, ':');
+        if (!key_str) continue;
+        *key_str++ = '\0';
+        
+        delay_str = strchr(key_str, ':');
+        if (!delay_str) continue;
+        *delay_str++ = '\0';
+        
+        rate_str = strchr(delay_str, ':');
+        if (!rate_str) continue;
+        *rate_str++ = '\0';
+        
+        /* Trim whitespace */
+        while (isspace(*button_name)) button_name++;
+        while (isspace(*key_str)) key_str++;
+        while (isspace(*delay_str)) delay_str++;
+        while (isspace(*rate_str)) rate_str++;
+        
+        /* Get button code from name */
+        button_code = get_button_code_internal(button_name);
+        if (!button_code) continue;  /* Unknown button name */
+        
+        /* Parse values */
+        key_code = atoi(key_str);
+        repeat_delay = atoi(delay_str);
+        repeat_rate = atoi(rate_str);
+        
+        /* Find matching button in mapping array and update it */
+        for (i = 0; g_mapping[i].button != 0; i++) {
+            if (g_mapping[i].button == button_code) {
+                g_mapping[i].key_code = key_code;
+                g_mapping[i].repeat_delay = repeat_delay;
+                g_mapping[i].repeat_rate = repeat_rate;
+                break;
+            }
+        }
+    }
+    
+    /* Close file */
+    my_fclose(fp);
+    
+    if (g_logging_enabled) {
+        LOG_I("Controller config: Loaded mappings from %s", fname);
+    }
+}
+
+/*
+ * Save controller button mappings to config file
+ * Format: button_name:key_code:repeat_delay:repeat_rate
+ */
+void controller_save_config(void) {
+    FILE *fp;
+    char fname[1024];
+    int i;
+    extern cptr ANGBAND_DIR_USER;  /* From variable.c */
+    
+    /* Build config file path */
+    if (!ANGBAND_DIR_USER) {
+        if (g_logging_enabled) {
+            LOG_W("Controller config: ANGBAND_DIR_USER not initialized, cannot save config");
+        }
+        return;
+    }
+    
+    path_build(fname, sizeof(fname), ANGBAND_DIR_USER, "controller.prf");
+    
+    /* Open config file for writing */
+    fp = my_fopen(fname, "w");
+    if (!fp) {
+        if (g_logging_enabled) {
+            LOG_W("Controller config: Failed to open %s for writing", fname);
+        }
+        return;
+    }
+    
+    /* Write header comment */
+    fprintf(fp, "# Controller button mapping configuration file\n");
+    fprintf(fp, "# Format: button_name:key_code:repeat_delay:repeat_rate\n");
+    fprintf(fp, "# Comments start with #\n");
+    fprintf(fp, "# Blank lines are ignored\n");
+    fprintf(fp, "# Key codes: ASCII character codes (e.g., 'i' = 105, 'e' = 101, 27 = Escape, 13 = Enter)\n");
+    fprintf(fp, "# Repeat delay: Initial delay in ms before repeat starts (0 = no repeat)\n");
+    fprintf(fp, "# Repeat rate: Delay in ms between repeats (0 = no repeat)\n");
+    fprintf(fp, "\n");
+    
+    /* Write mappings */
+    for (i = 0; g_mapping[i].button != 0; i++) {
+        const char *button_name = get_button_name_internal(g_mapping[i].button);
+        if (button_name) {
+            fprintf(fp, "%s:%d:%d:%d\n", 
+                    button_name, 
+                    g_mapping[i].key_code,
+                    g_mapping[i].repeat_delay,
+                    g_mapping[i].repeat_rate);
+        }
+    }
+    
+    /* Close file */
+    my_fclose(fp);
+    
+    if (g_logging_enabled) {
+        LOG_I("Controller config: Saved mappings to %s", fname);
+    }
+}
+
+/*
+ * Get number of button mappings
+ */
+int controller_get_mapping_count(void) {
+    int count = 0;
+    while (g_mapping[count].button != 0) {
+        count++;
+    }
+    return count;
+}
+
+/*
+ * Get button mapping at index (for config menu)
+ * Returns button code, or 0 if index is invalid
+ */
+WORD controller_get_mapping_button(int index) {
+    int count = controller_get_mapping_count();
+    if (index < 0 || index >= count) {
+        return 0;
+    }
+    return g_mapping[index].button;
+}
+
+/*
+ * Get key code for button mapping at index
+ */
+int controller_get_mapping_key_code(int index) {
+    int count = controller_get_mapping_count();
+    if (index < 0 || index >= count) {
+        return 0;
+    }
+    return g_mapping[index].key_code;
+}
+
+/*
+ * Set key code for button mapping at index
+ */
+void controller_set_mapping_key_code(int index, int key_code) {
+    int count = controller_get_mapping_count();
+    if (index < 0 || index >= count) {
+        return;
+    }
+    g_mapping[index].key_code = key_code;
+}
+
+/*
+ * Get button display name (exported version)
+ */
+const char* controller_get_button_display_name(WORD button) {
+    switch (button) {
+        case XINPUT_GAMEPAD_A: return "A Button";
+        case XINPUT_GAMEPAD_B: return "B Button";
+        case XINPUT_GAMEPAD_X: return "X Button";
+        case XINPUT_GAMEPAD_Y: return "Y Button";
+        case XINPUT_GAMEPAD_DPAD_UP: return "D-Pad Up";
+        case XINPUT_GAMEPAD_DPAD_DOWN: return "D-Pad Down";
+        case XINPUT_GAMEPAD_DPAD_LEFT: return "D-Pad Left";
+        case XINPUT_GAMEPAD_DPAD_RIGHT: return "D-Pad Right";
+        case XINPUT_GAMEPAD_START: return "Start";
+        case XINPUT_GAMEPAD_BACK: return "Back";
+        case XINPUT_GAMEPAD_LEFT_SHOULDER: return "Left Bumper";
+        case XINPUT_GAMEPAD_RIGHT_SHOULDER: return "Right Bumper";
+        default: return "Unknown";
+    }
+}

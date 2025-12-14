@@ -374,6 +374,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\cmd-attk.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\cmd-book.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_menu.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_config_menu.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\cmd-item.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\cmd-know.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\cmd-misc.c" />
