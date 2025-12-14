@@ -17,10 +17,8 @@ SteambandRedux is a modernization project that brings classic roguelike gameplay
 ### ✅ Completed
 - **CMake Build System Migration** - Successfully migrated from Borland C++ 4.5 to CMake, building on Windows with Visual Studio
 - **Comprehensive Logging System** - Full logging infrastructure with DEBUG/INFO/WARNING/ERROR/FATAL levels, file output with rotation, and Windows debug console support
-
-### 🚧 In Progress
-- Unit Testing Framework setup
-- XInput API integration
+- **Unit Testing Framework** - Unity testing framework integrated with CMake, comprehensive test infrastructure, and 28 tests covering logging and core utilities
+- **XInput API Integration** - Xbox 360 controller support via XInput API with proper initialization, detection, polling, and logging
 
 ### 📋 Planned
 - Controller input mapping and configuration
@@ -81,6 +79,16 @@ set STEAMBAND_LOG_LEVEL=DEBUG
 ./SteambandRedux.exe
 ```
 
+### Controller Support
+
+Xbox 360 controller support is integrated via XInput API. The controller is automatically detected and initialized at startup. You can control controller logging via environment variable:
+
+```bash
+# Silence controller logging (0 = silent, 1 = enabled, default = enabled)
+set STEAMBAND_CONTROLLER_LOG=0
+./SteambandRedux.exe
+```
+
 ## Project Structure
 
 ```
@@ -89,9 +97,13 @@ steambandRedux/
 │   ├── main-win.c         # Windows entry point and message loop
 │   ├── logging.c          # Logging system implementation
 │   ├── logging.h          # Logging system header
+│   ├── controller.c       # XInput controller support implementation
+│   ├── controller.h       # XInput controller support header
 │   └── tests/             # Unit tests
-│       ├── main_test.c    # Test runner
-│       └── test_logging.c # Logging system tests
+│       ├── unity_test_runner.c      # Unity test runner
+│       ├── test_logging_unity.c     # Logging system tests (Unity)
+│       ├── test_z_util.c            # z-util.c tests
+│       └── test_unity_infrastructure.c  # Unity framework tests
 ├── lib/                   # Game data directory
 │   ├── logs/             # Log files (auto-created)
 │   ├── data/             # Binary game data
@@ -104,7 +116,9 @@ steambandRedux/
 │   │   └── tech-stack.md         # Technical stack documentation
 │   ├── specs/            # Feature specifications
 │   │   ├── 2025-12-11-complete-cmake-build-system-migration/
-│   │   └── 2025-12-12-implement-comprehensive-logging-system/
+│   │   ├── 2025-12-12-implement-comprehensive-logging-system/
+│   │   ├── 2025-12-12-set-up-unit-testing-framework/
+│   │   └── 2025-12-13-integrate-xinput-api/
 │   └── commands/         # Development workflow commands
 ├── CMakeLists.txt        # CMake build configuration
 └── README.md             # This file
@@ -173,10 +187,38 @@ This project uses a structured development process called **Agent-OS** that orga
 
 **Verification:** [Final Verification Report](agent-os/specs/2025-12-12-implement-comprehensive-logging-system/verifications/final-verification.md)
 
+#### ✅ Set Up Unit Testing Framework
+**Spec:** `2025-12-12-set-up-unit-testing-framework`  
+**Status:** Complete  
+**Summary:** Integrated Unity testing framework, created comprehensive test infrastructure, and migrated existing tests with enhanced coverage.
+
+**Key Features:**
+- Unity testing framework integrated with CMake and ctest
+- Test infrastructure with fixtures, helpers, and organization
+- 28 tests total: 5 infrastructure + 13 logging + 10 z-util.c utilities
+- Comprehensive testing guide documentation
+- All tests passing via ctest integration
+
+**Verification:** [Final Verification Report](agent-os/specs/2025-12-12-set-up-unit-testing-framework/verifications/final-verification.md)
+
+#### ✅ Integrate XInput API
+**Spec:** `2025-12-13-integrate-xinput-api`  
+**Status:** Complete  
+**Summary:** Properly integrated XInput API for Xbox 360 controller support with initialization, detection, polling, and logging.
+
+**Key Features:**
+- XInput library linking verified and working via CMake
+- Controller initialization in WinMain (early startup)
+- Controller detection with connection status logging
+- Connection/disconnection event logging (state changes only)
+- Environment variable support (`STEAMBAND_CONTROLLER_LOG`) to silence logging
+- Robust error handling for disconnected controller state
+- Single controller support (controller 0)
+
+**Verification:** [Final Verification Report](agent-os/specs/2025-12-13-integrate-xinput-api/verifications/final-verification.md)
+
 ### Upcoming Specifications
 
-- **Set Up Unit Testing Framework** - Integrate testing framework and create test infrastructure
-- **Integrate XInput API** - Add Xbox 360 controller detection and polling
 - **Implement Controller Input Mapping** - Map controller buttons to game commands
 - **Integrate Steamworks SDK** - Add Steam platform integration
 
@@ -196,6 +238,7 @@ See [Product Roadmap](agent-os/product/roadmap.md) for the complete list.
 
 - **Logging System** (`src/logging.c`): Thread-safe logging with file output and rotation
 - **Windows Entry Point** (`src/main-win.c`): Windows message loop and initialization
+- **Controller Support** (`src/controller.c`): XInput API integration for Xbox 360 controller support
 - **Build System** (`CMakeLists.txt`): CMake configuration for modern compilation
 
 For detailed technical information, see [Tech Stack Documentation](agent-os/product/tech-stack.md).
@@ -266,7 +309,7 @@ For detailed information on writing and running tests, see the [Testing Guide](a
 - ✅ **CMake Build System** - Complete
 - ✅ **Logging System** - Complete
 - ✅ **Unit Testing Framework** - Complete
-- 📋 **XInput Integration** - Planned
+- ✅ **XInput Integration** - Complete
 - 📋 **Steam Integration** - Planned
 
 ---

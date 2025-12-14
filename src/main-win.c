@@ -5135,6 +5135,9 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 		}
 	}
 
+	/* Initialize controller support */
+	controller_init();
+
 	/* Prepare the filepaths */
 	init_stuff();
 

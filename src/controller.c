@@ -1,19 +1,22 @@
 /* File: controller.c */
 #include "controller.h"
 #include "angband.h"
+#include "logging.h"
 #include <windows.h>
 #include <xinput.h>
+#include <stdlib.h>
+#include <string.h>
 
-#ifdef _MSC_VER
-#pragma comment(lib, "xinput.lib")
-#endif
+/* Note: XInput library is linked via CMakeLists.txt, so pragma comment is not needed */
 
 /*
  * Controller state
  */
 static XINPUT_STATE g_state;
 static bool g_connected = FALSE;
+static bool g_previous_connected = FALSE; /* Track previous state for change detection */
 static DWORD g_last_packet = 0;
+static bool g_logging_enabled = TRUE; /* Controller logging enabled by default */
 
 /*
  * Button mappings
@@ -48,11 +51,31 @@ static button_map_t g_mapping[] = {
  */
 void controller_init(void) {
     DWORD dwResult;
+    const char *env_log;
+    
     ZeroMemory(&g_state, sizeof(XINPUT_STATE));
+    
+    /* Check environment variable for controller logging */
+    env_log = getenv("STEAMBAND_CONTROLLER_LOG");
+    if (env_log && strcmp(env_log, "0") == 0) {
+        g_logging_enabled = FALSE;
+    } else {
+        g_logging_enabled = TRUE; /* Default to enabled */
+    }
     
     /* Check if controller is connected */
     dwResult = XInputGetState(0, &g_state);
     g_connected = (dwResult == ERROR_SUCCESS);
+    g_previous_connected = g_connected; /* Initialize previous state */
+    
+    /* Log initialization status */
+    if (g_logging_enabled) {
+        if (g_connected) {
+            LOG_I("Controller initialized: Xbox 360 controller (port 0) connected");
+        } else {
+            LOG_I("Controller initialized: No controller detected (port 0)");
+        }
+    }
 }
 
 /*
@@ -115,6 +138,12 @@ int controller_check(void) {
         /* Controller is connected */
         g_connected = TRUE;
         
+        /* Log connection event if state changed from disconnected to connected */
+        if (!g_previous_connected && g_logging_enabled) {
+            LOG_I("Controller connected: Xbox 360 controller (port 0)");
+        }
+        g_previous_connected = TRUE;
+        
         /* Check packet number to see if state changed */
         if (state.dwPacketNumber != g_last_packet) {
             g_last_packet = state.dwPacketNumber;
@@ -142,7 +171,18 @@ int controller_check(void) {
         check_thumbsticks();
         
     } else {
+        /* Controller is disconnected */
         g_connected = FALSE;
+        
+        /* Log disconnection event if state changed from connected to disconnected */
+        if (g_previous_connected && g_logging_enabled) {
+            if (dwResult == ERROR_DEVICE_NOT_CONNECTED) {
+                LOG_W("Controller disconnected: Xbox 360 controller (port 0)");
+            } else {
+                LOG_W("Controller error: XInputGetState returned error code %lu", dwResult);
+            }
+        }
+        g_previous_connected = FALSE;
     }
 
     return handled;
