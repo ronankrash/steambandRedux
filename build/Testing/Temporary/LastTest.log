@@ -1,10 +1,10 @@
-Start testing: Dec 13 20:21 Pacific Standard Time
+Start testing: Dec 13 20:47 Pacific Standard Time
 ----------------------------------------------------------
 1/2 Testing: UnitTests
 1/2 Test: UnitTests
 Command: "C:/Users/bkars/git/steambandRedux/build/Debug/UnitTests.exe"
 Directory: C:/Users/bkars/git/steambandRedux/build
-"UnitTests" start time: Dec 13 20:21 Pacific Standard Time
+"UnitTests" start time: Dec 13 20:47 Pacific Standard Time
 Output:
 ----------------------------------------------------------
 Running test_log_level_enum...
@@ -34,10 +34,10 @@ Tests run: 11
 Tests passed: 11
 Tests failed: 0
 <end of output>
-Test time =   0.32 sec
+Test time =   0.30 sec
 ----------------------------------------------------------
 Test Passed.
-"UnitTests" end time: Dec 13 20:21 Pacific Standard Time
+"UnitTests" end time: Dec 13 20:47 Pacific Standard Time
 "UnitTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -45,7 +45,7 @@ Test Passed.
 2/2 Test: UnityTestRunner
 Command: "C:/Users/bkars/git/steambandRedux/build/Debug/UnityTestRunner.exe"
 Directory: C:/Users/bkars/git/steambandRedux/build
-"UnityTestRunner" start time: Dec 13 20:21 Pacific Standard Time
+"UnityTestRunner" start time: Dec 13 20:47 Pacific Standard Time
 Output:
 ----------------------------------------------------------
 C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:48:test_unity_assertions:PASS
@@ -81,11 +81,11 @@ C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:79:test_my_strcp
 28 Tests 0 Failures 0 Ignored 
 OK
 <end of output>
-Test time =   0.14 sec
+Test time =   0.16 sec
 ----------------------------------------------------------
 Test Passed.
-"UnityTestRunner" end time: Dec 13 20:21 Pacific Standard Time
+"UnityTestRunner" end time: Dec 13 20:47 Pacific Standard Time
 "UnityTestRunner" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 13 20:21 Pacific Standard Time
+End testing: Dec 13 20:47 Pacific Standard Time
