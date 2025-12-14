@@ -100,10 +100,16 @@ add_executable(UnitTests
 target_link_libraries(UnitTests ${LIBS})
 
 # Unity Test Runner (for Unity framework tests)
+# Note: test_util.c is excluded for now due to complex dependencies on game state
+# Focus on testing z-util.c functions which are more isolated
 add_executable(UnityTestRunner
     src/tests/unity_test_runner.c
     src/tests/test_unity_infrastructure.c
+    src/tests/test_logging_unity.c
+    src/tests/test_z_util.c
     src/tests/unity_integration.c
+    src/logging.c
+    src/z-util.c
     ${UNITY_SOURCES}
 )
 target_link_libraries(UnityTestRunner ${LIBS})
