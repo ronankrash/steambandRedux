@@ -372,9 +372,14 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_unity_infrastructure.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_logging_unity.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_z_util.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_controller.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_controller_stubs.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\unity_integration.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\logging.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\z-util.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_menu.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_config_menu.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\third_party\unity\src\unity.c" />
   </ItemGroup>
   <ItemGroup />
