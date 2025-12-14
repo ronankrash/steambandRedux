@@ -64,7 +64,7 @@ cd build/Debug
 
 # Run unit tests (method 1: direct execution)
 cd build/Debug
-./UnitTests.exe
+./UnityTestRunner.exe
 
 # Run unit tests (method 2: via CMake ctest)
 cd build
@@ -240,18 +240,32 @@ This project maintains the original Angband/Steamband license. See the original 
 
 ## Testing
 
-The project uses the Unity testing framework for unit tests. Tests are located in `src/tests/` and can be run via:
+The project uses the **Unity** testing framework for unit tests. Tests are located in `src/tests/` and can be run via:
 
-- **Direct execution**: `build/Debug/UnitTests.exe`
+- **Direct execution**: `build/Debug/UnityTestRunner.exe`
 - **CMake ctest**: `cd build && ctest -C Debug --output-on-failure`
 
-See the [Testing Guide](docs/TESTING.md) for detailed information on writing and running tests.
+### Test Structure
+
+- **Unity Infrastructure Tests** (`test_unity_infrastructure.c`) - Verify Unity framework integration
+- **Logging System Tests** (`test_logging_unity.c`) - 13 tests covering all logging functionality
+- **Core Utilities Tests** (`test_z_util.c`) - 10 tests for string utilities and buffer overflow protection
+
+### Current Test Coverage
+
+- ✅ Unity framework integration (5 tests)
+- ✅ Logging system (13 tests: levels, filtering, formatting, rotation, thread safety)
+- ✅ z-util.c utilities (10 tests: streq, prefix, suffix, my_strcpy)
+- ⏳ util.c utilities (tests written but deferred due to game state dependencies)
+- ⏳ files.c utilities (deferred due to game state dependencies)
+
+For detailed information on writing and running tests, see the [Testing Guide](agent-os/specs/2025-12-12-set-up-unit-testing-framework/documentation/testing-guide.md).
 
 ## Status Badges
 
 - ✅ **CMake Build System** - Complete
 - ✅ **Logging System** - Complete
-- 🚧 **Unit Testing Framework** - In Progress
+- ✅ **Unit Testing Framework** - Complete
 - 📋 **XInput Integration** - Planned
 - 📋 **Steam Integration** - Planned
 

@@ -7,7 +7,19 @@
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_unity_infrastructure.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_logging_unity.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_z_util.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\unity_integration.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\logging.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\z-util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\third_party\unity\src\unity.c">

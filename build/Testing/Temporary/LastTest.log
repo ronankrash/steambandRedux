@@ -1,10 +1,10 @@
-Start testing: Dec 12 19:55 Pacific Standard Time
+Start testing: Dec 13 20:21 Pacific Standard Time
 ----------------------------------------------------------
-1/1 Testing: UnitTests
-1/1 Test: UnitTests
+1/2 Testing: UnitTests
+1/2 Test: UnitTests
 Command: "C:/Users/bkars/git/steambandRedux/build/Debug/UnitTests.exe"
 Directory: C:/Users/bkars/git/steambandRedux/build
-"UnitTests" start time: Dec 12 19:55 Pacific Standard Time
+"UnitTests" start time: Dec 13 20:21 Pacific Standard Time
 Output:
 ----------------------------------------------------------
 Running test_log_level_enum...
@@ -34,11 +34,58 @@ Tests run: 11
 Tests passed: 11
 Tests failed: 0
 <end of output>
-Test time =   0.31 sec
+Test time =   0.32 sec
 ----------------------------------------------------------
 Test Passed.
-"UnitTests" end time: Dec 12 19:55 Pacific Standard Time
+"UnitTests" end time: Dec 13 20:21 Pacific Standard Time
 "UnitTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Dec 12 19:55 Pacific Standard Time
+2/2 Testing: UnityTestRunner
+2/2 Test: UnityTestRunner
+Command: "C:/Users/bkars/git/steambandRedux/build/Debug/UnityTestRunner.exe"
+Directory: C:/Users/bkars/git/steambandRedux/build
+"UnityTestRunner" start time: Dec 13 20:21 Pacific Standard Time
+Output:
+----------------------------------------------------------
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:48:test_unity_assertions:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:49:test_unity_runner:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:50:test_unity_suite_organization:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:51:test_test_helpers_temp_file:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:52:test_unity_fixtures_available:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:55:test_log_level_enum:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:56:test_log_level_filtering:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:57:test_message_formatting:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:58:test_printf_formatting:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:59:test_buffer_overflow_protection:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:60:test_convenience_macros:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:61:test_file_logging_creation:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:62:test_directory_creation:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:63:test_log_rotation:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:64:test_thread_safety_basic:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:65:test_logging_init:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:66:test_log_level_get_set:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:67:test_null_filename_handling:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:70:test_streq_basic:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:71:test_streq_null_handling:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:72:test_prefix_basic:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:73:test_prefix_edge_cases:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:74:test_suffix_basic:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:75:test_suffix_edge_cases:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:76:test_my_strcpy_basic:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:77:test_my_strcpy_buffer_overflow:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:78:test_my_strcpy_zero_buffer:PASS
+C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c:79:test_my_strcpy_exact_buffer_size:PASS
+
+-----------------------
+28 Tests 0 Failures 0 Ignored 
+OK
+<end of output>
+Test time =   0.14 sec
+----------------------------------------------------------
+Test Passed.
+"UnityTestRunner" end time: Dec 13 20:21 Pacific Standard Time
+"UnityTestRunner" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 13 20:21 Pacific Standard Time

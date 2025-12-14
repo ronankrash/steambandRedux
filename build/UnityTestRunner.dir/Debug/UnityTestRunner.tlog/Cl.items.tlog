@@ -1,4 +1,8 @@
 C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\unity_test_runner.obj
 C:\Users\bkars\git\steambandRedux\src\tests\test_unity_infrastructure.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\test_unity_infrastructure.obj
+C:\Users\bkars\git\steambandRedux\src\tests\test_logging_unity.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\test_logging_unity.obj
+C:\Users\bkars\git\steambandRedux\src\tests\test_z_util.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\test_z_util.obj
 C:\Users\bkars\git\steambandRedux\src\tests\unity_integration.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\unity_integration.obj
+C:\Users\bkars\git\steambandRedux\src\logging.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\logging.obj
+C:\Users\bkars\git\steambandRedux\src\z-util.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\z-util.obj
 C:\Users\bkars\git\steambandRedux\third_party\unity\src\unity.c;C:\Users\bkars\git\steambandRedux\build\UnityTestRunner.dir\Debug\unity.obj

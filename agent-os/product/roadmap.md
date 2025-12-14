@@ -2,7 +2,7 @@
 
 1. [x] Complete CMake Build System Migration — Fix all compilation errors, ensure successful build on Windows with Visual Studio, and verify all source files compile correctly with modern toolchain `M`
 2. [x] Implement Comprehensive Logging System — Create logging module with DEBUG/INFO/WARNING/ERROR levels, file output with rotation, and debug console output for development troubleshooting `M`
-3. [ ] Set Up Unit Testing Framework — Integrate testing framework (Unity/minunit), create test infrastructure, and write initial tests for logging system and core utilities `M`
+3. [x] Set Up Unit Testing Framework — Integrate testing framework (Unity/minunit), create test infrastructure, and write initial tests for logging system and core utilities `M`
 4. [ ] Integrate XInput API — Add XInput library linking, implement controller detection, and create controller state polling mechanism in Windows message loop `M`
 5. [ ] Implement Controller Input Mapping — Map Xbox 360 controller buttons/triggers to game commands (movement, actions, menu navigation) and integrate with existing input system `L`
 6. [ ] Add Controller Configuration — Create in-game controller mapping configuration allowing players to customize button assignments and save preferences `M`

@@ -370,7 +370,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\unity_test_runner.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_unity_infrastructure.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_logging_unity.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_z_util.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\unity_integration.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\logging.c" />
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\z-util.c" />
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\third_party\unity\src\unity.c" />
   </ItemGroup>
   <ItemGroup />
