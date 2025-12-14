@@ -41,6 +41,18 @@ extern void test_my_strcpy_buffer_overflow(void);
 extern void test_my_strcpy_zero_buffer(void);
 extern void test_my_strcpy_exact_buffer_size(void);
 
+/* Forward declarations for controller tests */
+extern void test_controller_default_mappings_accessible(void);
+extern void test_controller_button_display_names(void);
+extern void test_controller_mapping_key_code_get_set(void);
+extern void test_controller_config_trailing_whitespace(void);
+extern void test_controller_menu_init(void);
+extern void test_controller_menu_show_hide(void);
+extern void test_controller_config_menu_show_hide(void);
+extern void test_controller_menu_mutual_exclusivity(void);
+extern void test_controller_mapping_count_consistency(void);
+extern void test_controller_invalid_mapping_index(void);
+
 int main(void) {
     UNITY_BEGIN();
     
@@ -77,6 +89,18 @@ int main(void) {
     RUN_TEST(test_my_strcpy_buffer_overflow);
     RUN_TEST(test_my_strcpy_zero_buffer);
     RUN_TEST(test_my_strcpy_exact_buffer_size);
+    
+    /* Run controller tests */
+    RUN_TEST(test_controller_default_mappings_accessible);
+    RUN_TEST(test_controller_button_display_names);
+    RUN_TEST(test_controller_mapping_key_code_get_set);
+    RUN_TEST(test_controller_config_trailing_whitespace);
+    RUN_TEST(test_controller_menu_init);
+    RUN_TEST(test_controller_menu_show_hide);
+    RUN_TEST(test_controller_config_menu_show_hide);
+    RUN_TEST(test_controller_menu_mutual_exclusivity);
+    RUN_TEST(test_controller_mapping_count_consistency);
+    RUN_TEST(test_controller_invalid_mapping_index);
     
     return UNITY_END();
 }

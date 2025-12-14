@@ -109,9 +109,14 @@ add_executable(UnityTestRunner
     src/tests/test_unity_infrastructure.c
     src/tests/test_logging_unity.c
     src/tests/test_z_util.c
+    src/tests/test_controller.c
+    src/tests/test_controller_stubs.c
     src/tests/unity_integration.c
     src/logging.c
     src/z-util.c
+    src/controller.c
+    src/controller_menu.c
+    src/controller_config_menu.c
     ${UNITY_SOURCES}
 )
 target_link_libraries(UnityTestRunner ${LIBS})

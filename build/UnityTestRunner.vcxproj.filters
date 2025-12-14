@@ -13,6 +13,12 @@
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_z_util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_controller.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\test_controller_stubs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\tests\unity_integration.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -20,6 +26,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\z-util.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_menu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_config_menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\third_party\unity\src\unity.c">

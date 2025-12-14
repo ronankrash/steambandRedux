@@ -17,7 +17,7 @@ SteambandRedux is a modernization project that brings classic roguelike gameplay
 ### ✅ Completed
 - **CMake Build System Migration** - Successfully migrated from Borland C++ 4.5 to CMake, building on Windows with Visual Studio
 - **Comprehensive Logging System** - Full logging infrastructure with DEBUG/INFO/WARNING/ERROR/FATAL levels, file output with rotation, and Windows debug console support
-- **Unit Testing Framework** - Unity testing framework integrated with CMake, comprehensive test infrastructure, and 28 tests covering logging and core utilities
+- **Unit Testing Framework** - Unity testing framework integrated with CMake, comprehensive test infrastructure, and 38 tests covering logging, core utilities, and controller functionality
 - **XInput API Integration** - Xbox 360 controller support via XInput API with proper initialization, detection, polling, and logging
 - **Controller Input Mapping** - Complete controller input system with default button mappings, 8-way diagonal movement, key repeat, grid command menu, and in-game button remapping
 
@@ -128,6 +128,8 @@ steambandRedux/
 │       ├── unity_test_runner.c      # Unity test runner
 │       ├── test_logging_unity.c     # Logging system tests (Unity)
 │       ├── test_z_util.c            # z-util.c tests
+│       ├── test_controller.c        # Controller input mapping tests
+│       ├── test_controller_stubs.c  # Test stubs for controller tests
 │       └── test_unity_infrastructure.c  # Unity framework tests
 ├── lib/                   # Game data directory
 │   ├── logs/             # Log files (auto-created)
@@ -257,8 +259,9 @@ This project uses a structured development process called **Agent-OS** that orga
 - In-game button remapping menu (BACK triple-press)
 - Configuration file support (`lib/user/controller.prf`) with persistent mappings
 - Menu navigation support (A=Enter, B=Escape) for all game menus
+- 10 unit tests covering button mapping, menu state management, and configuration parsing
 
-**Verification:** Ready for in-game testing
+**Verification:** Complete - All unit tests passing (10 controller tests), ready for in-game integration testing
 
 ### Upcoming Specifications
 
@@ -337,14 +340,18 @@ The project uses the **Unity** testing framework for unit tests. Tests are locat
 - **Unity Infrastructure Tests** (`test_unity_infrastructure.c`) - Verify Unity framework integration
 - **Logging System Tests** (`test_logging_unity.c`) - 13 tests covering all logging functionality
 - **Core Utilities Tests** (`test_z_util.c`) - 10 tests for string utilities and buffer overflow protection
+- **Controller Tests** (`test_controller.c`) - 10 tests for controller input mapping functionality
 
 ### Current Test Coverage
 
 - ✅ Unity framework integration (5 tests)
 - ✅ Logging system (13 tests: levels, filtering, formatting, rotation, thread safety)
 - ✅ z-util.c utilities (10 tests: streq, prefix, suffix, my_strcpy)
+- ✅ Controller input mapping (10 tests: button mappings, menu state, config parsing)
 - ⏳ util.c utilities (tests written but deferred due to game state dependencies)
 - ⏳ files.c utilities (deferred due to game state dependencies)
+
+**Total: 38 tests, all passing**
 
 For detailed information on writing and running tests, see the [Testing Guide](agent-os/specs/2025-12-12-set-up-unit-testing-framework/documentation/testing-guide.md).
 
