@@ -5140,6 +5140,9 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 
 	/* Prepare the filepaths */
 	init_stuff();
+	
+	/* Load controller config after paths are initialized */
+	controller_load_config();
 
 	/* Initialize the keypress analyzer */
 	for (i = 0; special_key_list[i]; i++)

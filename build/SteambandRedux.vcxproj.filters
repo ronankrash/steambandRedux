@@ -19,6 +19,12 @@
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_menu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\controller_config_menu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\Users\bkars\git\steambandRedux\src\cmd-item.c">
       <Filter>Source Files</Filter>
     </ClCompile>

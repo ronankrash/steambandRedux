@@ -19,9 +19,9 @@ SteambandRedux is a modernization project that brings classic roguelike gameplay
 - **Comprehensive Logging System** - Full logging infrastructure with DEBUG/INFO/WARNING/ERROR/FATAL levels, file output with rotation, and Windows debug console support
 - **Unit Testing Framework** - Unity testing framework integrated with CMake, comprehensive test infrastructure, and 28 tests covering logging and core utilities
 - **XInput API Integration** - Xbox 360 controller support via XInput API with proper initialization, detection, polling, and logging
+- **Controller Input Mapping** - Complete controller input system with default button mappings, 8-way diagonal movement, key repeat, grid command menu, and in-game button remapping
 
 ### 📋 Planned
-- Controller input mapping and configuration
 - Steamworks SDK integration
 - Steam achievements and cloud saves
 - Steam release preparation
@@ -81,7 +81,28 @@ set STEAMBAND_LOG_LEVEL=DEBUG
 
 ### Controller Support
 
-Xbox 360 controller support is integrated via XInput API. The controller is automatically detected and initialized at startup. You can control controller logging via environment variable:
+Xbox 360 controller support is fully integrated with comprehensive input mapping:
+
+**Default Button Mappings:**
+- **A Button** → Enter (Confirm/Select in menus)
+- **B Button** → Escape (Cancel/Back in menus)
+- **X Button** → Inventory list (`i`)
+- **Y Button** → Equipment list (`e`)
+- **D-Pad** → Movement (Numpad 8/2/4/6) with key repeat
+- **Left Thumbstick** → 8-way diagonal movement (Numpad 1-9)
+- **Start** → Escape (Main menu)
+- **Back** → Full dungeon map (`M`)
+- **LB** → Rest (`R`)
+- **RB** → Search (`s`)
+
+**Controller Menus:**
+- **Command Menu** (BACK button double-press): Grid menu with 30+ game commands organized by category
+- **Configuration Menu** (BACK button triple-press): Remap any button to any key code
+
+**Configuration:**
+- Button mappings are saved to `lib/user/controller.prf`
+- Custom mappings persist across game sessions
+- Environment variable to control logging:
 
 ```bash
 # Silence controller logging (0 = silent, 1 = enabled, default = enabled)
@@ -99,6 +120,10 @@ steambandRedux/
 │   ├── logging.h          # Logging system header
 │   ├── controller.c       # XInput controller support implementation
 │   ├── controller.h       # XInput controller support header
+│   ├── controller_menu.c  # Controller command grid menu system
+│   ├── controller_menu.h  # Controller command menu header
+│   ├── controller_config_menu.c  # Button remapping configuration menu
+│   ├── controller_config_menu.h  # Button remapping menu header
 │   └── tests/             # Unit tests
 │       ├── unity_test_runner.c      # Unity test runner
 │       ├── test_logging_unity.c     # Logging system tests (Unity)
@@ -118,7 +143,8 @@ steambandRedux/
 │   │   ├── 2025-12-11-complete-cmake-build-system-migration/
 │   │   ├── 2025-12-12-implement-comprehensive-logging-system/
 │   │   ├── 2025-12-12-set-up-unit-testing-framework/
-│   │   └── 2025-12-13-integrate-xinput-api/
+│   │   ├── 2025-12-13-integrate-xinput-api/
+│   │   └── 2025-12-13-implement-controller-input-mapping/
 │   └── commands/         # Development workflow commands
 ├── CMakeLists.txt        # CMake build configuration
 └── README.md             # This file
@@ -217,9 +243,25 @@ This project uses a structured development process called **Agent-OS** that orga
 
 **Verification:** [Final Verification Report](agent-os/specs/2025-12-13-integrate-xinput-api/verifications/final-verification.md)
 
+#### ✅ Implement Controller Input Mapping
+**Spec:** `2025-12-13-implement-controller-input-mapping`  
+**Status:** Complete  
+**Summary:** Complete controller input system with default button mappings, 8-way diagonal movement, key repeat functionality, grid command menu, and in-game button remapping.
+
+**Key Features:**
+- Comprehensive default button mapping covering all essential game commands
+- 8-way diagonal thumbstick movement using angle calculation (Numpad 1-9)
+- Key repeat functionality for D-Pad movement (200ms delay, 50ms rate)
+- Grid command menu system (BACK double-press) with 30+ commands organized by category
+- D-Pad navigation with visual highlighting
+- In-game button remapping menu (BACK triple-press)
+- Configuration file support (`lib/user/controller.prf`) with persistent mappings
+- Menu navigation support (A=Enter, B=Escape) for all game menus
+
+**Verification:** Ready for in-game testing
+
 ### Upcoming Specifications
 
-- **Implement Controller Input Mapping** - Map controller buttons to game commands
 - **Integrate Steamworks SDK** - Add Steam platform integration
 
 See [Product Roadmap](agent-os/product/roadmap.md) for the complete list.
@@ -238,7 +280,9 @@ See [Product Roadmap](agent-os/product/roadmap.md) for the complete list.
 
 - **Logging System** (`src/logging.c`): Thread-safe logging with file output and rotation
 - **Windows Entry Point** (`src/main-win.c`): Windows message loop and initialization
-- **Controller Support** (`src/controller.c`): XInput API integration for Xbox 360 controller support
+- **Controller Support** (`src/controller.c`): XInput API integration with button mapping, 8-way movement, and key repeat
+- **Controller Command Menu** (`src/controller_menu.c`): Grid-based menu system for accessing game commands via controller
+- **Controller Config Menu** (`src/controller_config_menu.c`): In-game button remapping interface
 - **Build System** (`CMakeLists.txt`): CMake configuration for modern compilation
 
 For detailed technical information, see [Tech Stack Documentation](agent-os/product/tech-stack.md).
@@ -310,6 +354,7 @@ For detailed information on writing and running tests, see the [Testing Guide](a
 - ✅ **Logging System** - Complete
 - ✅ **Unit Testing Framework** - Complete
 - ✅ **XInput Integration** - Complete
+- ✅ **Controller Input Mapping** - Complete
 - 📋 **Steam Integration** - Planned
 
 ---

@@ -23,6 +23,8 @@ set(SOURCES
     src/cmd-attk.c
     src/cmd-book.c
     src/controller.c
+    src/controller_menu.c
+    src/controller_config_menu.c
     src/cmd-item.c
     src/cmd-know.c
     src/cmd-misc.c
