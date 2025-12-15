@@ -20,6 +20,8 @@ SteambandRedux is a modernization project that brings classic roguelike gameplay
 - **Unit Testing Framework** - Unity testing framework integrated with CMake, comprehensive test infrastructure, and 38 tests covering logging, core utilities, and controller functionality
 - **XInput API Integration** - Xbox 360 controller support via XInput API with proper initialization, detection, polling, and logging
 - **Controller Input Mapping** - Complete controller input system with default button mappings, 8-way diagonal movement, key repeat, grid command menu, and in-game button remapping
+- **Keyboard Input Support** - Full keyboard support alongside controller, with keyboard shortcuts ('N' for New Game, 'O' for Open Game) and proper message loop processing
+- **UI Improvements** - Larger, more readable fonts with automatic scaling, proper window resizing support for multiple screen sizes, and improved text rendering
 
 ### 📋 Planned
 - Steamworks SDK integration
@@ -73,6 +75,18 @@ cd build
 ctest -C Debug --output-on-failure
 ```
 
+**Keyboard Shortcuts:**
+- **'N'** - Start a new game
+- **'O'** - Open a saved game
+- **Arrow Keys** - Movement (in-game)
+- **Space** - Confirm/Select (in-game)
+- **Escape** - Cancel/Back (in-game)
+
+**Window Features:**
+- **Resizable Window** - Drag window edges to resize; terminal adjusts automatically
+- **Larger Text** - Font automatically scales for better readability
+- **Multi-Monitor Support** - Works on various screen sizes and resolutions
+
 ### Logging
 
 Logs are written to `lib/logs/steamband.log` (relative to the executable). You can control the log level via environment variable:
@@ -83,7 +97,18 @@ set STEAMBAND_LOG_LEVEL=DEBUG
 ./SteambandRedux.exe
 ```
 
-### Controller Support
+### Input Support
+
+The game supports both **keyboard** and **Xbox 360 controller** input simultaneously.
+
+#### Keyboard Support
+
+- **Full keyboard support** - All standard keys work in-game
+- **Menu shortcuts** - 'N' for New Game, 'O' for Open Game
+- **Arrow keys** - Movement and navigation
+- **Standard game controls** - All original keyboard commands work as expected
+
+#### Controller Support
 
 Xbox 360 controller support is fully integrated with comprehensive input mapping:
 
@@ -359,6 +384,16 @@ The project uses the **Unity** testing framework for unit tests. Tests are locat
 
 For detailed information on writing and running tests, see the [Testing Guide](agent-os/specs/2025-12-12-set-up-unit-testing-framework/documentation/testing-guide.md).
 
+## Recent Updates
+
+### Latest Fixes (December 2024)
+
+- ✅ **Keyboard Input** - Fixed keyboard input processing; keyboard shortcuts ('N', 'O') now work at menu screen
+- ✅ **Font Size** - Increased default font size for better readability; automatic scaling for small fonts
+- ✅ **Window Resizing** - Proper window resizing support; terminal adjusts automatically to window size
+- ✅ **Game Launch** - Game now launches successfully and displays properly; all initialization issues resolved
+- ✅ **Multi-Input Support** - Keyboard and controller work simultaneously; seamless switching between input methods
+
 ## Status Badges
 
 - ✅ **CMake Build System** - Complete
@@ -366,9 +401,11 @@ For detailed information on writing and running tests, see the [Testing Guide](a
 - ✅ **Unit Testing Framework** - Complete
 - ✅ **XInput Integration** - Complete
 - ✅ **Controller Input Mapping** - Complete
+- ✅ **Keyboard Input** - Complete
+- ✅ **UI Improvements** - Complete
 - 📋 **Steam Integration** - Planned
 
 ---
 
-**Note:** This is a modernization project. The game itself is based on the classic Steamband/Angband codebase, and we're adding modern features while preserving the authentic gameplay experience.
+**Note:** This is a modernization project. The game itself is based on the classic Steamband/Angband codebase, and we're adding modern features while preserving the authentic gameplay experience. The game is now fully playable with both keyboard and controller support!
 
