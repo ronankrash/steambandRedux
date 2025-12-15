@@ -10,7 +10,7 @@
 8. [ ] Implement Steam Overlay Support — Enable Steam overlay functionality, ensure overlay works during gameplay, and handle overlay activation/deactivation events `S`
 9. [ ] Create Steam Achievements System — Define achievement list, implement achievement unlocking logic, and integrate with game milestones and accomplishments `M`
 10. [ ] Add Steam Cloud Saves — Implement Steam Cloud save synchronization, handle save file upload/download, and provide fallback to local saves `M`
-11. [ ] Write Tests for Controller Support — Create unit tests for controller input mapping, button detection, and input translation to game commands `S`
+11. [x] Write Tests for Controller Support — Create unit tests for controller input mapping, button detection, and input translation to game commands `S`
 12. [ ] Write Tests for Steam Integration — Create unit tests for Steam API initialization, achievement unlocking, and cloud save operations `S`
 13. [ ] Polish and Documentation — Create user documentation for controller setup, Steam features, and prepare Steam store page materials `M`
 14. [ ] Steam Release Preparation — Final testing, Steam build configuration, store assets preparation, and submission to Steam platform `L`

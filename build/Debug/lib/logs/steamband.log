@@ -1,0 +1,886 @@
+[2025-12-13 22:09:06] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:09:06] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:20:40] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:20:40] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:21:10] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:21:10] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:28:21] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:28:21] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:30:07] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:30:07] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:35:31] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:35:31] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:36:23] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:36:23] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:40:02] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:40:02] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:40:02] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:40:02] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:40:46] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:40:46] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:40:46] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:40:46] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:44:26] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:44:26] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:44:26] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:44:26] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:44:26] [INFO] Initializing windows...
+[2025-12-13 22:44:44] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:44:44] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:44:44] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:44:44] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:44:44] [INFO] Initializing windows...
+[2025-12-13 22:46:04] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:46:04] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:46:04] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:46:04] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:46:04] [INFO] Initializing windows...
+[2025-12-13 22:46:04] [INFO] Loading preferences...
+[2025-12-13 22:46:04] [INFO] Preferences loaded successfully
+[2025-12-13 22:46:04] [INFO] Initializing 8 windows...
+[2025-12-13 22:46:04] [INFO] Window initialization complete
+[2025-12-13 22:49:00] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:49:00] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:49:00] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:49:00] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:49:00] [INFO] Initializing windows...
+[2025-12-13 22:49:00] [INFO] Loading preferences...
+[2025-12-13 22:49:00] [INFO] Preferences loaded successfully
+[2025-12-13 22:49:00] [INFO] Initializing 8 windows...
+[2025-12-13 22:49:00] [INFO] Window initialization complete
+[2025-12-13 22:49:00] [INFO] Creating sub-windows...
+[2025-12-13 22:49:00] [INFO] Creating main window...
+[2025-12-13 22:50:01] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:50:01] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:50:01] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:50:01] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:50:01] [INFO] Initializing windows...
+[2025-12-13 22:50:01] [INFO] Loading preferences...
+[2025-12-13 22:50:01] [INFO] Preferences loaded successfully
+[2025-12-13 22:50:01] [INFO] Initializing 8 windows...
+[2025-12-13 22:50:01] [INFO] Window initialization complete
+[2025-12-13 22:50:01] [INFO] Creating sub-windows...
+[2025-12-13 22:50:01] [INFO] Creating main window...
+[2025-12-13 22:50:01] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:50:01] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:51:05] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:51:05] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:51:05] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:51:05] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:51:05] [INFO] Initializing windows...
+[2025-12-13 22:51:05] [INFO] Loading preferences...
+[2025-12-13 22:51:05] [INFO] Preferences loaded successfully
+[2025-12-13 22:51:05] [INFO] Initializing 8 windows...
+[2025-12-13 22:51:05] [INFO] Window initialization complete
+[2025-12-13 22:51:05] [INFO] Creating sub-windows...
+[2025-12-13 22:51:05] [INFO] Creating main window...
+[2025-12-13 22:51:05] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:51:05] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:06] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:06] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:06] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:06] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:06] [INFO] Initializing windows...
+[2025-12-13 22:53:06] [INFO] Loading preferences...
+[2025-12-13 22:53:06] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:06] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:06] [INFO] Window initialization complete
+[2025-12-13 22:53:06] [INFO] Creating sub-windows...
+[2025-12-13 22:53:06] [INFO] Creating main window...
+[2025-12-13 22:53:06] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:06] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:08] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:08] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:08] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:08] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:08] [INFO] Initializing windows...
+[2025-12-13 22:53:08] [INFO] Loading preferences...
+[2025-12-13 22:53:08] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:08] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:08] [INFO] Window initialization complete
+[2025-12-13 22:53:08] [INFO] Creating sub-windows...
+[2025-12-13 22:53:08] [INFO] Creating main window...
+[2025-12-13 22:53:08] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:08] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:11] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:11] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:11] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:11] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:11] [INFO] Initializing windows...
+[2025-12-13 22:53:11] [INFO] Loading preferences...
+[2025-12-13 22:53:11] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:11] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:11] [INFO] Window initialization complete
+[2025-12-13 22:53:11] [INFO] Creating sub-windows...
+[2025-12-13 22:53:11] [INFO] Creating main window...
+[2025-12-13 22:53:11] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:11] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:12] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:12] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:12] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:12] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:12] [INFO] Initializing windows...
+[2025-12-13 22:53:12] [INFO] Loading preferences...
+[2025-12-13 22:53:12] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:12] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:12] [INFO] Window initialization complete
+[2025-12-13 22:53:12] [INFO] Creating sub-windows...
+[2025-12-13 22:53:12] [INFO] Creating main window...
+[2025-12-13 22:53:12] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:12] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:13] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:13] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:13] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:13] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:13] [INFO] Initializing windows...
+[2025-12-13 22:53:13] [INFO] Loading preferences...
+[2025-12-13 22:53:13] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:13] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:13] [INFO] Window initialization complete
+[2025-12-13 22:53:13] [INFO] Creating sub-windows...
+[2025-12-13 22:53:13] [INFO] Creating main window...
+[2025-12-13 22:53:13] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:13] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:14] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:14] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:14] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:14] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:14] [INFO] Initializing windows...
+[2025-12-13 22:53:14] [INFO] Loading preferences...
+[2025-12-13 22:53:14] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:14] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:14] [INFO] Window initialization complete
+[2025-12-13 22:53:14] [INFO] Creating sub-windows...
+[2025-12-13 22:53:14] [INFO] Creating main window...
+[2025-12-13 22:53:14] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:14] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:16] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:16] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:16] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:16] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:16] [INFO] Initializing windows...
+[2025-12-13 22:53:16] [INFO] Loading preferences...
+[2025-12-13 22:53:16] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:16] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:16] [INFO] Window initialization complete
+[2025-12-13 22:53:16] [INFO] Creating sub-windows...
+[2025-12-13 22:53:16] [INFO] Creating main window...
+[2025-12-13 22:53:16] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:16] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:18] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:18] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:18] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:18] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:18] [INFO] Initializing windows...
+[2025-12-13 22:53:18] [INFO] Loading preferences...
+[2025-12-13 22:53:18] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:18] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:18] [INFO] Window initialization complete
+[2025-12-13 22:53:18] [INFO] Creating sub-windows...
+[2025-12-13 22:53:18] [INFO] Creating main window...
+[2025-12-13 22:53:18] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:18] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:53:29] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:53:29] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:53:29] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:53:29] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:53:29] [INFO] Initializing windows...
+[2025-12-13 22:53:29] [INFO] Loading preferences...
+[2025-12-13 22:53:29] [INFO] Preferences loaded successfully
+[2025-12-13 22:53:29] [INFO] Initializing 8 windows...
+[2025-12-13 22:53:29] [INFO] Window initialization complete
+[2025-12-13 22:53:29] [INFO] Creating sub-windows...
+[2025-12-13 22:53:29] [INFO] Creating main window...
+[2025-12-13 22:53:29] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:53:29] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:55:11] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:55:11] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:55:11] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:55:11] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:55:11] [INFO] Initializing windows...
+[2025-12-13 22:55:11] [INFO] Loading preferences...
+[2025-12-13 22:55:11] [INFO] Preferences loaded successfully
+[2025-12-13 22:55:11] [INFO] Initializing 8 windows...
+[2025-12-13 22:55:11] [INFO] Window initialization complete
+[2025-12-13 22:55:11] [INFO] Creating sub-windows...
+[2025-12-13 22:55:11] [INFO] Creating main window...
+[2025-12-13 22:55:11] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:55:11] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:56:26] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:56:26] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:56:26] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:56:26] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:56:26] [INFO] Initializing windows...
+[2025-12-13 22:56:26] [INFO] Loading preferences...
+[2025-12-13 22:56:26] [INFO] Preferences loaded successfully
+[2025-12-13 22:56:26] [INFO] Initializing 8 windows...
+[2025-12-13 22:56:26] [INFO] Window initialization complete
+[2025-12-13 22:56:26] [INFO] Creating sub-windows...
+[2025-12-13 22:56:26] [INFO] Creating main window...
+[2025-12-13 22:56:26] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:56:26] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:58:40] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:58:40] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:58:40] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:58:40] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:58:40] [INFO] Initializing windows...
+[2025-12-13 22:58:40] [INFO] Loading preferences...
+[2025-12-13 22:58:40] [INFO] Preferences loaded successfully
+[2025-12-13 22:58:40] [INFO] Initializing 8 windows...
+[2025-12-13 22:58:40] [INFO] Window initialization complete
+[2025-12-13 22:58:40] [INFO] Creating sub-windows...
+[2025-12-13 22:58:40] [INFO] Creating main window...
+[2025-12-13 22:58:40] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:58:40] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 22:59:32] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 22:59:32] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 22:59:32] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 22:59:32] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 22:59:32] [INFO] Initializing windows...
+[2025-12-13 22:59:32] [INFO] Loading preferences...
+[2025-12-13 22:59:32] [INFO] Preferences loaded successfully
+[2025-12-13 22:59:32] [INFO] Initializing 8 windows...
+[2025-12-13 22:59:32] [INFO] Window initialization complete
+[2025-12-13 22:59:32] [INFO] Creating sub-windows...
+[2025-12-13 22:59:32] [INFO] Creating main window...
+[2025-12-13 22:59:32] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 22:59:32] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:00:56] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:00:56] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:00:56] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:00:56] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:00:56] [INFO] Initializing windows...
+[2025-12-13 23:00:56] [INFO] Loading preferences...
+[2025-12-13 23:00:56] [INFO] Preferences loaded successfully
+[2025-12-13 23:00:56] [INFO] Initializing 8 windows...
+[2025-12-13 23:00:56] [INFO] Window initialization complete
+[2025-12-13 23:00:56] [INFO] Creating sub-windows...
+[2025-12-13 23:00:56] [INFO] Creating main window...
+[2025-12-13 23:00:56] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:00:56] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:03:09] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:03:09] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:03:09] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:03:09] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:03:09] [INFO] Initializing windows...
+[2025-12-13 23:03:09] [INFO] Loading preferences...
+[2025-12-13 23:03:09] [INFO] Preferences loaded successfully
+[2025-12-13 23:03:09] [INFO] Initializing 8 windows...
+[2025-12-13 23:03:09] [INFO] Window initialization complete
+[2025-12-13 23:03:09] [INFO] Creating sub-windows...
+[2025-12-13 23:03:09] [INFO] Creating main window...
+[2025-12-13 23:03:09] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:03:09] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:03:09] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-13 23:03:09] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-13 23:04:28] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:04:28] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:04:28] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:04:28] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:04:28] [INFO] Initializing windows...
+[2025-12-13 23:04:28] [INFO] Loading preferences...
+[2025-12-13 23:04:28] [INFO] Preferences loaded successfully
+[2025-12-13 23:04:28] [INFO] Initializing 8 windows...
+[2025-12-13 23:04:28] [INFO] Window initialization complete
+[2025-12-13 23:04:28] [INFO] Creating sub-windows...
+[2025-12-13 23:04:28] [INFO] Creating main window...
+[2025-12-13 23:04:28] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:04:28] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:04:28] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-13 23:04:28] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-13 23:04:28] [DEBUG] About to flush logs and call CreateWindowEx
+[2025-12-13 23:04:28] [DEBUG] Calling log_close()
+[2025-12-13 23:05:33] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:05:33] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:05:33] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:05:33] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:05:33] [INFO] Initializing windows...
+[2025-12-13 23:05:33] [INFO] Loading preferences...
+[2025-12-13 23:05:33] [INFO] Preferences loaded successfully
+[2025-12-13 23:05:33] [INFO] Initializing 8 windows...
+[2025-12-13 23:05:33] [INFO] Window initialization complete
+[2025-12-13 23:05:33] [INFO] Creating sub-windows...
+[2025-12-13 23:05:33] [INFO] Creating main window...
+[2025-12-13 23:05:33] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:05:33] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:05:33] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-13 23:05:33] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-13 23:05:33] [DEBUG] About to flush logs and call CreateWindowEx
+[2025-12-13 23:05:33] [DEBUG] Calling log_close()
+[2025-12-13 23:07:00] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:07:00] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:07:00] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:07:00] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:07:00] [INFO] Initializing windows...
+[2025-12-13 23:07:00] [INFO] Loading preferences...
+[2025-12-13 23:07:00] [INFO] Preferences loaded successfully
+[2025-12-13 23:07:00] [INFO] Initializing 8 windows...
+[2025-12-13 23:07:00] [INFO] Window initialization complete
+[2025-12-13 23:07:00] [INFO] Creating sub-windows...
+[2025-12-13 23:07:00] [INFO] Creating main window...
+[2025-12-13 23:07:00] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:07:00] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:07:00] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-13 23:07:00] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-13 23:07:30] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:07:30] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:07:30] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:07:30] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:07:30] [INFO] Initializing windows...
+[2025-12-13 23:07:30] [INFO] Loading preferences...
+[2025-12-13 23:07:30] [INFO] Preferences loaded successfully
+[2025-12-13 23:07:30] [INFO] Initializing 8 windows...
+[2025-12-13 23:07:30] [INFO] Window initialization complete
+[2025-12-13 23:07:30] [INFO] Creating sub-windows...
+[2025-12-13 23:07:30] [INFO] Creating main window...
+[2025-12-13 23:07:30] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:07:30] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:07:30] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-13 23:07:30] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-13 23:07:57] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-13 23:07:57] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-13 23:07:57] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-13 23:07:57] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-13 23:07:57] [INFO] Initializing windows...
+[2025-12-13 23:07:57] [INFO] Loading preferences...
+[2025-12-13 23:07:57] [INFO] Preferences loaded successfully
+[2025-12-13 23:07:57] [INFO] Initializing 8 windows...
+[2025-12-13 23:07:57] [INFO] Window initialization complete
+[2025-12-13 23:07:57] [INFO] Creating sub-windows...
+[2025-12-13 23:07:57] [INFO] Creating main window...
+[2025-12-13 23:07:57] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-13 23:07:57] [INFO] Calling CreateWindowEx for main window...
+[2025-12-13 23:07:57] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-13 23:07:57] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-13 23:07:57] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-13 23:07:57] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-13 23:07:57] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:30:14] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:30:14] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:30:14] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:30:14] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:30:14] [INFO] Initializing windows...
+[2025-12-14 15:30:14] [INFO] Loading preferences...
+[2025-12-14 15:30:14] [INFO] Preferences loaded successfully
+[2025-12-14 15:30:14] [INFO] Initializing 8 windows...
+[2025-12-14 15:30:14] [INFO] Window initialization complete
+[2025-12-14 15:30:14] [INFO] Creating sub-windows...
+[2025-12-14 15:30:14] [INFO] Creating main window...
+[2025-12-14 15:30:14] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:30:14] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:30:14] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:30:14] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:30:14] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:30:14] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:30:14] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:32:05] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:32:05] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:32:05] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:32:05] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:32:05] [INFO] Initializing windows...
+[2025-12-14 15:32:05] [INFO] Loading preferences...
+[2025-12-14 15:32:05] [INFO] Preferences loaded successfully
+[2025-12-14 15:32:05] [INFO] Initializing 8 windows...
+[2025-12-14 15:32:05] [INFO] Window initialization complete
+[2025-12-14 15:32:05] [INFO] Creating sub-windows...
+[2025-12-14 15:32:05] [INFO] Creating main window...
+[2025-12-14 15:32:05] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:32:05] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:32:05] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:32:05] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:32:05] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:32:05] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:32:05] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:33:59] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:33:59] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:33:59] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:33:59] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:33:59] [INFO] Initializing windows...
+[2025-12-14 15:33:59] [INFO] Loading preferences...
+[2025-12-14 15:33:59] [INFO] Preferences loaded successfully
+[2025-12-14 15:33:59] [INFO] Initializing 8 windows...
+[2025-12-14 15:33:59] [INFO] Window initialization complete
+[2025-12-14 15:33:59] [INFO] Creating sub-windows...
+[2025-12-14 15:33:59] [INFO] Creating main window...
+[2025-12-14 15:33:59] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:33:59] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:33:59] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:33:59] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:33:59] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:33:59] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:33:59] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:33:59] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:37:39] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:37:39] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:37:39] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:37:39] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:37:39] [INFO] Initializing windows...
+[2025-12-14 15:37:39] [INFO] Loading preferences...
+[2025-12-14 15:37:39] [INFO] Preferences loaded successfully
+[2025-12-14 15:37:39] [INFO] Initializing 8 windows...
+[2025-12-14 15:37:39] [INFO] Window initialization complete
+[2025-12-14 15:37:39] [INFO] Creating sub-windows...
+[2025-12-14 15:37:39] [INFO] Creating main window...
+[2025-12-14 15:37:39] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:37:39] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:37:39] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:37:39] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:37:39] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:37:39] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:37:39] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:37:39] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:39:49] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:39:49] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:39:49] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:39:49] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:39:49] [INFO] Initializing windows...
+[2025-12-14 15:39:49] [INFO] Loading preferences...
+[2025-12-14 15:39:49] [INFO] Preferences loaded successfully
+[2025-12-14 15:39:49] [INFO] Initializing 8 windows...
+[2025-12-14 15:39:49] [INFO] Window initialization complete
+[2025-12-14 15:39:49] [INFO] Creating sub-windows...
+[2025-12-14 15:39:49] [INFO] Creating main window...
+[2025-12-14 15:39:49] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:39:49] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:39:49] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:39:49] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:39:49] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:39:49] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:39:49] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:39:49] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:41:08] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:41:08] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:41:08] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:41:08] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:41:08] [INFO] Initializing windows...
+[2025-12-14 15:41:08] [INFO] Loading preferences...
+[2025-12-14 15:41:08] [INFO] Preferences loaded successfully
+[2025-12-14 15:41:08] [INFO] Initializing 8 windows...
+[2025-12-14 15:41:08] [INFO] Window initialization complete
+[2025-12-14 15:41:08] [INFO] Creating sub-windows...
+[2025-12-14 15:41:08] [INFO] Creating main window...
+[2025-12-14 15:41:08] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:41:08] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:41:08] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:41:08] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:41:08] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:41:08] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:41:08] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:41:08] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:42:46] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:42:46] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:42:46] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:42:46] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:42:46] [INFO] Initializing windows...
+[2025-12-14 15:42:46] [INFO] Loading preferences...
+[2025-12-14 15:42:46] [INFO] Preferences loaded successfully
+[2025-12-14 15:42:46] [INFO] Initializing 8 windows...
+[2025-12-14 15:42:47] [INFO] Window initialization complete
+[2025-12-14 15:42:47] [INFO] Creating sub-windows...
+[2025-12-14 15:42:47] [INFO] Creating main window...
+[2025-12-14 15:42:47] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:42:47] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:42:47] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:42:47] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:42:47] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:42:47] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:42:47] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:42:47] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:45:18] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:45:18] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:45:18] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:45:18] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:45:18] [INFO] Initializing windows...
+[2025-12-14 15:45:18] [INFO] Loading preferences...
+[2025-12-14 15:45:18] [INFO] Preferences loaded successfully
+[2025-12-14 15:45:18] [INFO] Initializing 8 windows...
+[2025-12-14 15:45:18] [INFO] Window initialization complete
+[2025-12-14 15:45:18] [INFO] Creating sub-windows...
+[2025-12-14 15:45:18] [INFO] Creating main window...
+[2025-12-14 15:45:18] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:45:18] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:45:18] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:45:18] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:45:18] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:45:18] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:45:18] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:45:18] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:47:16] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:47:16] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:47:16] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:47:16] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:47:16] [INFO] Initializing windows...
+[2025-12-14 15:47:16] [INFO] Loading preferences...
+[2025-12-14 15:47:16] [INFO] Preferences loaded successfully
+[2025-12-14 15:47:16] [INFO] Initializing 8 windows...
+[2025-12-14 15:47:16] [INFO] Window initialization complete
+[2025-12-14 15:47:16] [INFO] Creating sub-windows...
+[2025-12-14 15:47:16] [INFO] Creating main window...
+[2025-12-14 15:47:16] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:47:16] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:47:16] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:47:16] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:47:16] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:47:16] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:47:16] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:47:16] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:49:15] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:49:15] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:49:15] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:49:15] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:49:15] [INFO] Initializing windows...
+[2025-12-14 15:49:15] [INFO] Loading preferences...
+[2025-12-14 15:49:15] [INFO] Preferences loaded successfully
+[2025-12-14 15:49:15] [INFO] Initializing 8 windows...
+[2025-12-14 15:49:15] [INFO] Window initialization complete
+[2025-12-14 15:49:15] [INFO] Creating sub-windows...
+[2025-12-14 15:49:15] [INFO] Creating main window...
+[2025-12-14 15:49:15] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:49:15] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:49:15] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:49:15] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:49:15] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:49:15] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:49:15] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:49:15] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:51:58] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:51:58] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:51:58] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:51:58] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:51:58] [INFO] Initializing windows...
+[2025-12-14 15:51:58] [INFO] Loading preferences...
+[2025-12-14 15:51:58] [INFO] Preferences loaded successfully
+[2025-12-14 15:51:58] [INFO] Initializing 8 windows...
+[2025-12-14 15:51:58] [INFO] Window initialization complete
+[2025-12-14 15:51:58] [INFO] Creating sub-windows...
+[2025-12-14 15:51:58] [INFO] Creating main window...
+[2025-12-14 15:51:58] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:51:58] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:51:58] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:51:58] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:51:58] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:51:58] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:51:58] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:51:58] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:55:48] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:55:48] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:55:48] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:55:48] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:55:48] [INFO] Initializing windows...
+[2025-12-14 15:55:48] [INFO] Loading preferences...
+[2025-12-14 15:55:48] [INFO] Preferences loaded successfully
+[2025-12-14 15:55:48] [INFO] Initializing 8 windows...
+[2025-12-14 15:55:48] [INFO] Window initialization complete
+[2025-12-14 15:55:48] [INFO] Creating sub-windows...
+[2025-12-14 15:55:48] [INFO] Creating main window...
+[2025-12-14 15:55:48] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:55:48] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:55:48] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:55:48] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:55:48] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:55:48] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:55:48] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:55:48] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:55:48] [DEBUG] CreateWindowEx returned: 00000000001F0AB0
+[2025-12-14 15:55:48] [DEBUG] Exited __try/__except block
+[2025-12-14 15:58:58] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 15:58:58] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 15:58:58] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 15:58:58] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 15:58:58] [INFO] Initializing windows...
+[2025-12-14 15:58:58] [INFO] Loading preferences...
+[2025-12-14 15:58:58] [INFO] Preferences loaded successfully
+[2025-12-14 15:58:58] [INFO] Initializing 8 windows...
+[2025-12-14 15:58:58] [INFO] Window initialization complete
+[2025-12-14 15:58:58] [INFO] Creating sub-windows...
+[2025-12-14 15:58:58] [INFO] Creating main window...
+[2025-12-14 15:58:58] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 15:58:58] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 15:58:58] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 15:58:58] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 15:58:58] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 15:58:58] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 15:58:58] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 15:58:58] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 15:58:58] [DEBUG] CreateWindowEx returned: 0000000000B60474
+[2025-12-14 15:58:58] [DEBUG] Exited __try/__except block
+[2025-12-14 15:58:58] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:01:40] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:01:40] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:01:40] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:01:40] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:01:40] [INFO] Initializing windows...
+[2025-12-14 16:01:40] [INFO] Loading preferences...
+[2025-12-14 16:01:40] [INFO] Preferences loaded successfully
+[2025-12-14 16:01:40] [INFO] Initializing 8 windows...
+[2025-12-14 16:01:40] [INFO] Window initialization complete
+[2025-12-14 16:01:40] [INFO] Creating sub-windows...
+[2025-12-14 16:01:40] [INFO] Creating main window...
+[2025-12-14 16:01:40] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:01:40] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:01:40] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:01:40] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:01:40] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:01:40] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:01:40] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:01:40] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:01:40] [DEBUG] CreateWindowEx returned: 0000000000220AB0
+[2025-12-14 16:01:40] [DEBUG] Exited __try/__except block
+[2025-12-14 16:01:40] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:01:40] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000220AB0)
+[2025-12-14 16:01:40] [DEBUG] Dispatching message 1
+[2025-12-14 16:01:40] [DEBUG] Dispatched message 1
+[2025-12-14 16:01:40] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000220AB0)
+[2025-12-14 16:01:40] [DEBUG] Dispatching message 2
+[2025-12-14 16:01:40] [DEBUG] Dispatched message 2
+[2025-12-14 16:01:40] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000AE0AEA)
+[2025-12-14 16:01:40] [DEBUG] Dispatching message 3
+[2025-12-14 16:01:40] [DEBUG] Dispatched message 3
+[2025-12-14 16:01:40] [DEBUG] Processing message 4: 0x000F (hWnd=0000000000220AB0)
+[2025-12-14 16:01:40] [DEBUG] Dispatching message 4
+[2025-12-14 16:02:58] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:02:58] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:02:58] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:02:58] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:02:58] [INFO] Initializing windows...
+[2025-12-14 16:02:58] [INFO] Loading preferences...
+[2025-12-14 16:02:58] [INFO] Preferences loaded successfully
+[2025-12-14 16:02:58] [INFO] Initializing 8 windows...
+[2025-12-14 16:02:58] [INFO] Window initialization complete
+[2025-12-14 16:02:58] [INFO] Creating sub-windows...
+[2025-12-14 16:02:58] [INFO] Creating main window...
+[2025-12-14 16:02:58] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:02:58] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:02:58] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:02:58] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:02:58] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:02:58] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:02:58] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:02:58] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:02:58] [DEBUG] CreateWindowEx returned: 0000000000B80474
+[2025-12-14 16:02:58] [DEBUG] Exited __try/__except block
+[2025-12-14 16:02:58] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:02:58] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000B80474)
+[2025-12-14 16:02:58] [DEBUG] Dispatching message 1
+[2025-12-14 16:02:58] [DEBUG] Dispatched message 1
+[2025-12-14 16:02:58] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000B80474)
+[2025-12-14 16:02:58] [DEBUG] Dispatching message 2
+[2025-12-14 16:02:58] [DEBUG] Dispatched message 2
+[2025-12-14 16:02:58] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000AF0AEA)
+[2025-12-14 16:02:58] [DEBUG] Dispatching message 3
+[2025-12-14 16:02:58] [DEBUG] Dispatched message 3
+[2025-12-14 16:02:58] [DEBUG] Processing message 4: 0x000F (hWnd=0000000000B80474)
+[2025-12-14 16:02:58] [DEBUG] Dispatching message 4
+[2025-12-14 16:04:41] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:04:41] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:04:41] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:04:41] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:04:41] [INFO] Initializing windows...
+[2025-12-14 16:04:41] [INFO] Loading preferences...
+[2025-12-14 16:04:41] [INFO] Preferences loaded successfully
+[2025-12-14 16:04:41] [INFO] Initializing 8 windows...
+[2025-12-14 16:04:41] [INFO] Window initialization complete
+[2025-12-14 16:04:41] [INFO] Creating sub-windows...
+[2025-12-14 16:04:41] [INFO] Creating main window...
+[2025-12-14 16:04:41] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:04:41] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:04:41] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:04:41] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:04:41] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:04:41] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:04:41] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:04:41] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:04:41] [DEBUG] CreateWindowEx returned: 0000000000240AB0
+[2025-12-14 16:04:41] [DEBUG] Exited __try/__except block
+[2025-12-14 16:04:41] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:04:41] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000240AB0)
+[2025-12-14 16:04:41] [DEBUG] Dispatching message 1
+[2025-12-14 16:04:41] [DEBUG] Dispatched message 1
+[2025-12-14 16:04:41] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000240AB0)
+[2025-12-14 16:04:41] [DEBUG] Dispatching message 2
+[2025-12-14 16:04:41] [DEBUG] Dispatched message 2
+[2025-12-14 16:04:41] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000B00AEA)
+[2025-12-14 16:04:41] [DEBUG] Dispatching message 3
+[2025-12-14 16:04:41] [DEBUG] Dispatched message 3
+[2025-12-14 16:04:41] [DEBUG] Processing message 4: 0x000F (hWnd=0000000000240AB0)
+[2025-12-14 16:04:41] [DEBUG] Dispatching message 4
+[2025-12-14 16:05:51] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:05:51] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:05:51] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:05:51] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:05:51] [INFO] Initializing windows...
+[2025-12-14 16:05:51] [INFO] Loading preferences...
+[2025-12-14 16:05:51] [INFO] Preferences loaded successfully
+[2025-12-14 16:05:51] [INFO] Initializing 8 windows...
+[2025-12-14 16:05:51] [INFO] Window initialization complete
+[2025-12-14 16:05:51] [INFO] Creating sub-windows...
+[2025-12-14 16:05:51] [INFO] Creating main window...
+[2025-12-14 16:05:51] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:05:51] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:05:51] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:05:51] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:05:51] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:05:51] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:05:51] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:05:51] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:05:51] [DEBUG] CreateWindowEx returned: 0000000000BB0474
+[2025-12-14 16:05:51] [DEBUG] Exited __try/__except block
+[2025-12-14 16:05:51] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:05:51] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000BB0474)
+[2025-12-14 16:05:51] [DEBUG] Dispatching message 1
+[2025-12-14 16:05:51] [DEBUG] Dispatched message 1
+[2025-12-14 16:05:51] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000BB0474)
+[2025-12-14 16:05:51] [DEBUG] Dispatching message 2
+[2025-12-14 16:05:51] [DEBUG] Dispatched message 2
+[2025-12-14 16:05:51] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000310B6A)
+[2025-12-14 16:05:51] [DEBUG] Dispatching message 3
+[2025-12-14 16:05:51] [DEBUG] Dispatched message 3
+[2025-12-14 16:05:51] [DEBUG] Processing message 4: 0x000F (hWnd=0000000000BB0474)
+[2025-12-14 16:05:51] [DEBUG] Dispatching message 4
+[2025-12-14 16:07:35] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:07:35] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:07:35] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:07:35] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:07:35] [INFO] Initializing windows...
+[2025-12-14 16:07:35] [INFO] Loading preferences...
+[2025-12-14 16:07:35] [INFO] Preferences loaded successfully
+[2025-12-14 16:07:35] [INFO] Initializing 8 windows...
+[2025-12-14 16:07:35] [INFO] Window initialization complete
+[2025-12-14 16:07:35] [INFO] Creating sub-windows...
+[2025-12-14 16:07:35] [INFO] Creating main window...
+[2025-12-14 16:07:35] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:07:35] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:07:35] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:07:35] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:07:35] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:07:35] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:07:35] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:07:35] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:07:35] [DEBUG] CreateWindowEx returned: 0000000000640BD8
+[2025-12-14 16:07:35] [DEBUG] Exited __try/__except block
+[2025-12-14 16:07:35] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:07:35] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000640BD8)
+[2025-12-14 16:07:35] [DEBUG] Dispatching message 1
+[2025-12-14 16:07:35] [DEBUG] Dispatched message 1
+[2025-12-14 16:07:35] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000640BD8)
+[2025-12-14 16:07:35] [DEBUG] Dispatching message 2
+[2025-12-14 16:07:35] [DEBUG] Dispatched message 2
+[2025-12-14 16:07:35] [DEBUG] Processing message 3: 0x0060 (hWnd=00000000007C0C2C)
+[2025-12-14 16:07:35] [DEBUG] Dispatching message 3
+[2025-12-14 16:07:35] [DEBUG] Dispatched message 3
+[2025-12-14 16:07:35] [DEBUG] Processing message 4: 0x000F (hWnd=0000000000640BD8)
+[2025-12-14 16:07:35] [DEBUG] Dispatching message 4
+[2025-12-14 16:07:35] [DEBUG] Dispatched message 4
+[2025-12-14 16:07:35] [DEBUG] Processing message 5: 0x0060 (hWnd=00000000007C0C2C)
+[2025-12-14 16:07:35] [DEBUG] Dispatching message 5
+[2025-12-14 16:07:35] [DEBUG] Dispatched message 5
+[2025-12-14 16:07:35] [DEBUG] Finished processing queued messages (processed 5 messages)
+[2025-12-14 16:07:35] [INFO] CreateWindowEx returned: 0000000000640BD8
+[2025-12-14 16:07:35] [INFO] Main window created successfully
+[2025-12-14 16:07:35] [DEBUG] Showing main window
+[2025-12-14 16:07:35] [DEBUG] Main window shown
+[2025-12-14 16:07:35] [DEBUG] Linking term data
+[2025-12-14 16:07:35] [DEBUG] Term data linked
+[2025-12-14 16:07:35] [DEBUG] Term screen set
+[2025-12-14 16:07:35] [INFO] All windows created and initialized
+[2025-12-14 16:07:35] [INFO] Windows initialized successfully
+[2025-12-14 16:07:35] [INFO] Initializing Angband game engine...
+[2025-12-14 16:08:59] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:08:59] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:08:59] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:08:59] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:08:59] [INFO] Initializing windows...
+[2025-12-14 16:08:59] [INFO] Loading preferences...
+[2025-12-14 16:08:59] [INFO] Preferences loaded successfully
+[2025-12-14 16:08:59] [INFO] Initializing 8 windows...
+[2025-12-14 16:08:59] [INFO] Window initialization complete
+[2025-12-14 16:08:59] [INFO] Creating sub-windows...
+[2025-12-14 16:08:59] [INFO] Creating main window...
+[2025-12-14 16:08:59] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:08:59] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:08:59] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:08:59] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:08:59] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:08:59] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:08:59] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:08:59] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:08:59] [DEBUG] CreateWindowEx returned: 0000000000290AB0
+[2025-12-14 16:08:59] [DEBUG] Exited __try/__except block
+[2025-12-14 16:08:59] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:08:59] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000290AB0)
+[2025-12-14 16:08:59] [DEBUG] Dispatching message 1
+[2025-12-14 16:08:59] [DEBUG] Dispatched message 1
+[2025-12-14 16:08:59] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000290AB0)
+[2025-12-14 16:08:59] [DEBUG] Dispatching message 2
+[2025-12-14 16:08:59] [DEBUG] Dispatched message 2
+[2025-12-14 16:08:59] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000330B6A)
+[2025-12-14 16:08:59] [DEBUG] Dispatching message 3
+[2025-12-14 16:08:59] [DEBUG] Dispatched message 3
+[2025-12-14 16:08:59] [DEBUG] Processing message 4: 0x000F (hWnd=0000000000290AB0)
+[2025-12-14 16:08:59] [DEBUG] Dispatching message 4
+[2025-12-14 16:08:59] [DEBUG] Dispatched message 4
+[2025-12-14 16:08:59] [DEBUG] Processing message 5: 0x0060 (hWnd=0000000000330B6A)
+[2025-12-14 16:08:59] [DEBUG] Dispatching message 5
+[2025-12-14 16:08:59] [DEBUG] Dispatched message 5
+[2025-12-14 16:08:59] [DEBUG] Finished processing queued messages (processed 5 messages)
+[2025-12-14 16:08:59] [INFO] CreateWindowEx returned: 0000000000290AB0
+[2025-12-14 16:08:59] [INFO] Main window created successfully
+[2025-12-14 16:08:59] [DEBUG] Showing main window
+[2025-12-14 16:08:59] [DEBUG] Main window shown
+[2025-12-14 16:08:59] [DEBUG] Linking term data
+[2025-12-14 16:08:59] [DEBUG] Term data linked
+[2025-12-14 16:08:59] [DEBUG] Term screen set
+[2025-12-14 16:08:59] [INFO] All windows created and initialized
+[2025-12-14 16:08:59] [INFO] Windows initialized successfully
+[2025-12-14 16:08:59] [INFO] Initializing Angband game engine...
+[2025-12-14 16:09:46] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2025-12-14 16:09:46] [INFO] Controller initialized: No controller detected (port 0)
+[2025-12-14 16:09:46] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2025-12-14 16:09:46] [INFO] Controller config: Config file not found, using default mappings
+[2025-12-14 16:09:46] [INFO] Initializing windows...
+[2025-12-14 16:09:46] [INFO] Loading preferences...
+[2025-12-14 16:09:46] [INFO] Preferences loaded successfully
+[2025-12-14 16:09:46] [INFO] Initializing 8 windows...
+[2025-12-14 16:09:46] [INFO] Window initialization complete
+[2025-12-14 16:09:46] [INFO] Creating sub-windows...
+[2025-12-14 16:09:46] [INFO] Creating main window...
+[2025-12-14 16:09:46] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(30,20), size=(660,375)
+[2025-12-14 16:09:46] [INFO] Calling CreateWindowEx for main window...
+[2025-12-14 16:09:46] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2025-12-14 16:09:46] [DEBUG] CreateWindowEx position: (30,20), size: (660,375)
+[2025-12-14 16:09:46] [DEBUG] Flushing logs before CreateWindowEx
+[2025-12-14 16:09:46] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2025-12-14 16:09:46] [DEBUG] Entering __try block for CreateWindowEx
+[2025-12-14 16:09:46] [DEBUG] Inside __try block, calling CreateWindowEx
+[2025-12-14 16:09:46] [DEBUG] CreateWindowEx returned: 0000000000740BA2
+[2025-12-14 16:09:46] [DEBUG] Exited __try/__except block
+[2025-12-14 16:09:46] [DEBUG] Processing queued messages after CreateWindowEx
+[2025-12-14 16:09:46] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000740BA2)
+[2025-12-14 16:09:46] [DEBUG] Dispatching message 1
+[2025-12-14 16:09:46] [DEBUG] Dispatched message 1
+[2025-12-14 16:09:46] [DEBUG] Processing message 2: 0xC0CD (hWnd=0000000000740BA2)
+[2025-12-14 16:09:46] [DEBUG] Dispatching message 2
+[2025-12-14 16:09:46] [DEBUG] Dispatched message 2
+[2025-12-14 16:09:46] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000460C16)
+[2025-12-14 16:09:46] [DEBUG] Dispatching message 3
+[2025-12-14 16:09:46] [DEBUG] Dispatched message 3
+[2025-12-14 16:09:46] [DEBUG] Processing message 4: 0x0101 (hWnd=0000000000740BA2)
+[2025-12-14 16:09:46] [DEBUG] Dispatching message 4
+[2025-12-14 16:09:46] [DEBUG] Dispatched message 4
+[2025-12-14 16:09:46] [DEBUG] Processing message 5: 0x000F (hWnd=0000000000740BA2)
+[2025-12-14 16:09:46] [DEBUG] Dispatching message 5
+[2025-12-14 16:09:46] [DEBUG] Dispatched message 5
+[2025-12-14 16:09:46] [DEBUG] Processing message 6: 0x0060 (hWnd=0000000000460C16)
+[2025-12-14 16:09:46] [DEBUG] Dispatching message 6
+[2025-12-14 16:09:46] [DEBUG] Dispatched message 6
+[2025-12-14 16:09:46] [DEBUG] Finished processing queued messages (processed 6 messages)
+[2025-12-14 16:09:46] [INFO] CreateWindowEx returned: 0000000000740BA2
+[2025-12-14 16:09:46] [INFO] Main window created successfully
+[2025-12-14 16:09:46] [DEBUG] Showing main window
+[2025-12-14 16:09:46] [DEBUG] Main window shown
+[2025-12-14 16:09:46] [DEBUG] Linking term data
+[2025-12-14 16:09:46] [DEBUG] Term data linked
+[2025-12-14 16:09:46] [DEBUG] Term screen set
+[2025-12-14 16:09:46] [INFO] All windows created and initialized
+[2025-12-14 16:09:46] [INFO] Windows initialized successfully
+[2025-12-14 16:09:46] [INFO] Initializing Angband game engine...

@@ -27,6 +27,12 @@ void log_init(const char *filename);
 void log_close(void);
 
 /*
+ * Flush log file (ensures all buffered data is written)
+ * Safe to call even if log is already closed
+ */
+void log_flush(void);
+
+/*
  * Set minimum log level
  * Messages below this level will be filtered out
  * @param level: Minimum log level (LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL)

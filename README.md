@@ -57,6 +57,10 @@ cmake --build build --config Release
 
 ```bash
 # Run the game
+# Note: The game automatically locates the 'lib' directory by searching:
+# 1. Next to the executable (build/Debug/lib/)
+# 2. One level up (build/lib/)
+# 3. Two levels up (root lib/)
 cd build/Debug
 ./SteambandRedux.exe
 

@@ -250,6 +250,26 @@ void log_close(void) {
 #endif
 }
 
+void log_flush(void) {
+#ifdef WINDOWS
+    /* Acquire mutex */
+    if (log_mutex) {
+        WaitForSingleObject(log_mutex, INFINITE);
+    }
+#endif
+    
+    if (log_file) {
+        fflush(log_file);
+    }
+    
+#ifdef WINDOWS
+    /* Release mutex */
+    if (log_mutex) {
+        ReleaseMutex(log_mutex);
+    }
+#endif
+}
+
 void log_set_level(log_level_t level) {
     min_log_level = level;
 }
