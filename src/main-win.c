@@ -898,10 +898,43 @@ static void validate_file(cptr s)
  */
 static void validate_dir(cptr s)
 {
-	/* Verify or fail */
+	/* Check if directory exists */
 	if (!check_dir(s))
 	{
-		quit_fmt("Cannot find required directory:\n%s", s);
+		/* Try to create the directory */
+#ifdef WINDOWS
+		if (CreateDirectory(s, NULL) == 0)
+		{
+			/* If creation failed, check if it's because it already exists */
+			DWORD error = GetLastError();
+			if (error != ERROR_ALREADY_EXISTS)
+			{
+				/* Directory doesn't exist and couldn't be created */
+				quit_fmt("Cannot find required directory:\n%s", s);
+			}
+			/* If ERROR_ALREADY_EXISTS, another process created it, verify it exists now */
+			if (!check_dir(s))
+			{
+				quit_fmt("Cannot find required directory:\n%s", s);
+			}
+		}
+#else
+		/* For non-Windows, use mkdir */
+		if (mkdir(s, 0755) != 0)
+		{
+			/* If creation failed, check if it's because it already exists */
+			if (errno != EEXIST)
+			{
+				/* Directory doesn't exist and couldn't be created */
+				quit_fmt("Cannot find required directory:\n%s", s);
+			}
+			/* If EEXIST, another process created it, verify it exists now */
+			if (!check_dir(s))
+			{
+				quit_fmt("Cannot find required directory:\n%s", s);
+			}
+		}
+#endif
 	}
 }
 
@@ -2717,7 +2750,9 @@ static void init_windows(void)
 
 
 	/* Load prefs */
+	LOG_I("Loading preferences...");
 	load_prefs();
+	LOG_I("Preferences loaded successfully");
 
 
 	/* Main window (need these before term_getsize gets called) */
@@ -2739,6 +2774,7 @@ static void init_windows(void)
 
 
 	/* All windows */
+	LOG_I("Initializing %d windows...", MAX_TERM_DATA);
 	for (i = 0; i < MAX_TERM_DATA; i++)
 	{
 		td = &data[i];
@@ -2769,9 +2805,11 @@ static void init_windows(void)
 		/* Resize the window */
 		term_window_resize(td);
 	}
+	LOG_I("Window initialization complete");
 
 
 	/* Sub windows (reverse order) */
+	LOG_I("Creating sub-windows...");
 	for (i = MAX_TERM_DATA - 1; i >= 1; --i)
 	{
 		td = &data[i];
@@ -2783,7 +2821,10 @@ static void init_windows(void)
 		                       td->size_wid, td->size_hgt,
 		                       HWND_DESKTOP, NULL, hInstance, NULL);
 		my_td = NULL;
-		if (!td->w) quit("Failed to create sub-window");
+		if (!td->w) {
+			LOG_F("Failed to create sub-window %d", i);
+			quit("Failed to create sub-window");
+		}
 
 		if (td->visible)
 		{
@@ -2807,20 +2848,103 @@ static void init_windows(void)
 
 
 	/* Main window */
+	LOG_I("Creating main window...");
 	td = &data[0];
+	LOG_I("Main window params: style=0x%08X, exStyle=0x%08X, pos=(%d,%d), size=(%d,%d)", 
+	      td->dwStyle, td->dwExStyle, td->pos_x, td->pos_y, td->size_wid, td->size_hgt);
 
 	/* Main window */
 	my_td = td;
-	td->w = CreateWindowEx(td->dwExStyle, AppName,
-	                       td->s, td->dwStyle,
-	                       td->pos_x, td->pos_y,
-	                       td->size_wid, td->size_hgt,
-	                       HWND_DESKTOP, NULL, hInstance, NULL);
+	LOG_I("Calling CreateWindowEx for main window...");
+	LOG_D("CreateWindowEx parameters: AppName=%s, style=0x%08X, exStyle=0x%08X", AppName, td->dwStyle, td->dwExStyle);
+	LOG_D("CreateWindowEx position: (%d,%d), size: (%d,%d)", td->pos_x, td->pos_y, td->size_wid, td->size_hgt);
+	
+/* Flush logs before window creation to ensure they're written */
+	/* Use log_flush() instead of log_close() to avoid mutex deadlock */
+	LOG_D("Flushing logs before CreateWindowEx");
+	log_flush();
+	LOG_D("Logs flushed successfully, about to call CreateWindowEx");
+	
+	/* Use structured exception handling to catch any crashes during window creation */
+	LOG_D("Entering __try block for CreateWindowEx");
+	
+	/* Process any pending messages before window creation to avoid deadlocks */
+	MSG msg;
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+	
+	__try {
+		LOG_D("Inside __try block, calling CreateWindowEx");
+		/* Create window - Windows will send WM_NCCREATE, WM_CREATE, etc. synchronously */
+		td->w = CreateWindowEx(td->dwExStyle, AppName,
+		                       td->s, td->dwStyle,
+		                       td->pos_x, td->pos_y,
+		                       td->size_wid, td->size_hgt,
+		                       HWND_DESKTOP, NULL, hInstance, NULL);
+		/* Write to debug file immediately after CreateWindowEx returns */
+		{
+			FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+			if (f) {
+				fprintf(f, "[CreateWindowEx RETURNED] hWnd=%p\n", td->w);
+				fflush(f);
+				fclose(f);
+			}
+		}
+		LOG_D("CreateWindowEx returned: %p", td->w);
+	}
+	__except(EXCEPTION_EXECUTE_HANDLER) {
+		/* Exception occurred during window creation */
+		DWORD exc_code = GetExceptionCode();
+		LOG_F("Exception during CreateWindowEx: 0x%08X", exc_code);
+		char msg[512];
+		sprintf(msg, "Exception during CreateWindowEx: 0x%08X", exc_code);
+		MessageBox(NULL, msg, "Debug Exception", MB_OK);
+		td->w = NULL;
+	}
 	my_td = NULL;
-	if (!td->w) quit_fmt("Failed to create %s window", VERSION_NAME);
+	LOG_D("Exited __try/__except block");
+	
+	/* Process any messages that were queued during window creation */
+	LOG_D("Processing queued messages after CreateWindowEx");
+	int msg_count = 0;
+	const int MAX_MSG_COUNT = 100; /* Safety limit to prevent infinite loops */
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) && msg_count < MAX_MSG_COUNT) {
+		msg_count++;
+		LOG_D("Processing message %d: 0x%04X (hWnd=%p)", msg_count, msg.message, msg.hwnd);
+		TranslateMessage(&msg);
+		LOG_D("Dispatching message %d", msg_count);
+		DispatchMessage(&msg);
+		LOG_D("Dispatched message %d", msg_count);
+	}
+	if (msg_count >= MAX_MSG_COUNT) {
+		LOG_W("Reached message processing limit (%d), stopping", MAX_MSG_COUNT);
+	}
+	LOG_D("Finished processing queued messages (processed %d messages)", msg_count);
+	
+	LOG_I("CreateWindowEx returned: %p", td->w);
+	if (!td->w) {
+		DWORD error = GetLastError();
+		LOG_F("Failed to create %s window, error code: %lu", VERSION_NAME, error);
+		quit_fmt("Failed to create %s window", VERSION_NAME);
+	}
+	LOG_I("Main window created successfully");
+	
+	/* Show the main window (similar to how sub-windows are shown) */
+	LOG_D("Showing main window");
+	if (td->visible) {
+		td->size_hack = TRUE;
+		ShowWindow(td->w, SW_SHOW);
+		td->size_hack = FALSE;
+	}
+	LOG_D("Main window shown");
 
+	LOG_D("Linking term data");
 	term_data_link(td);
+	LOG_D("Term data linked");
 	term_screen = &td->t;
+	LOG_D("Term screen set");
 
 #ifdef ZANGBAND_BIGSCREEN
 
@@ -2862,6 +2986,8 @@ static void init_windows(void)
 
 	/* Process pending messages */
 	(void)Term_xtra_win_flush();
+	
+	LOG_I("All windows created and initialized");
 }
 
 
@@ -3915,10 +4041,91 @@ static void handle_wm_paint(HWND hWnd)
 	PAINTSTRUCT ps;
 	term_data *td;
 
+	/* Debug logging */
+	{
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[handle_wm_paint] hWnd=%p\n", hWnd);
+			fflush(f);
+			fclose(f);
+		}
+	}
+
 	/* Acquire proper "term_data" info */
-	td = (term_data *)GetWindowLong(hWnd, 0);
+	td = (term_data *)GetWindowLongPtr(hWnd, 0);
+
+	/* Debug logging */
+	{
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[handle_wm_paint] td=%p\n", td);
+			fflush(f);
+			fclose(f);
+		}
+	}
+
+	/* Safety check: if td is NULL, just paint black and return */
+	if (!td)
+	{
+		{
+			FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+			if (f) {
+				fprintf(f, "[handle_wm_paint] td is NULL, doing minimal paint\n");
+				fflush(f);
+				fclose(f);
+			}
+		}
+		BeginPaint(hWnd, &ps);
+		EndPaint(hWnd, &ps);
+		return;
+	}
+
+	/* Debug logging */
+	{
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[handle_wm_paint] td->w=%p, tile_wid=%d, tile_hgt=%d\n", td->w, td->tile_wid, td->tile_hgt);
+			fflush(f);
+			fclose(f);
+		}
+	}
+
+	/* Safety check: if window is still being created (td->w is NULL) or not initialized,
+	   just do minimal paint without redrawing */
+	if (!td->w || td->tile_wid == 0 || td->tile_hgt == 0)
+	{
+		{
+			FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+			if (f) {
+				fprintf(f, "[handle_wm_paint] Window not initialized, doing minimal paint\n");
+				fflush(f);
+				fclose(f);
+			}
+		}
+		BeginPaint(hWnd, &ps);
+		EndPaint(hWnd, &ps);
+		return;
+	}
+
+	{
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[handle_wm_paint] Calling BeginPaint\n");
+			fflush(f);
+			fclose(f);
+		}
+	}
 
 	BeginPaint(hWnd, &ps);
+
+	{
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[handle_wm_paint] BeginPaint returned\n");
+			fflush(f);
+			fclose(f);
+		}
+	}
 
 	if (td->map_active)
 	{
@@ -3940,6 +4147,15 @@ static void handle_wm_paint(HWND hWnd)
 	}
 
 	EndPaint(hWnd, &ps);
+
+	{
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[handle_wm_paint] EndPaint returned, function complete\n");
+			fflush(f);
+			fclose(f);
+		}
+	}
 }
 
 
@@ -3959,7 +4175,18 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 #endif /* USE_SAVER */
 
 	/* Acquire proper "term_data" info */
-	td = (term_data *)GetWindowLong(hWnd, 0);
+	td = (term_data *)GetWindowLongPtr(hWnd, 0);
+
+	/* Log ALL messages during window creation to debug the hang */
+	if (uMsg == WM_NCCREATE || uMsg == WM_CREATE || uMsg == WM_GETMINMAXINFO || 
+	    uMsg == WM_SIZE || uMsg == WM_SHOWWINDOW || uMsg == WM_ACTIVATE ||
+	    uMsg == WM_WINDOWPOSCHANGING || uMsg == WM_WINDOWPOSCHANGED || uMsg == WM_MOVE) {
+		FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+		if (f) {
+			fprintf(f, "[MSG 0x%04X] hWnd=%p, td=%p\n", uMsg, hWnd, td);
+			fclose(f);
+		}
+	}
 
 	/* Handle message */
 	switch (uMsg)
@@ -3967,25 +4194,70 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 		/* XXX XXX XXX */
 		case WM_NCCREATE:
 		{
-			SetWindowLong(hWnd, 0, (LONG)(my_td));
-			break;
+			/* Write debug info to file since logging may not be initialized yet */
+			{
+				FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+				if (f) {
+					fprintf(f, "[WM_NCCREATE] hWnd=%p, my_td=%p\n", hWnd, my_td);
+					fclose(f);
+				}
+			}
+			/* SetWindowLongPtr must be called before any other operations */
+			SetWindowLongPtr(hWnd, 0, (LONG_PTR)(my_td));
+			{
+				FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+				if (f) {
+					fprintf(f, "[WM_NCCREATE] SetWindowLongPtr completed, returning TRUE\n");
+					fclose(f);
+				}
+			}
+			return TRUE; /* Allow window creation to continue */
 		}
 
 		/* XXX XXX XXX */
 		case WM_CREATE:
 		{
+			/* Write debug info to file */
+			{
+				FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+				if (f) {
+					fprintf(f, "[WM_CREATE] hWnd=%p\n", hWnd);
+					fclose(f);
+				}
+			}
+			/* Window created successfully */
 			return 0;
 		}
 
 		case WM_GETMINMAXINFO:
 		{
+			/* Write debug info to file */
+			{
+				FILE *f = fopen("lib\\logs\\window_debug.log", "a");
+				if (f) {
+					fprintf(f, "[WM_GETMINMAXINFO] hWnd=%p, td=%p\n", hWnd, td);
+					fclose(f);
+				}
+			}
+			/* Temporarily disable custom min/max handling to test if this is causing the hang */
+			/* Let Windows use default min/max sizes */
+			return 0;
+			
+#if 0
 			MINMAXINFO FAR *lpmmi;
 			RECT rc;
 
 			lpmmi = (MINMAXINFO FAR *)lParam;
 
 			/* this message was sent before WM_NCCREATE */
-			if (!td) return 1;
+			if (!td) {
+				return 0; /* Let Windows use default min/max sizes */
+			}
+
+			/* Safety check: ensure td fields are initialized */
+			if (td->tile_wid == 0 || td->tile_hgt == 0) {
+				return 0; /* Use default sizes */
+			}
 
 			/* Minimum window size is 80x24 */
 			rc.left = rc.top = 0;
@@ -3993,13 +4265,19 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 			rc.bottom = rc.top + 24 * td->tile_hgt + td->size_oh1 + td->size_oh2 + 1;
 
 			/* Adjust */
-			AdjustWindowRectEx(&rc, td->dwStyle, TRUE, td->dwExStyle);
+			__try {
+				AdjustWindowRectEx(&rc, td->dwStyle, TRUE, td->dwExStyle);
+			}
+			__except(EXCEPTION_EXECUTE_HANDLER) {
+				return 0; /* Use default sizes on exception */
+			}
 
 			/* Save minimum size */
 			lpmmi->ptMinTrackSize.x = rc.right - rc.left;
 			lpmmi->ptMinTrackSize.y = rc.bottom - rc.top;
 
 			return 0;
+#endif
 		}
 
 		case WM_PAINT:
@@ -4151,14 +4429,19 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 
 		case WM_SIZE:
 		{
-			/* this message was sent before WM_NCCREATE */
-			if (!td) return 1;
-
-			/* it was sent from inside CreateWindowEx */
-			if (!td->w) return 1;
-
-			/* was sent from WM_SIZE */
-			if (td->size_hack) return 1;
+			/* Use exception handling to catch any crashes during WM_SIZE processing */
+			__try {
+				/* During CreateWindowEx, td->w is NULL because CreateWindowEx hasn't returned yet */
+				/* We MUST return 0 immediately to avoid calling Term_activate/Term_resize */
+				/* which require game state that isn't initialized yet */
+				if (!td || !td->w || td->size_hack) {
+					return 0; /* Let DefWindowProc handle it */
+				}
+			}
+			__except(EXCEPTION_EXECUTE_HANDLER) {
+				/* Exception occurred - return 0 to let DefWindowProc handle it */
+				return 0;
+			}
 
 			switch (wParam)
 			{
@@ -4283,7 +4566,7 @@ static LRESULT FAR PASCAL AngbandListProc(HWND hWnd, UINT uMsg,
 
 
 	/* Acquire proper "term_data" info */
-	td = (term_data *)GetWindowLong(hWnd, 0);
+	td = (term_data *)GetWindowLongPtr(hWnd, 0);
 
 	/* Process message */
 	switch (uMsg)
@@ -4291,7 +4574,7 @@ static LRESULT FAR PASCAL AngbandListProc(HWND hWnd, UINT uMsg,
 		/* XXX XXX XXX */
 		case WM_NCCREATE:
 		{
-			SetWindowLong(hWnd, 0, (LONG)(my_td));
+			SetWindowLongPtr(hWnd, 0, (LONG_PTR)(my_td));
 			break;
 		}
 
@@ -4879,6 +5162,62 @@ static void init_stuff(void)
 	/* Add "lib" to the path */
 	strcpy(path + i + 1, "lib\\");
 
+	/* Helper: Check if lib directory contains required subdirectories (like "apex") */
+	/* We check for "apex" subdirectory to verify it's the correct lib directory */
+	char test_path[1024];
+	bool lib_valid = FALSE;
+	if (check_dir(path))
+	{
+		/* Check for apex subdirectory to verify it's the correct lib */
+		snprintf(test_path, sizeof(test_path), "%sapex", path);
+		lib_valid = check_dir(test_path);
+	}
+
+	/* If lib doesn't exist or doesn't have required subdirectories, try going up directories */
+	if (!lib_valid)
+	{
+		/* Try going up one level (from build/Debug to build) */
+		int j = i - 1;
+		for (; j > 0; j--)
+		{
+			if (path[j] == '\\')
+			{
+				break;
+			}
+		}
+		if (j > 0)
+		{
+			strcpy(path + j + 1, "lib\\");
+			if (check_dir(path))
+			{
+				snprintf(test_path, sizeof(test_path), "%sapex", path);
+				lib_valid = check_dir(test_path);
+			}
+			if (!lib_valid)
+			{
+				/* Try going up another level (from build to root) */
+				int k = j - 1;
+				for (; k > 0; k--)
+				{
+					if (path[k] == '\\')
+					{
+						break;
+					}
+				}
+				if (k > 0)
+				{
+					strcpy(path + k + 1, "lib\\");
+					/* Verify this lib has apex */
+					if (check_dir(path))
+					{
+						snprintf(test_path, sizeof(test_path), "%sapex", path);
+						lib_valid = check_dir(test_path);
+					}
+				}
+			}
+		}
+	}
+
 	/* Validate the path */
 	validate_dir(path);
 
@@ -4922,8 +5261,11 @@ static void init_stuff(void)
 	/* Build the filename */
 	path_build(path, 1024, ANGBAND_DIR_XTRA_FONT, "8X13.FON");
 
-	/* Hack -- Validate the basic font */
-	validate_file(path);
+	/* Hack -- Validate the basic font (non-fatal, game can use system fonts as fallback) */
+	if (!check_file(path))
+	{
+		LOG_W("Font file not found: %s (game will attempt to use system fonts)", path);
+	}
 
 
 #ifdef USE_GRAPHICS
@@ -5174,7 +5516,9 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	}
 
 	/* Prepare the windows */
+	LOG_I("Initializing windows...");
 	init_windows();
+	LOG_I("Windows initialized successfully");
 
 	/* Activate hooks */
 	plog_aux = hook_plog;
@@ -5185,7 +5529,24 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	ANGBAND_SYS = "win";
 
 	/* Initialize */
-	init_angband();
+	LOG_I("Initializing Angband game engine...");
+	LOG_D("About to call init_angband()");
+	
+	__try {
+		LOG_D("Inside __try block for init_angband()");
+		init_angband();
+		LOG_D("init_angband() returned successfully");
+	}
+	__except(EXCEPTION_EXECUTE_HANDLER) {
+		DWORD exc_code = GetExceptionCode();
+		LOG_F("Exception during init_angband(): 0x%08X", exc_code);
+		char msg[512];
+		sprintf(msg, "Exception during init_angband(): 0x%08X\n\nThis usually indicates:\n- Missing files in lib/ directory\n- Terminal not fully initialized\n- Uninitialized game state", exc_code);
+		MessageBox(NULL, msg, "Debug Exception", MB_OK | MB_ICONERROR);
+		quit_fmt("Fatal error during initialization: 0x%08X", exc_code);
+	}
+	
+	LOG_I("Angband game engine initialized successfully");
 
 	/* We are now initialized */
 	initialized = TRUE;
