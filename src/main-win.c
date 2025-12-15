@@ -2789,14 +2789,88 @@ static void init_windows(void)
 			path_build(buf, 1024, ANGBAND_DIR_XTRA_FONT, "8X13.FON");
 
 			/* Force the use of that font */
-			(void)term_force_font(td, buf);
-
-			/* Oops */
-			td->tile_wid = 8;
-			td->tile_hgt = 13;
-
-			/* Assume not bizarre */
-			td->bizarre = FALSE;
+			if (term_force_font(td, buf))
+			{
+				/* Font file not found - use larger system fixed-pitch font as fallback */
+				LOG_W("Font file not found: %s, using larger system fixed-pitch font as fallback", buf);
+				
+				/* Try larger font sizes first (16x24, then 14x20, then 12x16) */
+				int font_sizes[][2] = {{24, 16}, {20, 14}, {16, 12}, {13, 8}};
+				int font_idx = 0;
+				td->font_id = NULL;
+				
+				for (font_idx = 0; font_idx < 4 && !td->font_id; font_idx++) {
+					/* Create a system fixed-pitch font with larger size */
+					td->font_id = CreateFont(font_sizes[font_idx][0], font_sizes[font_idx][1], 
+					                         0, 0, FW_DONTCARE, 0, 0, 0,
+					                         ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+					                         CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+					                         FIXED_PITCH | FF_DONTCARE, "Courier New");
+					
+					if (!td->font_id) {
+						LOG_D("Failed to create Courier New %dx%d, trying Courier", 
+						      font_sizes[font_idx][1], font_sizes[font_idx][0]);
+						td->font_id = CreateFont(font_sizes[font_idx][0], font_sizes[font_idx][1], 
+						                         0, 0, FW_DONTCARE, 0, 0, 0,
+						                         ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+						                         CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+						                         FIXED_PITCH | FF_DONTCARE, "Courier");
+					}
+				}
+				
+				if (!td->font_id) {
+					LOG_W("Failed to create fallback font, using system default");
+					td->font_id = (HFONT)GetStockObject(SYSTEM_FIXED_FONT);
+				}
+				
+				/* Get actual font metrics */
+				if (td->font_id) {
+					HDC hdcDesktop = GetDC(HWND_DESKTOP);
+					HFONT hfOld = SelectObject(hdcDesktop, td->font_id);
+					TEXTMETRIC tm;
+					GetTextMetrics(hdcDesktop, &tm);
+					SelectObject(hdcDesktop, hfOld);
+					ReleaseDC(HWND_DESKTOP, hdcDesktop);
+					
+					td->font_wid = tm.tmAveCharWidth;
+					td->font_hgt = tm.tmHeight;
+					LOG_D("Fallback font metrics: wid=%d, hgt=%d", td->font_wid, td->font_hgt);
+				} else {
+					LOG_W("No font available, using default dimensions");
+					td->font_wid = 12;
+					td->font_hgt = 16;
+				}
+				
+				/* Set tile dimensions */
+				td->tile_wid = td->font_wid;
+				td->tile_hgt = td->font_hgt;
+				
+				/* Assume not bizarre */
+				td->bizarre = FALSE;
+			}
+			else
+			{
+				/* Font loaded successfully - scale up if it's too small */
+				LOG_D("Font loaded successfully: wid=%d, hgt=%d", td->font_wid, td->font_hgt);
+				
+				/* If font is smaller than 12x16, scale it up */
+				if (td->font_wid < 12 || td->font_hgt < 16) {
+					LOG_D("Font is small, scaling up for better readability");
+					/* Scale up proportionally */
+					int scale_w = (12 + td->font_wid - 1) / td->font_wid; /* Round up */
+					int scale_h = (16 + td->font_hgt - 1) / td->font_hgt; /* Round up */
+					int scale = (scale_w > scale_h) ? scale_w : scale_h;
+					
+					td->tile_wid = td->font_wid * scale;
+					td->tile_hgt = td->font_hgt * scale;
+					td->bizarre = TRUE; /* Mark as bizarre to use special rendering */
+					LOG_D("Scaled font: tile_wid=%d, tile_hgt=%d (scale=%d)", 
+					      td->tile_wid, td->tile_hgt, scale);
+				} else {
+					td->tile_wid = td->font_wid;
+					td->tile_hgt = td->font_hgt;
+				}
+			}
 		}
 
 		/* Analyze the font */
@@ -2945,6 +3019,11 @@ static void init_windows(void)
 	LOG_D("Term data linked");
 	term_screen = &td->t;
 	LOG_D("Term screen set");
+	
+	/* Activate the main terminal so Term global variable is set */
+	LOG_D("Activating main terminal");
+	Term_activate(&td->t);
+	LOG_D("Main terminal activated, Term=%p", Term);
 
 #ifdef ZANGBAND_BIGSCREEN
 
@@ -4334,11 +4413,33 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 				return 0;
 			}
 
+			/* For regular keys, let TranslateMessage generate WM_CHAR */
+			/* Don't break - let DefWindowProc handle it so TranslateMessage works */
 			break;
 		}
 
 		case WM_CHAR:
 		{
+			/* Handle keyboard shortcuts for menu commands when game is not in progress */
+			if (!game_in_progress && initialized)
+			{
+				/* 'N' or 'n' for New Game */
+				if (wParam == 'N' || wParam == 'n')
+				{
+					/* Send menu command for New Game */
+					SendMessage(hWnd, WM_COMMAND, IDM_FILE_NEW, 0);
+					return 0;
+				}
+				/* 'O' or 'o' for Open Game */
+				if (wParam == 'O' || wParam == 'o')
+				{
+					/* Send menu command for Open Game */
+					SendMessage(hWnd, WM_COMMAND, IDM_FILE_OPEN, 0);
+					return 0;
+				}
+			}
+			
+			/* Normal keyboard input - queue for game processing */
 			Term_keypress(wParam);
 			return 0;
 		}
@@ -4437,6 +4538,11 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 				if (!td || !td->w || td->size_hack) {
 					return 0; /* Let DefWindowProc handle it */
 				}
+				
+				/* Ensure tile dimensions are valid */
+				if (td->tile_wid <= 0 || td->tile_hgt <= 0) {
+					return 0; /* Can't resize if tiles aren't initialized */
+				}
 			}
 			__except(EXCEPTION_EXECUTE_HANDLER) {
 				/* Exception occurred - return 0 to let DefWindowProc handle it */
@@ -4462,8 +4568,15 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 
 				case SIZE_RESTORED:
 				{
-					int cols = (LOWORD(lParam) - td->size_ow1) / td->tile_wid;
-					int rows = (HIWORD(lParam) - td->size_oh1) / td->tile_hgt;
+					/* Calculate new terminal size based on client area */
+					int client_width = LOWORD(lParam);
+					int client_height = HIWORD(lParam);
+					int cols = (client_width - td->size_ow1 - td->size_ow2) / td->tile_wid;
+					int rows = (client_height - td->size_oh1 - td->size_oh2) / td->tile_hgt;
+
+					/* Ensure minimum size */
+					if (cols < 1) cols = 1;
+					if (rows < 1) rows = 1;
 
 					/* New size */
 					if ((td->cols != cols) || (td->rows != rows))
@@ -4472,11 +4585,15 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 						td->cols = cols;
 						td->rows = rows;
 
-						/* Activate */
-						Term_activate(&td->t);
+						/* Only resize if game is initialized */
+						if (initialized && Term)
+						{
+							/* Activate */
+							Term_activate(&td->t);
 
-						/* Resize the term */
-						Term_resize(td->cols, td->rows);
+							/* Resize the term */
+							Term_resize(td->cols, td->rows);
+						}
 
 						/* Redraw later */
 						InvalidateRect(td->w, NULL, TRUE);
@@ -4735,11 +4852,33 @@ static LRESULT FAR PASCAL AngbandListProc(HWND hWnd, UINT uMsg,
 				return 0;
 			}
 
+			/* For regular keys, let TranslateMessage generate WM_CHAR */
+			/* Don't break - let DefWindowProc handle it so TranslateMessage works */
 			break;
 		}
 
 		case WM_CHAR:
 		{
+			/* Handle keyboard shortcuts for menu commands when game is not in progress */
+			if (!game_in_progress && initialized)
+			{
+				/* 'N' or 'n' for New Game */
+				if (wParam == 'N' || wParam == 'n')
+				{
+					/* Send menu command for New Game */
+					SendMessage(hWnd, WM_COMMAND, IDM_FILE_NEW, 0);
+					return 0;
+				}
+				/* 'O' or 'o' for Open Game */
+				if (wParam == 'O' || wParam == 'o')
+				{
+					/* Send menu command for Open Game */
+					SendMessage(hWnd, WM_COMMAND, IDM_FILE_OPEN, 0);
+					return 0;
+				}
+			}
+			
+			/* Normal keyboard input - queue for game processing */
 			Term_keypress(wParam);
 			return 0;
 		}
@@ -5532,6 +5671,13 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	LOG_I("Initializing Angband game engine...");
 	LOG_D("About to call init_angband()");
 	
+	/* Check if ANGBAND_DIR_FILE is initialized */
+	if (!ANGBAND_DIR_FILE) {
+		LOG_F("ANGBAND_DIR_FILE is NULL! File paths not initialized.");
+		quit("ANGBAND_DIR_FILE is NULL - file paths not initialized");
+	}
+	LOG_D("ANGBAND_DIR_FILE = %s", ANGBAND_DIR_FILE);
+	
 	__try {
 		LOG_D("Inside __try block for init_angband()");
 		init_angband();
@@ -5569,11 +5715,27 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	prt("[Choose 'New' or 'Open' from the 'File' menu]", 23, 17);
 	Term_fresh();
 
+	/* Ensure main window has focus for keyboard input */
+	SetFocus(data[0].w);
+	SetActiveWindow(data[0].w);
+	SetForegroundWindow(data[0].w);
+
 	/* Process messages forever */
+	/* Also poll controller and process any queued keypresses */
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
+		/* Poll controller for input */
+		controller_check();
+		
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
+		
+		/* Process any pending messages (non-blocking) */
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE | PM_NOYIELD))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 	}
 
 	/* Paranoia */

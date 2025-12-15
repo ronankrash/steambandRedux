@@ -12,6 +12,7 @@
 #include "angband.h"
 
 #include "init.h"
+#include "logging.h"
 
 
 /*
@@ -1658,14 +1659,19 @@ void init_angband(void)
 
 	char buf[1024];
 
+	LOG_D("init_angband() started");
 
 	/*** Verify the "news" file ***/
 
+	LOG_D("Building news.txt path");
 	/* Build the filename */
 	path_build(buf, 1024, ANGBAND_DIR_FILE, "news.txt");
+	LOG_D("Path built: %s", buf);
 
+	LOG_D("Opening news.txt file");
 	/* Attempt to open the file */
 	fd = fd_open(buf, O_RDONLY);
+	LOG_D("fd_open returned: %d", fd);
 
 	/* Failure */
 	if (fd < 0)
@@ -1679,39 +1685,76 @@ void init_angband(void)
 		init_angband_aux(why);
 	}
 
+	LOG_D("Closing news.txt file (fd=%d)", fd);
 	/* Close it */
 	fd_close(fd);
+	LOG_D("fd_close returned successfully");
 
+	LOG_D("About to call Term_clear()");
 
 	/*** Display the "news" file ***/
 
 	/* Clear screen */
-	Term_clear();
+	/* Note: Term_clear() may crash if terminal is not fully initialized */
+	/* Check if Term is initialized before calling */
+	if (!Term) {
+		LOG_W("Term is NULL, skipping Term_clear()");
+	} else {
+		LOG_D("Term is valid (Term=%p), calling Term_clear()", Term);
+		if (!Term->scr) {
+			LOG_W("Term->scr is NULL, skipping Term_clear()");
+		} else {
+			Term_clear();
+			LOG_D("Term_clear() returned successfully");
+		}
+	}
 
+	LOG_D("About to build news.txt path again");
 	/* Build the filename */
 	path_build(buf, 1024, ANGBAND_DIR_FILE, "news.txt");
+	LOG_D("Path built: %s", buf);
 
+	LOG_D("About to open news.txt file");
 	/* Open the News file */
 	fp = my_fopen(buf, "r");
+	LOG_D("my_fopen returned: %p", fp);
+	log_flush(); /* Ensure log is written before potential crash */
 
 	/* Dump */
+	LOG_D("About to check if fp is valid");
 	if (fp)
 	{
 		int i = 0;
 
+		LOG_D("Reading news.txt file");
 		/* Dump the file to the screen */
 		while (0 == my_fgets(fp, buf, 1024))
 		{
+			LOG_D("Read line %d from news.txt", i);
 			/* Display and advance */
+			/* Check if Term is valid before calling Term_putstr */
+			if (!Term) {
+				LOG_W("Term is NULL, skipping Term_putstr()");
+				break;
+			}
 			Term_putstr(0, i++, -1, TERM_WHITE, buf);
 		}
+		LOG_D("Finished reading news.txt file");
 
 		/* Close */
+		LOG_D("Closing news.txt file");
 		my_fclose(fp);
+		LOG_D("my_fclose returned successfully");
 	}
 
 	/* Flush it */
-	Term_fresh();
+	LOG_D("About to call Term_fresh()");
+	if (!Term) {
+		LOG_W("Term is NULL, skipping Term_fresh()");
+	} else {
+		Term_fresh();
+		LOG_D("Term_fresh() returned successfully");
+	}
 
 
 	/*** Verify (or create) the "high score" file ***/
