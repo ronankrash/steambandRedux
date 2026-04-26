@@ -118,6 +118,19 @@ endif()
 add_executable(SteambandRedux WIN32 ${SOURCES})
 target_link_libraries(SteambandRedux PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
 
+function(steamband_copy_sdl_runtime target_name)
+    if(WIN32 AND STEAMBAND_HAS_SDL2 AND TARGET SDL2::SDL2)
+        add_custom_command(TARGET ${target_name} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    $<TARGET_FILE:SDL2::SDL2>
+                    $<TARGET_FILE_DIR:${target_name}>
+            COMMENT "Copy SDL2 runtime next to ${target_name}"
+        )
+    endif()
+endfunction()
+
+steamband_copy_sdl_runtime(SteambandRedux)
+
 # Unity Testing Framework
 set(UNITY_SOURCES
     third_party/unity/src/unity.c
@@ -137,6 +150,7 @@ if(STEAMBAND_HAS_SDL2)
     target_sources(UnitTests PRIVATE src/renderer.c)
 endif()
 target_link_libraries(UnitTests PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
+steamband_copy_sdl_runtime(UnitTests)
 
 # Unity Test Runner (for Unity framework tests)
 # Note: test_util.c is excluded for now due to complex dependencies on game state
@@ -160,6 +174,7 @@ if(STEAMBAND_HAS_SDL2)
     target_sources(UnityTestRunner PRIVATE src/renderer.c)
 endif()
 target_link_libraries(UnityTestRunner PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
+steamband_copy_sdl_runtime(UnityTestRunner)
 
 # Enable CTest
 enable_testing()

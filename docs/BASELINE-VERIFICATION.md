@@ -15,9 +15,9 @@ ctest --test-dir build -C Debug --output-on-failure
 Renderer build with SDL2:
 
 ```bash
-cmake -S . -B build-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON
-cmake --build build-sdl2 --config Debug
-ctest --test-dir build-sdl2 -C Debug --output-on-failure
+cmake -S . -B build -DSDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2 -DSTEAMBAND_ENABLE_SDL2=ON
+cmake --build build --config Debug
+ctest --test-dir build -C Debug --output-on-failure
 ```
 
 Direct Unity runner, after a successful Debug build:
@@ -42,6 +42,7 @@ cd build/Debug
 - SDL2 configure succeeds with `cmake -S . -B build-rescue-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON`.
 - SDL2 Debug build succeeds with `cmake --build build-rescue-sdl2 --config Debug`.
 - SDL2 CTest succeeds with `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`.
+- The default `build/Debug` SDL build copies `SDL2d.dll` next to the executables and passes CTest.
 - Both builds emit legacy MSVC warnings, mostly narrowing/sign conversion warnings in older game code.
 - Bounded SDL launch probe passed: `build-rescue-sdl2/Debug/SteambandRedux.exe` started and stayed alive for 3 seconds before test termination.
 - Interactive keyboard/controller gameplay smoke testing was not run in this pass.

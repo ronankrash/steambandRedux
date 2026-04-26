@@ -2294,11 +2294,44 @@ static errr Term_wipe_win(int x, int y, int n)
  * what color it should be using to draw with, but perhaps simply changing
  * it every time is not too inefficient.  XXX XXX XXX
  */
+static char win_translate_fallback_glyph(char c)
+{
+	unsigned char uc = (unsigned char)c;
+
+	/*
+	 * font-win.prf uses special glyph slots from lib/xtra/font/*.FON.
+	 * This fork does not currently ship those bitmap fonts, so system
+	 * fallback fonts draw the control/DEL slots as boxes. Keep the legacy
+	 * view readable until a licensed font/tile set is added.
+	 */
+	if (uc == 31) return '.';
+	if (uc == 127) return '#';
+	if (uc < 32) return ' ';
+
+	return c;
+}
+
 static errr Term_text_win(int x, int y, int n, byte a, cptr s)
 {
 	term_data *td = (term_data*)(Term->data);
 	RECT rc;
 	HDC hdc;
+	char fallback_buf[1024];
+	cptr text = s;
+
+	if (!td->font_file && n > 0)
+	{
+		int i;
+		int copy_n = (n < (int)sizeof(fallback_buf) - 1) ? n : (int)sizeof(fallback_buf) - 1;
+
+		for (i = 0; i < copy_n; i++)
+		{
+			fallback_buf[i] = win_translate_fallback_glyph(s[i]);
+		}
+		fallback_buf[copy_n] = '\0';
+		text = fallback_buf;
+		n = copy_n;
+	}
 
 
 	/* Total rectangle */
@@ -2351,7 +2384,7 @@ static errr Term_text_win(int x, int y, int n, byte a, cptr s)
 		{
 			/* Dump the text */
 			ExtTextOut(hdc, rc.left, rc.top, 0, &rc,
-			           s+i, 1, NULL);
+			           text+i, 1, NULL);
 
 			/* Advance */
 			rc.left += td->tile_wid;
@@ -2364,7 +2397,7 @@ static errr Term_text_win(int x, int y, int n, byte a, cptr s)
 	{
 		/* Dump the text */
 		ExtTextOut(hdc, rc.left, rc.top, ETO_OPAQUE | ETO_CLIPPED, &rc,
-		           s, n, NULL);
+		           text, n, NULL);
 	}
 
 	/* Release DC */

@@ -35,6 +35,7 @@ Do not trust older claims unless they are backed by source code or repeatable co
   - `cmake -S . -B build-rescue-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON`
   - `cmake --build build-rescue-sdl2 --config Debug`
   - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+- Default `build/Debug` SDL build verification passed with `SDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2`; CMake copies `SDL2d.dll` next to the Debug executables.
 - Bounded SDL launch probe passed: `build-rescue-sdl2/Debug/SteambandRedux.exe` started and stayed alive for 3 seconds before test termination.
 - Interactive keyboard/controller hardware smoke tests remain pending.
 - See `docs/BASELINE-VERIFICATION.md` for required commands and pass criteria.

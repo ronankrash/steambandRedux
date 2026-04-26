@@ -23,10 +23,10 @@ cmake -S . -B build
 To build the SDL2 renderer path, install SDL2 and configure with:
 
 ```bash
-cmake -S . -B build-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON
+cmake -S . -B build -DSDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2 -DSTEAMBAND_ENABLE_SDL2=ON
 ```
 
-SDL2 is installed locally via vcpkg at `C:/Users/bkars/vcpkg`. Both non-SDL2 and SDL2 Debug builds pass CTest locally.
+SDL2 is installed locally via vcpkg at `C:/Users/bkars/vcpkg`. The CMake build copies the SDL2 runtime DLL next to Debug executables. Both non-SDL2 and SDL2 Debug builds pass CTest locally.
 
 ## Test Targets
 

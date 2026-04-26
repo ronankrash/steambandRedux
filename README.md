@@ -46,11 +46,11 @@ cmake --build build --config Debug
 SDL2 renderer configure/build:
 
 ```bash
-cmake -S . -B build-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON
-cmake --build build-sdl2 --config Debug
+cmake -S . -B build -DSDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2 -DSTEAMBAND_ENABLE_SDL2=ON
+cmake --build build --config Debug
 ```
 
-SDL2 is currently installed locally via vcpkg at `C:/Users/bkars/vcpkg`.
+SDL2 is currently installed locally via vcpkg at `C:/Users/bkars/vcpkg`. The build copies the SDL2 runtime DLL next to each Debug executable automatically.
 
 ## Running
 
