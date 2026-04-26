@@ -22,6 +22,8 @@ See:
 - `HANDOFF.md`
 - `docs/BASELINE-AUDIT.md`
 - `docs/BASELINE-VERIFICATION.md`
+- `docs/LICENSING-RISK-MANIFEST.md`
+- `docs/PLAYTEST-CHECKLIST.md`
 - `docs/ROADMAP.md`
 - `docs/TECHNICAL.md`
 - `docs/ARCHITECTURE-DECISION.md`

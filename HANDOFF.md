@@ -6,6 +6,7 @@ Current phase: rescue baseline and process stabilization
 ## Ground Truth
 
 Use this file plus `docs/BASELINE-AUDIT.md`, `docs/BASELINE-VERIFICATION.md`, `docs/REPO-HYGIENE.md`, and `docs/ARCHITECTURE-DECISION.md` as the current handoff set.
+Use `docs/PLAYTEST-CHECKLIST.md` for repeatable manual validation and `docs/LICENSING-RISK-MANIFEST.md` for release-risk tracking.
 
 Do not trust older claims unless they are backed by source code or repeatable commands.
 
