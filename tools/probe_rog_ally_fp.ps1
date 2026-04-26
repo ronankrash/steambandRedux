@@ -148,7 +148,7 @@ try {
     if ($TryNewGame) {
         Send-KeyDownUp 0x57 # W/forward or legacy command
         Start-Sleep -Milliseconds 150
-        if (!$TopDown) {
+        if (!$TopDown -and !$AutoTopDown) {
             Send-KeyDownUp 0x44 # D/strafe right
             Start-Sleep -Milliseconds 150
             Send-KeyDownUp 0x25 # Left arrow turn
@@ -251,7 +251,11 @@ foreach ($Check in $Checks.GetEnumerator()) {
 }
 
 if ($TryNewGame) {
-    Write-Host "NOTE: -TryNewGame sends default birth-flow keys, then toggles first-person and sends a small movement/turn sequence."
+    if ($TopDown -or $AutoTopDown) {
+        Write-Host "NOTE: -TryNewGame sends default birth-flow keys, keeps top-down tiles active, then sends a small legacy movement key."
+    } else {
+        Write-Host "NOTE: -TryNewGame sends default birth-flow keys, then toggles first-person and sends a small movement/turn sequence."
+    }
     Write-Host "NOTE: It still cannot visually assert every birth prompt; manual ROG Ally validation remains required."
 }
 
