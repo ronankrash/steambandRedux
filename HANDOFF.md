@@ -2,11 +2,11 @@
 
 Last updated: 2026-04-26
 Branch: `steambranch`
-Remote status at update: branch is ahead of `origin/steambranch`; working tree has uncommitted rescue-slice edits.
+Remote status at update: branch is ahead of `origin/steambranch`; only local runtime score data may be dirty.
 
 ## Current Mission
 
-Modernize Steamband into a controller-first, Steam-ready, first-person steampunk dungeon crawler while preserving the legacy C game rules, items, maps, saves, and keyboard behavior.
+Deliver a personally playable controller-first first-person Steamband build for Asus ROG Ally while preserving the legacy C game rules, items, maps, saves, and keyboard behavior. Steam/licensing/release cleanup is deliberately deferred until the first-person play loop is comfortable to play.
 
 ## Source Of Truth
 
@@ -15,6 +15,8 @@ Modernize Steamband into a controller-first, Steam-ready, first-person steampunk
 - `docs/BASELINE-VERIFICATION.md`: build/test commands and status.
 - `docs/ARCHITECTURE-DECISION.md`: preserve legacy C engine as gameplay source of truth.
 - `docs/PLAYTEST-CHECKLIST.md`: manual keyboard/controller/ROG Ally validation checklist.
+- `docs/ROG-ALLY-FP-MANUAL-TEST.md`: focused first-person launch and smoke-test guide.
+- `docs/ART-DIRECTION.md`: current no-asset art direction and future asset pipeline goals.
 - `docs/LICENSING-RISK-MANIFEST.md`: known legacy licensing blockers.
 - `tools/license_scan.py`: repeatable scan for restrictive legacy license phrases.
 
@@ -30,7 +32,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - SDL2 installed at `C:/Users/bkars/vcpkg`
   - configure with `SDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2`
 - `build/Debug` can be configured as the SDL2 build and copies `SDL2d.dll` beside Debug executables.
-- `run-rog-ally-fp.bat` launches the current `build/Debug/SteambandRedux.exe` and prints the first-person playtest controls.
+- `tools/launch_rog_ally_fp_smoke.cmd` launches the current SDL2 Debug first-person smoke build and prints the playtest controls/log paths.
 - `tools/probe_rog_ally_fp.ps1` performs a no-hardware native-window keyboard probe against the SDL2 Debug build and verifies renderer init, DDA startup, first-person activation, and shutdown from the new log segment.
 - Generated `build/` artifacts are no longer tracked by Git.
 - `agent-os/` has been removed; current workflow is `.cursor/rules`, `.cursor/skills`, docs, and handoff.
@@ -146,7 +148,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
 
 ## Licensing Status
 
-This is the biggest release blocker.
+This is a later release blocker, not the current playability focus.
 
 - Many legacy source files contain educational/research/not-for-profit terms.
 - `src/angband.h` includes no-sale/no-market language.
@@ -157,17 +159,21 @@ This is the biggest release blocker.
 
 ## Recommended Next Work
 
-1. Run and record the manual playtest checklist on the current SDL2 `build/Debug` build.
-2. Fix any user-visible controller/window/render issues found during manual testing.
-3. Continue renderer hardening:
-   - manual SDL first-person focus/window smoke testing,
-   - replace abstract HUD blocks with licensed UI text/art after asset approval,
-   - texture/asset loading only after license-safe assets are approved.
-4. Start licensing remediation:
-   - full manifest from `tools/license_scan.py`,
-   - legal/upstream policy decision,
-   - align `LICENSES.md`, help text, and embedded copyright string.
-5. Keep committing small, focused changes. Do not push unless explicitly requested.
+1. Prioritize manual ROG Ally playability over licensing/Steam:
+   - Run `tools\launch_rog_ally_fp_smoke.cmd`.
+   - Follow `docs\ROG-ALLY-FP-MANUAL-TEST.md`.
+   - Record concrete failures around birth, movement, camera, command menu, inventory/equipment, stairs, combat, save/load, focus, and sleep/resume.
+2. Fix first-person usability bugs immediately and commit each verified slice:
+   - controller turn/move feel,
+   - command coverage from FP,
+   - character creation/controller traps,
+   - visibility of monsters/items/doors/stairs/traps,
+   - HUD/readability at 720p and 1080p.
+3. Keep using no-asset/procedural presentation until gameplay feels good:
+   - follow `docs/ART-DIRECTION.md`,
+   - keep texture loading disabled until assets are explicitly approved in `ASSETS.md`.
+4. Defer licensing/Steam remediation until the user can comfortably play the game in first person.
+5. Do not push unless explicitly requested.
 
 ## Team Roles To Continue
 
