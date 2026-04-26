@@ -41,6 +41,14 @@ function Send-KeyDownUp([byte]$VirtualKey) {
     [SteambandProbeInput]::keybd_event($VirtualKey, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
 }
 
+function Send-Text([string]$Text) {
+    foreach ($Char in $Text.ToCharArray()) {
+        $Code = [byte][char]::ToUpperInvariant($Char)
+        Send-KeyDownUp $Code
+        Start-Sleep -Milliseconds 40
+    }
+}
+
 function Send-CtrlF12 {
     [SteambandProbeInput]::keybd_event(0x11, 0, 0, 0) # Ctrl
     Start-Sleep -Milliseconds 40
@@ -72,18 +80,41 @@ try {
 
     if ($TryNewGame) {
         Send-KeyDownUp 0x4E # N
-        Start-Sleep -Milliseconds 700
-        # Best effort only: these legacy birth prompts are visual and still need manual confirmation.
-        Send-KeyDownUp 0x1B # Esc, commonly accepts defaults/backtracks in birth prompts
-        Start-Sleep -Milliseconds 200
-    } else {
-        Send-CtrlF12
-        Start-Sleep -Seconds $HoldSeconds
-
-        # Let the SDL window process an exit key if it has focus; CloseMainWindow below is the hard fallback.
-        Send-KeyDownUp 0x1B # Esc
         Start-Sleep -Milliseconds 500
+
+        # Best-effort default character path:
+        # Enter accepts highlighted sex/race/class, accepts the random roll,
+        # accepts the typed name, and accepts final character confirmation.
+        1..4 | ForEach-Object {
+            Send-KeyDownUp 0x0D # Enter
+            Start-Sleep -Milliseconds 350
+        }
+        Send-Text "rogtest"
+        Send-KeyDownUp 0x0D # Enter name
+        Start-Sleep -Milliseconds 400
+        Send-KeyDownUp 0x0D # Continue into world
+        Start-Sleep -Milliseconds 900
     }
+
+    Send-CtrlF12
+    Start-Sleep -Milliseconds 700
+
+    if ($TryNewGame) {
+        Send-KeyDownUp 0x57 # W/forward
+        Start-Sleep -Milliseconds 150
+        Send-KeyDownUp 0x44 # D/strafe right
+        Start-Sleep -Milliseconds 150
+        Send-KeyDownUp 0x25 # Left arrow turn
+        Start-Sleep -Milliseconds 150
+        Send-KeyDownUp 0x27 # Right arrow turn
+        Start-Sleep -Milliseconds 150
+    }
+
+    Start-Sleep -Seconds $HoldSeconds
+
+    # Let the SDL window process an exit key if it has focus; CloseMainWindow below is the hard fallback.
+    Send-KeyDownUp 0x1B # Esc
+    Start-Sleep -Milliseconds 500
 }
 finally {
     if (!$Process.HasExited) {
@@ -122,6 +153,8 @@ $Checks = [ordered]@{
 
 if ($TryNewGame) {
     $Checks["Title-screen New attempted"] = $true
+    $Checks["Default birth keys sent"] = $true
+    $Checks["First-person activated after New attempt"] = $NewLog.Contains("First-person mode activated")
     $Checks["Clean renderer shutdown"] = $NewLog.Contains("Renderer shutdown complete") -or $NewLog.Contains("Exited first-person mode")
 } else {
     $Checks["First-person activated"] = $NewLog.Contains("First-person mode activated")
@@ -138,8 +171,8 @@ foreach ($Check in $Checks.GetEnumerator()) {
 }
 
 if ($TryNewGame) {
-    Write-Host "NOTE: -TryNewGame injects the title-screen New command only and does not run the first-person activation check."
-    Write-Host "NOTE: Character creation remains manual unless future probes can read UI state."
+    Write-Host "NOTE: -TryNewGame sends default birth-flow keys, then toggles first-person and sends a small movement/turn sequence."
+    Write-Host "NOTE: It still cannot visually assert every birth prompt; manual ROG Ally validation remains required."
 }
 
 if ($Checks.Values -contains $false) {
