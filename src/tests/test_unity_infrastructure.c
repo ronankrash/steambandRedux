@@ -392,6 +392,8 @@ void test_renderer_basic(void) {
     TEST_ASSERT_TRUE_MESSAGE(ctx->keyboard_focus, "First-person toggle should accept SDL key focus");
     TEST_ASSERT_TRUE_MESSAGE(renderer_should_forward_key_event(ctx), "Focused first-person mode should forward keys");
     TEST_ASSERT_FALSE_MESSAGE(renderer_texture_loading_allowed(ctx), "Unapproved textures must not load");
+    TEST_ASSERT_FALSE_MESSAGE(renderer_autostart_top_down_requested(),
+                              "Top-down autostart should be opt-in through environment");
     TEST_ASSERT_FALSE_MESSAGE(ctx->show_debug_minimap, "Debug minimap should be hidden by default for immersion");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_trace_column(ctx, RENDER_WIDTH / 2, &ray_hit),
                                   "Center trace should be deterministic and testable");

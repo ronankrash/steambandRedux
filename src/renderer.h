@@ -191,6 +191,7 @@ int renderer_handle_events(RendererContext* ctx, int max_events);
 void renderer_render(RendererContext* ctx);
 void renderer_toggle_mode(RendererContext* ctx);
 void renderer_toggle_top_down_mode(RendererContext* ctx);
+bool renderer_autostart_top_down_requested(void);
 void renderer_sync_from_player(RendererContext* ctx);  /* Syncs from p_ptr if available */
 void renderer_rotate(RendererContext* ctx, double radians);  /* Rotate camera direction and plane */
 

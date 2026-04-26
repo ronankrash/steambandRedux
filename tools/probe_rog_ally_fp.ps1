@@ -3,7 +3,8 @@ param(
     [int]$StartupTimeoutSeconds = 8,
     [int]$HoldSeconds = 2,
     [switch]$TryNewGame,
-    [switch]$TopDown
+    [switch]$TopDown,
+    [switch]$AutoTopDown
 )
 
 $ErrorActionPreference = "Stop"
@@ -18,6 +19,10 @@ $GameLog = Join-Path $BuildDir "lib\logs\steamband.log"
 
 if (!(Test-Path $GameExe)) {
     throw "Missing executable: $GameExe"
+}
+
+if ($AutoTopDown) {
+    $env:STEAMBAND_START_TOPDOWN = "1"
 }
 
 $NativeInput = @"
@@ -121,9 +126,9 @@ try {
         Start-Sleep -Milliseconds 900
     }
 
-    if ($TopDown) {
+    if ($TopDown -and !$AutoTopDown) {
         Send-CtrlF11 $Process.MainWindowHandle
-    } else {
+    } elseif (!$AutoTopDown) {
         Send-CtrlF12 $Process.MainWindowHandle
     }
     Start-Sleep -Milliseconds 700
@@ -185,7 +190,7 @@ $Checks = [ordered]@{
 if ($TryNewGame) {
     $Checks["Title-screen New attempted"] = $true
     $Checks["Default birth keys sent"] = $true
-    if ($TopDown) {
+    if ($TopDown -or $AutoTopDown) {
         $Checks["Top-down tile mode activated after New attempt"] = $NewLog.Contains("Top-down SDL tile mode activated")
         $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
     } else {
@@ -195,7 +200,7 @@ if ($TryNewGame) {
         $NewLog.Contains("Exited first-person mode") -or
         $NewLog.Contains("Exited SDL renderer mode")
 } else {
-    if ($TopDown) {
+    if ($TopDown -or $AutoTopDown) {
         $Checks["Top-down tile mode activated"] = $NewLog.Contains("Top-down SDL tile mode activated")
         $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
     } else {
@@ -206,7 +211,7 @@ if ($TryNewGame) {
         $NewLog.Contains("Exited SDL renderer mode")
 }
 
-if ($TopDown) {
+if ($TopDown -or $AutoTopDown) {
     Write-Host "SteambandRedux ROG Ally top-down tile automation probe"
 } else {
     Write-Host "SteambandRedux ROG Ally first-person automation probe"

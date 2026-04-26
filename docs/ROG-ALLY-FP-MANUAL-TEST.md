@@ -134,6 +134,14 @@ powershell -ExecutionPolicy Bypass -File tools\package_rog_ally_drop.ps1
 
 The package contains `SteambandRedux.exe`, the SDL2 runtime DLL when present, and a full `lib\` tree beside the executable. You can pass `-DestinationPath \\ALLY-SHARE\SteambandRedux` or another local/network path to copy directly to the handheld.
 
+For a tile-first playtest on the development PC, run:
+
+```bat
+tools\launch_topdown_tiles.cmd
+```
+
+The packaged Ally drop also includes `launch_topdown_tiles.cmd`, which sets `STEAMBAND_START_TOPDOWN=1` and opens the SDL2 tile window automatically.
+
 ## Record Results
 
 ```text

@@ -34,6 +34,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
 - `build/Debug` can be configured as the SDL2 build and copies `SDL2d.dll` beside Debug executables.
 - `tools/launch_rog_ally_fp_smoke.cmd` launches the current SDL2 Debug first-person smoke build and prints the playtest controls/log paths.
 - `tools/package_rog_ally_drop.ps1` assembles a lightweight ROG Ally/LAN drop folder with `SteambandRedux.exe`, SDL2 runtime DLL when present, and a full `lib/` tree beside the executable.
+- `tools/launch_topdown_tiles.cmd` launches the SDL2 Debug build with `STEAMBAND_START_TOPDOWN=1` so the tile window opens automatically.
 - `tools/probe_rog_ally_fp.ps1` performs a no-hardware native-window keyboard probe against the SDL2 Debug build and verifies renderer init, DDA startup, first-person activation, and shutdown from the new log segment.
 - Generated `build/` artifacts are no longer tracked by Git.
 - `agent-os/` has been removed; current workflow is `.cursor/rules`, `.cursor/skills`, docs, and handoff.
@@ -67,6 +68,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
 - SDL2 top-down tile renderer now exists as a no-asset prototype:
   - Hidden by default.
   - Toggle with `Ctrl+F11`.
+  - Can autostart via `STEAMBAND_START_TOPDOWN=1` or `tools\launch_topdown_tiles.cmd`.
   - `Ctrl+F11` exits back to the legacy 2D fallback; Escape is forwarded to the legacy game as cancel while top-down mode is focused.
   - It mirrors cave/player state through a tested tile-classification layer with safe out-of-bounds handling.
   - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.

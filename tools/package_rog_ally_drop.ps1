@@ -28,6 +28,7 @@ New-Item -ItemType Directory -Force -Path $dropRoot | Out-Null
 
 $dropExe = Join-Path $dropRoot "SteambandRedux.exe"
 $dropLib = Join-Path $dropRoot "lib"
+$dropLauncher = Join-Path $dropRoot "launch_topdown_tiles.cmd"
 
 Copy-Item -Force -Path $gameExe -Destination $dropExe
 
@@ -46,6 +47,16 @@ if (Test-Path $dropLib) {
 }
 Copy-Item -Recurse -Force -Path $sourceLib -Destination $dropLib
 
+@"
+@echo off
+setlocal
+set "STEAMBAND_LOG_LEVEL=INFO"
+set "STEAMBAND_START_TOPDOWN=1"
+pushd "%~dp0" >nul
+start "" /wait "%~dp0SteambandRedux.exe"
+popd >nul
+"@ | Set-Content -Encoding ASCII -Path $dropLauncher
+
 $logs = Join-Path $dropLib "logs"
 New-Item -ItemType Directory -Force -Path $logs | Out-Null
 
@@ -54,6 +65,7 @@ Write-Host "  $dropRoot"
 Write-Host ""
 Write-Host "Run on the Ally:"
 Write-Host "  SteambandRedux.exe"
+Write-Host "  launch_topdown_tiles.cmd  (opens the SDL2 tile window automatically)"
 Write-Host ""
 Write-Host "Logs will be written under:"
 Write-Host "  $(Join-Path $dropLib 'logs')"

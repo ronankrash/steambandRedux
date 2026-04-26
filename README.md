@@ -91,6 +91,12 @@ Review current coverage against legacy terrain, object, and monster data with:
 python tools/report_topdown_asset_coverage.py
 ```
 
+To launch directly into the SDL2 top-down tile view from the SDL2 Debug build:
+
+```bat
+tools\launch_topdown_tiles.cmd
+```
+
 The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
 current controls, and points to the SDL build logs. See
 `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.

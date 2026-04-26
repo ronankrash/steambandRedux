@@ -1779,6 +1779,15 @@ bool renderer_texture_loading_allowed(const RendererContext* ctx) {
     return (ctx && ctx->textures_approved) ? TRUE : FALSE;
 }
 
+bool renderer_autostart_top_down_requested(void) {
+    const char* value = SDL_getenv("STEAMBAND_START_TOPDOWN");
+    if (!value || !value[0]) return FALSE;
+    if (strcmp(value, "0") == 0) return FALSE;
+    if (strcmp(value, "false") == 0 || strcmp(value, "FALSE") == 0) return FALSE;
+    if (strcmp(value, "off") == 0 || strcmp(value, "OFF") == 0) return FALSE;
+    return TRUE;
+}
+
 int renderer_trace_column(const RendererContext* ctx, int screen_x, RendererRayHit* hit) {
     double cameraX;
     double rayDirX;

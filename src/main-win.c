@@ -5752,6 +5752,9 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	/* Initialize first-person renderer (minimal integration for raycasting prototype) */
 	if (!renderer_init(get_renderer())) {
 		LOG_W("Renderer init failed - falling back to 2D only. Check SDL2 setup.");
+	} else if (renderer_autostart_top_down_requested()) {
+		renderer_toggle_top_down_mode(get_renderer());
+		LOG_I("SDL2 top-down tile mode autostart requested by STEAMBAND_START_TOPDOWN.");
 	}
 #else
 	LOG_I("SDL2 renderer disabled; running legacy 2D display only.");
