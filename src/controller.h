@@ -56,5 +56,11 @@ void controller_set_mapping_key_code(int index, int key_code);
  */
 const char* controller_get_button_display_name(WORD button);
 
+/*
+ * Get normalized right-stick horizontal look value (-1.0 to 1.0), or 0.0
+ * inside deadzone / when unavailable.
+ */
+double controller_get_look_x(void);
+
 #endif /* INCLUDED_CONTROLLER_H */
 

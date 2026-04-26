@@ -211,6 +211,28 @@ void renderer_rotate(RendererContext* ctx, double radians) {
     ctx->planeY = oldPlaneX * sinAngle + ctx->planeY * cosAngle;
 }
 
+double renderer_safe_perp_distance(int side, int map_x, int map_y,
+                                   double pos_x, double pos_y,
+                                   int step_x, int step_y,
+                                   double ray_dir_x, double ray_dir_y) {
+    const double EPSILON = 1e-9;
+    double denom;
+    double dist;
+
+    if (side == 0) {
+        denom = ray_dir_x;
+        if (fabs(denom) < EPSILON) denom = (denom < 0.0) ? -EPSILON : EPSILON;
+        dist = (map_x - pos_x + (1 - step_x) / 2.0) / denom;
+    } else {
+        denom = ray_dir_y;
+        if (fabs(denom) < EPSILON) denom = (denom < 0.0) ? -EPSILON : EPSILON;
+        dist = (map_y - pos_y + (1 - step_y) / 2.0) / denom;
+    }
+
+    if (dist <= EPSILON || dist != dist) return 0.1;
+    return dist;
+}
+
 /* Core DDA raycasting render function.
  * For each screen column: calculate ray, DDA step through map (using renderer_is_wall),
  * compute wall height with perspective correction (1 / perpWallDist), draw vertical strip.
@@ -255,7 +277,9 @@ void renderer_render(RendererContext* ctx) {
         
         int stepX, stepY;  /* Direction to step in x/y */
         int hit = 0;       /* Was a wall hit? */
-        int side;          /* NS or EW wall hit? */
+        int side = 0;      /* NS or EW wall hit? */
+        int dda_steps = 0;
+        int max_steps = DUNGEON_HGT + DUNGEON_WID + 4;
         
         /* Calculate step and initial sideDist */
         if (rayDirX < 0) {
@@ -275,6 +299,7 @@ void renderer_render(RendererContext* ctx) {
         
         /* DDA algorithm - perform ray marching through map */
         while (hit == 0) {
+            dda_steps++;
             /* Jump to next map square */
             if (sideDistX < sideDistY) {
                 sideDistX += deltaDistX;
@@ -292,7 +317,8 @@ void renderer_render(RendererContext* ctx) {
             }
             
             /* Prevent infinite loop (safety for degenerate rays) */
-            if (mapX < 0 || mapX > DUNGEON_WID || mapY < 0 || mapY > DUNGEON_HGT) {
+            if (mapX < 0 || mapX > DUNGEON_WID || mapY < 0 || mapY > DUNGEON_HGT ||
+                dda_steps > max_steps) {
                 hit = 1;
                 break;
             }
@@ -300,8 +326,8 @@ void renderer_render(RendererContext* ctx) {
         
         /* Calculate distance to wall for perspective (perp to avoid fish-eye) */
         double perpWallDist;
-        if (side == 0) perpWallDist = (mapX - ctx->posX + (1 - stepX) / 2) / rayDirX;
-        else           perpWallDist = (mapY - ctx->posY + (1 - stepY) / 2) / rayDirY;
+        perpWallDist = renderer_safe_perp_distance(side, mapX, mapY, ctx->posX, ctx->posY,
+                                                   stepX, stepY, rayDirX, rayDirY);
         if (perpWallDist <= 0) perpWallDist = 0.1;  /* Prevent div/0 or negative */
         
         /* Calculate height of wall strip on screen */

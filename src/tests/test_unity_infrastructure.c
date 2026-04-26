@@ -87,6 +87,10 @@ void test_renderer_basic(void) {
     TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->dirY + 1.0) < 0.0001, "Rotation should turn direction left");
     TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->planeX + 0.66) < 0.0001, "Rotation should rotate camera plane X");
     TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->planeY) < 0.0001, "Rotation should rotate camera plane Y near zero");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_safe_perp_distance(0, 5, 5, 5.5, 5.5, 1, 1, 0.0, 1.0) > 0.0,
+                             "Perpendicular distance should guard zero X rays");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_safe_perp_distance(1, 5, 5, 5.5, 5.5, 1, 1, 1.0, 0.0) > 0.0,
+                             "Perpendicular distance should guard zero Y rays");
 
     TEST_PASS_MESSAGE("Renderer DDA and wall tests passed - ready for steampunk textures");
 #else

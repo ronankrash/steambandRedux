@@ -1941,10 +1941,13 @@ static errr Term_xtra_win_react(void)
 static void win_renderer_pulse(void)
 {
 	RendererContext *renderer = get_renderer();
+	double look_x;
 
 	if (!renderer || !renderer->first_person_mode) return;
 
 	renderer_sync_from_player(renderer);
+	look_x = controller_get_look_x();
+	if (look_x != 0.0) renderer_rotate(renderer, look_x * 0.08);
 	renderer_render(renderer);
 }
 #endif

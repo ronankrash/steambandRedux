@@ -4,9 +4,6 @@
 #include "controller_config_menu.h"
 #include "angband.h"
 #include "logging.h"
-#ifdef STEAMBAND_HAS_SDL2
-#include "renderer.h"
-#endif
 #include <windows.h>
 #include <xinput.h>
 #ifdef STEAMBAND_HAS_SDL2
@@ -209,27 +206,20 @@ static void check_thumbsticks(void) {
     }
 }
 
-#ifdef STEAMBAND_HAS_SDL2
 /*
- * Right stick turns the SDL first-person camera. It does not queue game
- * movement, so legacy keyboard/XInput movement remains unchanged.
+ * Return normalized right-stick look on X axis. This keeps analog look state
+ * in the controller layer while renderer/main-win decide how to use it.
  */
-static void check_right_thumbstick(void) {
+double controller_get_look_x(void) {
     const int DEADZONE = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
     short rx = g_state.Gamepad.sThumbRX;
 
     if (rx < -DEADZONE || rx > DEADZONE) {
-        static DWORD last_turn = 0;
-        DWORD now = GetTickCount();
-
-        if (now - last_turn > 30) {
-            double normalized = (double)rx / 32767.0;
-            renderer_rotate(get_renderer(), normalized * 0.08);
-            last_turn = now;
-        }
+        return (double)rx / 32767.0;
     }
+
+    return 0.0;
 }
-#endif
 
 /*
  * Check controller input
@@ -411,9 +401,6 @@ int controller_check(void) {
         
         /* Check thumbsticks */
         check_thumbsticks();
-#ifdef STEAMBAND_HAS_SDL2
-        check_right_thumbstick();
-#endif
         
     } else {
         /* Controller is disconnected */

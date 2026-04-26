@@ -54,6 +54,10 @@ void renderer_rotate(RendererContext* ctx, double radians);  /* Rotate camera di
 /* Test/utility functions */
 bool renderer_is_wall(int y, int x);  /* Uses cave data or test map */
 void renderer_test_dda(void);  /* For unit tests */
+double renderer_safe_perp_distance(int side, int map_x, int map_y,
+                                   double pos_x, double pos_y,
+                                   int step_x, int step_y,
+                                   double ray_dir_x, double ray_dir_y);
 RendererContext* get_renderer(void);
 
 /* 2D fallback indicator */
