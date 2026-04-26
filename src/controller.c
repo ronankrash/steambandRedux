@@ -26,6 +26,8 @@ static DWORD g_last_packet = 0;
 static bool g_logging_enabled = TRUE; /* Controller logging enabled by default */
 static DWORD g_back_button_press_time = 0; /* Track BACK button for menu activation */
 static bool g_back_button_was_pressed = FALSE;
+static int g_back_button_press_count = 0;
+static bool g_back_command_pending = FALSE;
 static bool g_fp_toggle_chord_was_pressed = FALSE;
 
 /* SDL2 GameController for Phase 2 ROG Ally optimization and modern input (fallback to XInput) */
@@ -286,100 +288,52 @@ int controller_check(void) {
             }
         }
         
-        /* Check for config menu activation: BACK button triple-press (within 500ms each) */
-        /* Shared static variables for triple-press detection (used by both open and close logic) */
-        static DWORD g_back_press_times[3] = {0, 0, 0};
-        static int g_back_press_count = 0;
-        
-        /* Only process if no menu is currently active (to prevent conflicts) */
+        /* Check for BACK button gestures. Single BACK still falls through to
+         * the normal mapping (M/map). Double BACK opens the command menu after
+         * the triple-press window expires; triple BACK opens config immediately.
+         */
         if (!controller_menu_is_active() && !controller_config_menu_is_active()) {
             bool back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
             if (back_pressed && !g_back_button_was_pressed) {
-                /* Back button just pressed */
-                DWORD time_since_last = (g_back_press_count > 0) ? (now - g_back_press_times[g_back_press_count - 1]) : 1000;
-                if (time_since_last < 500 && g_back_press_count > 0) {
-                    g_back_press_times[g_back_press_count++] = now;
-                    if (g_back_press_count >= 3) {
-                        /* Triple-press detected - show config menu */
-                        controller_config_menu_show();
-                        g_back_press_count = 0;
-                        g_back_button_press_time = 0;
-                    }
-                } else {
-                    /* Reset counter */
-                    g_back_press_count = 1;
-                    g_back_press_times[0] = now;
-                }
-                g_back_button_was_pressed = TRUE;
-            } else if (!back_pressed && g_back_button_was_pressed) {
-                /* Back button released */
-                g_back_button_was_pressed = FALSE;
-                /* Reset counter after delay */
-                if (g_back_press_count > 0 && (now - g_back_press_times[g_back_press_count - 1]) > 500) {
-                    g_back_press_count = 0;
-                }
-            }
-        } else if (controller_config_menu_is_active()) {
-            /* Config menu is active - allow triple-press to close it */
-            bool back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
-            if (back_pressed && !g_back_button_was_pressed) {
-                DWORD time_since_last = (g_back_press_count > 0) ? (now - g_back_press_times[g_back_press_count - 1]) : 1000;
-                if (time_since_last < 500 && g_back_press_count > 0) {
-                    g_back_press_times[g_back_press_count++] = now;
-                    if (g_back_press_count >= 3) {
-                        /* Triple-press detected - hide config menu */
-                        controller_config_menu_hide();
-                        g_back_press_count = 0;
-                        g_back_button_press_time = 0;
-                    }
-                } else {
-                    g_back_press_count = 1;
-                    g_back_press_times[0] = now;
-                }
-                g_back_button_was_pressed = TRUE;
-            } else if (!back_pressed && g_back_button_was_pressed) {
-                g_back_button_was_pressed = FALSE;
-                if (g_back_press_count > 0 && (now - g_back_press_times[g_back_press_count - 1]) > 500) {
-                    g_back_press_count = 0;
-                }
-            }
-        }
-        
-        /* Check for command menu activation: BACK button double-press (within 500ms) */
-        /* Only process if no menu is currently active (to prevent conflicts) */
-        if (!controller_menu_is_active() && !controller_config_menu_is_active()) {
-            bool back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
-            if (back_pressed && !g_back_button_was_pressed) {
-                /* Back button just pressed */
                 DWORD time_since_last = now - g_back_button_press_time;
-                if (time_since_last < 500 && g_back_button_press_time > 0) {
-                    /* Double-press detected - show command menu */
-                    controller_menu_show();
-                    g_back_button_press_time = 0; /* Reset */
-                } else {
-                    g_back_button_press_time = now;
+
+                if (time_since_last > 500 || g_back_button_press_time == 0) {
+                    g_back_button_press_count = 0;
+                    g_back_command_pending = FALSE;
                 }
+
+                g_back_button_press_count++;
+                g_back_button_press_time = now;
                 g_back_button_was_pressed = TRUE;
+
+                if (g_back_button_press_count >= 3) {
+                    controller_config_menu_show();
+                    g_back_button_press_count = 0;
+                    g_back_command_pending = FALSE;
+                    g_back_button_press_time = 0;
+                    return TRUE;
+                }
+
+                if (g_back_button_press_count == 2) {
+                    g_back_command_pending = TRUE;
+                    return TRUE;
+                }
             } else if (!back_pressed && g_back_button_was_pressed) {
-                /* Back button released */
                 g_back_button_was_pressed = FALSE;
             }
-        } else if (controller_menu_is_active()) {
-            /* Command menu is active - allow double-press to close it */
-            bool back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
-            if (back_pressed && !g_back_button_was_pressed) {
-                DWORD time_since_last = now - g_back_button_press_time;
-                if (time_since_last < 500 && g_back_button_press_time > 0) {
-                    /* Double-press detected - hide command menu */
-                    controller_menu_hide();
-                    g_back_button_press_time = 0; /* Reset */
-                } else {
-                    g_back_button_press_time = now;
-                }
-                g_back_button_was_pressed = TRUE;
-            } else if (!back_pressed && g_back_button_was_pressed) {
-                /* Back button released */
-                g_back_button_was_pressed = FALSE;
+
+            if (g_back_command_pending && (now - g_back_button_press_time) > 500) {
+                controller_menu_show();
+                g_back_button_press_count = 0;
+                g_back_command_pending = FALSE;
+                g_back_button_press_time = 0;
+                return TRUE;
+            }
+
+            if (!g_back_command_pending && g_back_button_press_count == 1 &&
+                (now - g_back_button_press_time) > 500) {
+                g_back_button_press_count = 0;
+                g_back_button_press_time = 0;
             }
         }
         

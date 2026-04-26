@@ -75,13 +75,13 @@ Expected behavior: double `Back` opens the command grid.
 
 Pass if:
 
-- Double `Back` within roughly 500 ms opens `Controller Command Menu`.
+- Double `Back` within roughly 500 ms opens `Controller Command Menu` after the triple-press window expires.
 - D-pad navigates the grid.
 - `A` selects a command and closes the menu.
 - `B` cancels and closes the menu.
 - Selected commands match keyboard behavior.
 
-High-risk item: double/triple `Back` gesture overlap may be hard to perform reliably. Record failures as UX bugs, not tester error.
+High-risk item: double/triple `Back` gesture overlap may still be hard to perform reliably. Record failures as UX bugs, not tester error.
 
 ## Controller Config Menu
 
