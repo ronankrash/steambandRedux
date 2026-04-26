@@ -70,6 +70,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Escape or `Ctrl+F11` exits back to the legacy 2D fallback.
   - It mirrors cave/player state through a tested tile-classification layer with safe out-of-bounds handling.
   - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.
+  - The placeholder atlas is reproducible via `python tools/generate_topdown_tilesheet.py`.
   - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` without changing code.
   - Current atlas contract: 24x24 tiles, 7 columns x 2 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
   - Monster family tiles are renderer-only and derived from visible live monsters using bounded `cave_m_idx -> m_list -> r_info` lookups; unknown, unseen, or unavailable race data falls back to terrain or the generic monster tile.
@@ -165,6 +166,8 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Packaged drop folder contains `lib/xtra/graf/sdl2_topdown_24.bmp`.
   - Unity coverage now includes top-down tile priority, safe bounds, viewport sizing, fallback colors, and independent top-down mode toggling.
   - Automated no-hardware probing verifies `Ctrl+F11` top-down activation, placeholder tilesheet load, and clean shutdown from logs.
+  - Probe keyboard injection now posts F11/F12 directly to the native game window while Ctrl is held to avoid foreground timing misses.
+  - Placeholder atlas regeneration passed with `python tools/generate_topdown_tilesheet.py` and matched the committed BMP.
   - Manual visual validation of tile readability on the ROG Ally is still pending.
 - `python tools/license_scan.py --details` still reports inherited release blockers: 70 educational/not-for-profit files, 75 not-for-profit matches, 1 sell-or-market match, 1 commercial-use help match, 1 legacy/GPL coexistence match, 2 embedded copyright-string locations, and 1 Microsoft sample-file match.
 - Interactive keyboard/controller/ROG Ally smoke testing is still pending and must use `docs/PLAYTEST-CHECKLIST.md`.

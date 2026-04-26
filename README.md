@@ -79,6 +79,12 @@ glyphs. Compatible local tilesheet experiments can set `STEAMBAND_TOPDOWN_TILESE
 to a 24x24 BMP atlas; bundled external art still requires documentation in
 `ASSETS.md`.
 
+Regenerate the checked-in placeholder atlas with:
+
+```bash
+python tools/generate_topdown_tilesheet.py
+```
+
 The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
 current controls, and points to the SDL build logs. See
 `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.

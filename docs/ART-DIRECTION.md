@@ -44,6 +44,7 @@ Initial custom tilesheets should use this atlas contract:
 - 24x24 source tiles, 7 columns by 2 rows.
 - Row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
 - Runtime override for experiments: set `STEAMBAND_TOPDOWN_TILESET` to a compatible BMP path.
+- Project placeholder regeneration: run `python tools/generate_topdown_tilesheet.py`. Use `--print-contract` to print the current slot order.
 
 ## Handheld UX Goals
 

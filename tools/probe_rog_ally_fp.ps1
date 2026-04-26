@@ -31,7 +31,12 @@ public static class SteambandProbeInput {
     [DllImport("user32.dll")]
     public static extern void keybd_event(byte bVk, byte bScan, int dwFlags, int dwExtraInfo);
 
+    [DllImport("user32.dll")]
+    public static extern bool PostMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
     public const int KEYEVENTF_KEYUP = 0x0002;
+    public const int WM_KEYDOWN = 0x0100;
+    public const int WM_KEYUP = 0x0101;
 }
 "@
 Add-Type $NativeInput
@@ -50,21 +55,25 @@ function Send-Text([string]$Text) {
     }
 }
 
-function Send-CtrlF12 {
+function Send-CtrlF12([IntPtr]$WindowHandle) {
     [SteambandProbeInput]::keybd_event(0x11, 0, 0, 0) # Ctrl
     Start-Sleep -Milliseconds 40
-    [SteambandProbeInput]::keybd_event(0x7B, 0, 0, 0) # F12
+    [SteambandProbeInput]::PostMessage($WindowHandle,
+        [SteambandProbeInput]::WM_KEYDOWN, [IntPtr]0x7B, [IntPtr]0) | Out-Null # F12
     Start-Sleep -Milliseconds 40
-    [SteambandProbeInput]::keybd_event(0x7B, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
+    [SteambandProbeInput]::PostMessage($WindowHandle,
+        [SteambandProbeInput]::WM_KEYUP, [IntPtr]0x7B, [IntPtr]0) | Out-Null
     [SteambandProbeInput]::keybd_event(0x11, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
 }
 
-function Send-CtrlF11 {
+function Send-CtrlF11([IntPtr]$WindowHandle) {
     [SteambandProbeInput]::keybd_event(0x11, 0, 0, 0) # Ctrl
     Start-Sleep -Milliseconds 40
-    [SteambandProbeInput]::keybd_event(0x7A, 0, 0, 0) # F11
+    [SteambandProbeInput]::PostMessage($WindowHandle,
+        [SteambandProbeInput]::WM_KEYDOWN, [IntPtr]0x7A, [IntPtr]0) | Out-Null # F11
     Start-Sleep -Milliseconds 40
-    [SteambandProbeInput]::keybd_event(0x7A, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
+    [SteambandProbeInput]::PostMessage($WindowHandle,
+        [SteambandProbeInput]::WM_KEYUP, [IntPtr]0x7A, [IntPtr]0) | Out-Null
     [SteambandProbeInput]::keybd_event(0x11, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
 }
 
@@ -87,6 +96,12 @@ try {
 
     [SteambandProbeInput]::SetForegroundWindow($Process.MainWindowHandle) | Out-Null
     Start-Sleep -Milliseconds 300
+    if ($TopDown) {
+        # The Win32 title screen can still be reading startup files when the
+        # native window first appears. Give Ctrl+F11 the same stable target a
+        # handheld tester would have after the prompt is visible.
+        Start-Sleep -Milliseconds 1000
+    }
 
     if ($TryNewGame) {
         Send-KeyDownUp 0x4E # N
@@ -107,9 +122,9 @@ try {
     }
 
     if ($TopDown) {
-        Send-CtrlF11
+        Send-CtrlF11 $Process.MainWindowHandle
     } else {
-        Send-CtrlF12
+        Send-CtrlF12 $Process.MainWindowHandle
     }
     Start-Sleep -Milliseconds 700
 
