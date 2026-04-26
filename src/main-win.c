@@ -1950,20 +1950,31 @@ static void win_renderer_pulse(void)
 		return;
 	}
 
-	if (!renderer || !renderer->first_person_mode) return;
+	if (!renderer || !renderer->first_person_mode) {
+		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
+		return;
+	}
 
 	renderer_handle_events(renderer, 32);
-	if (!renderer->first_person_mode) return;
+	if (!renderer->first_person_mode) {
+		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
+		return;
+	}
 
 	renderer_sync_from_player(renderer);
 	look_x = controller_get_look_x();
 	if (look_x != 0.0) renderer_rotate(renderer, look_x * 0.08);
+	controller_set_first_person_camera(TRUE, renderer->dirX, renderer->dirY,
+	                                   renderer->planeX, renderer->planeY);
 	renderer_render(renderer);
 }
 
 static void win_renderer_toggle(void)
 {
 	renderer_toggle_mode(get_renderer());
+	if (!get_renderer()->first_person_mode) {
+		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
+	}
 	win_renderer_pulse();
 }
 #endif
@@ -5817,6 +5828,15 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	check_for_save_file(lpCmdLine);
 
 	/* Prompt the user */
+#ifdef STEAMBAND_HAS_SDL2
+	prt(controller_get_playability_hint(0, TRUE), 20, 1);
+	prt(controller_get_playability_hint(1, TRUE), 21, 1);
+	prt(controller_get_playability_hint(2, TRUE), 22, 1);
+#else
+	prt(controller_get_playability_hint(0, FALSE), 20, 1);
+	prt(controller_get_playability_hint(1, FALSE), 21, 1);
+	prt(controller_get_playability_hint(2, FALSE), 22, 1);
+#endif
 	prt("[Choose 'New' or 'Open' from the 'File' menu]", 23, 17);
 	Term_fresh();
 

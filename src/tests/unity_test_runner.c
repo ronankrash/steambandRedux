@@ -1,6 +1,6 @@
 /* File: src/tests/unity_test_runner.c
  * Unity test runner - runs Unity framework tests
- * 
+ *
  * This file provides a main() function for running Unity tests.
  * It can be compiled as a separate executable or integrated into main_test.c
  */
@@ -44,6 +44,8 @@ extern void test_my_strcpy_exact_buffer_size(void);
 
 /* Forward declarations for controller tests */
 extern void test_controller_default_mappings_accessible(void);
+extern void test_controller_rog_ally_default_mapping_contract(void);
+extern void test_controller_playability_hints_are_short_and_actionable(void);
 extern void test_controller_button_display_names(void);
 extern void test_controller_mapping_key_code_get_set(void);
 extern void test_controller_config_trailing_whitespace(void);
@@ -53,11 +55,15 @@ extern void test_controller_config_menu_show_hide(void);
 extern void test_controller_menu_mutual_exclusivity(void);
 extern void test_controller_mapping_count_consistency(void);
 extern void test_controller_invalid_mapping_index(void);
+extern void test_controller_back_single_delays_map_until_gesture_window(void);
+extern void test_controller_back_double_opens_command_without_map(void);
+extern void test_controller_back_triple_opens_config_immediately(void);
+extern void test_controller_first_person_camera_relative_movement(void);
 extern void test_sdl2_controller_init(void);
 
 int main(void) {
     UNITY_BEGIN();
-    
+
     /* Run Unity infrastructure tests */
     RUN_TEST(test_unity_assertions);
     RUN_TEST(test_unity_runner);
@@ -65,7 +71,7 @@ int main(void) {
     RUN_TEST(test_test_helpers_temp_file);
     RUN_TEST(test_unity_fixtures_available);
     RUN_TEST(test_renderer_basic);
-    
+
     /* Run logging system tests */
     RUN_TEST(test_log_level_enum);
     RUN_TEST(test_log_level_filtering);
@@ -80,7 +86,7 @@ int main(void) {
     RUN_TEST(test_logging_init);
     RUN_TEST(test_log_level_get_set);
     RUN_TEST(test_null_filename_handling);
-    
+
     /* Run z-util.c tests */
     RUN_TEST(test_streq_basic);
     RUN_TEST(test_streq_null_handling);
@@ -92,9 +98,11 @@ int main(void) {
     RUN_TEST(test_my_strcpy_buffer_overflow);
     RUN_TEST(test_my_strcpy_zero_buffer);
     RUN_TEST(test_my_strcpy_exact_buffer_size);
-    
+
     /* Run controller tests */
     RUN_TEST(test_controller_default_mappings_accessible);
+    RUN_TEST(test_controller_rog_ally_default_mapping_contract);
+    RUN_TEST(test_controller_playability_hints_are_short_and_actionable);
     RUN_TEST(test_controller_button_display_names);
     RUN_TEST(test_controller_mapping_key_code_get_set);
     RUN_TEST(test_controller_config_trailing_whitespace);
@@ -104,8 +112,12 @@ int main(void) {
     RUN_TEST(test_controller_menu_mutual_exclusivity);
     RUN_TEST(test_controller_mapping_count_consistency);
     RUN_TEST(test_controller_invalid_mapping_index);
+    RUN_TEST(test_controller_back_single_delays_map_until_gesture_window);
+    RUN_TEST(test_controller_back_double_opens_command_without_map);
+    RUN_TEST(test_controller_back_triple_opens_config_immediately);
+    RUN_TEST(test_controller_first_person_camera_relative_movement);
     RUN_TEST(test_sdl2_controller_init);
-    
+
     return UNITY_END();
 }
 

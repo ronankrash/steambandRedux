@@ -73,6 +73,6 @@ CMake Error at CMakeLists.txt:8 (find_package):
 
 - `renderer_render()` is called from the Win32 loop in SDL2 builds, but deterministic visual output is not tested.
 - SDL controller hardware behavior is not covered by automated tests.
-- BACK double/triple press timing has no automated coverage.
+- BACK double/triple press timing has Unity coverage for the gesture state machine, but no live hardware timing coverage.
 - `test_util.c` is not part of current CMake test targets.
 - SDL2 renderer/controller smoke tests are ignored when SDL2 is disabled.

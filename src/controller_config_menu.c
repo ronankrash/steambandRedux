@@ -15,6 +15,7 @@ static bool g_config_menu_active = FALSE;
 static int g_config_menu_selected = 0;  /* Currently selected button index */
 static DWORD g_config_menu_last_nav = 0; /* Last navigation time for rate limiting */
 static bool g_config_menu_remapping = FALSE; /* True when waiting for button press to remap */
+static bool g_config_menu_wait_release = FALSE; /* Ignore the press that entered remap mode */
 static int g_config_menu_remap_target = -1; /* Button index being remapped */
 
 /* Use controller_get_button_display_name directly */
@@ -49,7 +50,7 @@ static void config_menu_display(void) {
     int menu_start_y = 3;
     char key_buf[32];
     int count = controller_get_mapping_count();
-    
+
     /* Draw menu title */
     Term_putstr(menu_start_x, menu_start_y - 1, 50, TERM_WHITE, "Controller Button Configuration");
     if (g_config_menu_remapping) {
@@ -57,31 +58,31 @@ static void config_menu_display(void) {
     } else {
         Term_putstr(menu_start_x, menu_start_y - 2, 50, TERM_YELLOW, "A: Remap  B: Cancel/Save  D-Pad: Navigate");
     }
-    
+
     /* Draw button mappings */
     for (i = 0; i < count; i++) {
         y = menu_start_y + i;
         x = menu_start_x;
-        
+
         /* Highlight selected item */
         byte attr = (i == g_config_menu_selected) ? TERM_L_BLUE : TERM_WHITE;
-        
+
         /* Draw button name */
         char line[80];
         WORD button = controller_get_mapping_button(i);
         int key_code = controller_get_mapping_key_code(i);
         const char *button_name = controller_get_button_display_name(button);
         get_key_display_name(key_code, key_buf, sizeof(key_buf));
-        
+
         snprintf(line, sizeof(line), "%-15s -> %s", button_name, key_buf);
         Term_putstr(x, y, 50, attr, line);
-        
+
         /* Draw selection indicator */
         if (i == g_config_menu_selected) {
             Term_putstr(x - 2, y, 1, TERM_YELLOW, ">");
         }
     }
-    
+
     /* Draw save instruction */
     if (!g_config_menu_remapping) {
         Term_putstr(menu_start_x, menu_start_y + 12, 50, TERM_WHITE, "Press B to save and exit");
@@ -96,6 +97,7 @@ void controller_config_menu_init(void) {
     g_config_menu_selected = 0;
     g_config_menu_last_nav = 0;
     g_config_menu_remapping = FALSE;
+    g_config_menu_wait_release = FALSE;
     g_config_menu_remap_target = -1;
 }
 
@@ -106,6 +108,7 @@ void controller_config_menu_show(void) {
     g_config_menu_active = TRUE;
     g_config_menu_selected = 0;
     g_config_menu_remapping = FALSE;
+    g_config_menu_wait_release = FALSE;
     g_config_menu_remap_target = -1;
     config_menu_display();
 }
@@ -125,7 +128,19 @@ void controller_config_menu_hide(void) {
     }
     g_config_menu_active = FALSE;
     g_config_menu_remapping = FALSE;
+    g_config_menu_wait_release = FALSE;
     g_config_menu_remap_target = -1;
+}
+
+static bool config_menu_any_mapped_button_pressed(XINPUT_STATE *state, int count) {
+    int i;
+
+    for (i = 0; i < count; i++) {
+        WORD button = controller_get_mapping_button(i);
+        if (state->Gamepad.wButtons & button) return TRUE;
+    }
+
+    return FALSE;
 }
 
 /*
@@ -141,12 +156,12 @@ int controller_config_menu_is_active(void) {
 static void config_menu_handle_navigation(XINPUT_STATE *state) {
     DWORD now = GetTickCount();
     int count = controller_get_mapping_count();
-    
+
     /* Rate limit navigation */
     if (now - g_config_menu_last_nav < 200) {
         return;
     }
-    
+
     /* Check D-Pad for navigation */
     if (state->Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) {
         g_config_menu_selected--;
@@ -167,8 +182,23 @@ static void config_menu_handle_navigation(XINPUT_STATE *state) {
 static void config_menu_handle_selection(XINPUT_STATE *state) {
     int count = controller_get_mapping_count();
     int i;
-    
+
     if (g_config_menu_remapping) {
+        if (g_config_menu_wait_release) {
+            if (config_menu_any_mapped_button_pressed(state, count)) {
+                return;
+            }
+            g_config_menu_wait_release = FALSE;
+        }
+
+        /* B or BACK cancels remapping instead of becoming a remap source. */
+        if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
+            g_config_menu_remapping = FALSE;
+            g_config_menu_remap_target = -1;
+            config_menu_display();
+            return;
+        }
+
         /* Waiting for button press to remap */
         /* Check all buttons to see which one was pressed */
         for (i = 0; i < count; i++) {
@@ -188,24 +218,18 @@ static void config_menu_handle_selection(XINPUT_STATE *state) {
                 return;
             }
         }
-        
-        /* B or BACK cancels remapping */
-        if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
-            g_config_menu_remapping = FALSE;
-            g_config_menu_remap_target = -1;
-            config_menu_display();
-        }
     } else {
         /* Normal menu mode */
         /* A button starts remapping */
         if (state->Gamepad.wButtons & XINPUT_GAMEPAD_A) {
             if (g_config_menu_selected < count) {
                 g_config_menu_remapping = TRUE;
+                g_config_menu_wait_release = TRUE;
                 g_config_menu_remap_target = g_config_menu_selected;
                 config_menu_display();
             }
         }
-        
+
         /* B or BACK saves and exits */
         if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
             /* Save configuration */
@@ -223,23 +247,23 @@ static void config_menu_handle_selection(XINPUT_STATE *state) {
 int controller_config_menu_check(void) {
     XINPUT_STATE state;
     DWORD dwResult;
-    
+
     if (!g_config_menu_active) {
         return FALSE;
     }
-    
+
     /* Poll controller */
     dwResult = XInputGetState(0, &state);
     if (dwResult != ERROR_SUCCESS) {
         return FALSE;
     }
-    
+
     /* Handle navigation */
     config_menu_handle_navigation(&state);
-    
+
     /* Handle selection */
     config_menu_handle_selection(&state);
-    
+
     return TRUE;
 }
 

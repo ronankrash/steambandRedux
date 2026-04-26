@@ -2,7 +2,7 @@
 
 Last updated: 2026-04-25
 Branch: `steambranch`
-Remote status at update: clean and aligned with `origin/steambranch`
+Remote status at update: branch is ahead of `origin/steambranch`; working tree has uncommitted rescue-slice edits.
 
 ## Current Mission
 
@@ -30,12 +30,14 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - SDL2 installed at `C:/Users/bkars/vcpkg`
   - configure with `SDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2`
 - `build/Debug` can be configured as the SDL2 build and copies `SDL2d.dll` beside Debug executables.
+- `run-rog-ally-fp.bat` launches the current `build/Debug/SteambandRedux.exe` and prints the first-person playtest controls.
 - Generated `build/` artifacts are no longer tracked by Git.
 - `agent-os/` has been removed; current workflow is `.cursor/rules`, `.cursor/skills`, docs, and handoff.
 
 ## Current Gameplay/Renderer State
 
 - Legacy Win32 Term/GDI display remains the main playable UI.
+- The startup prompt now prints compact controller/first-person control hints before `New`/`Open`, so ROG Ally defaults and FP entry are discoverable immediately.
 - Missing legacy `.FON` files no longer make the map unreadable: fallback glyphs translate special floor/wall slots into readable `.` and `#` with system fonts.
 - SDL2 first-person renderer exists as a prototype:
   - Hidden by default.
@@ -43,8 +45,15 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Controller toggle: `L3 + R3`.
   - Escape or `Ctrl+F12` in SDL window exits first-person mode.
   - Right stick turns the first-person camera.
-  - SDL keyboard focus forwards basic commands into the legacy Angband input queue.
+  - SDL keyboard focus forwards commands into the legacy Angband input queue.
+  - In the SDL window, `W`/Up move forward relative to the camera, `S`/Down move backward, `A`/`D` strafe, and Left/Right arrows turn the camera.
   - Renderer is pulsed from the Win32 loop and has bounded SDL event handling.
+  - Renderer ray/strip math now has deterministic Unity coverage via pure trace helpers.
+  - SDL key forwarding is gated on first-person mode plus SDL keyboard focus.
+  - In-window HUD hint blocks show mode/focus state plus compact move/turn glyphs without adding font or art assets.
+  - Wall strips use deterministic feature-aware colors plus distance/side shading; debug minimap is hidden by default for immersion.
+  - SDL resize events clamp renderer dimensions to a safe readable viewport range.
+  - Texture slots remain empty unless assets are explicitly approved in `ASSETS.md`.
 - First-person view is not yet a finished gameplay mode. It is a live prototype/mirror of player position and cave data, not a polished replacement for the 2D UI.
 
 ## Controller State
@@ -58,16 +67,49 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - `Y`: equipment (`e`).
   - D-pad: cardinal movement.
   - Left stick: 8-way movement.
+  - D-pad/left stick become camera-relative while first-person mode is active.
   - Right stick: first-person camera turn while FP is active.
   - `LB`: rest (`R`).
   - `RB`: search (`s`).
-  - `Back`: single map, double command menu, triple config menu.
+  - `Back`: single map after the double/triple gesture window, double command menu, triple config menu.
   - Active controller menus can also be closed with `Back`.
+- Controller fixes in this branch prevent double/triple `Back` from leaking the single-map command, and prevent the `A` press used to enter config remap mode from becoming the remap source.
+- Startup logs now print the current ROG Ally defaults and Back/L3+R3 gestures so a handheld playtester can confirm the active mapping from `lib/logs/steamband.log`.
+- The controller layer exposes short playability hint strings with Unity coverage, keeping the visible startup hints synchronized with tested defaults.
 
 ## Verification Notes
 
-- Automated non-SDL and SDL CTest paths were passing at the last full verification.
-- Bounded launch probes have shown the executable starts and stays alive.
+- Latest ROG Ally playtest-prep pass added a Unity contract test for default controller mappings and passed:
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+  - Bounded SDL launch probe: `build-rescue-sdl2/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
+- Latest first-person play conversion added camera-relative SDL keyboard and controller movement transforms and passed:
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+  - Bounded SDL launch probe: `build-rescue-sdl2/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
+  - Default SDL build also updated and passed: `cmake --build build --config Debug`, `ctest --test-dir build -C Debug --output-on-failure`, and a 3-second bounded launch probe for `build/Debug/SteambandRedux.exe`.
+- Automated non-SDL and SDL CTest paths passed in this pass:
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+- Latest SDL renderer polish passed:
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+- Non-SDL regression after the renderer polish passed:
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+- Latest first-person discoverability slice added startup controller/FP hints and a Unity contract test for the hint strings. Verification passed:
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+  - Bounded SDL launch probe: `build-rescue-sdl2/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
+- Bounded SDL launch probe passed: `build-rescue-sdl2/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
+- `python tools/license_scan.py --details` still reports inherited release blockers: 70 educational/not-for-profit files, 75 not-for-profit matches, 1 sell-or-market match, 1 commercial-use help match, 1 legacy/GPL coexistence match, 2 embedded copyright-string locations, and 1 Microsoft sample-file match.
 - Interactive keyboard/controller/ROG Ally smoke testing is still pending and must use `docs/PLAYTEST-CHECKLIST.md`.
 - Default `build/Debug` can be locked if the game is running; close `SteambandRedux.exe` before rebuilding that tree.
 
@@ -87,9 +129,8 @@ This is the biggest release blocker.
 1. Run and record the manual playtest checklist on the current SDL2 `build/Debug` build.
 2. Fix any user-visible controller/window/render issues found during manual testing.
 3. Continue renderer hardening:
-   - deterministic ray/strip tests,
-   - event/focus policy polish,
-   - visible HUD/mode hint,
+   - manual SDL first-person focus/window smoke testing,
+   - replace abstract HUD blocks with licensed UI text/art after asset approval,
    - texture/asset loading only after license-safe assets are approved.
 4. Start licensing remediation:
    - full manifest from `tools/license_scan.py`,

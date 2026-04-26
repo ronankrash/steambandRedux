@@ -61,7 +61,20 @@ cd build/Debug
 ./SteambandRedux.exe
 ```
 
-The current player-facing display is still the legacy Windows terminal/GDI UI.
+For a quick Asus ROG Ally / first-person smoke test from the repository root:
+
+```bat
+tools\launch_rog_ally_fp_smoke.cmd
+```
+
+The legacy Windows terminal/GDI UI remains available. Toggle the SDL first-person
+view with `Ctrl+F12` or `L3 + R3`; in the SDL window use `W`/Up forward,
+`S`/Down back, `A`/`D` strafe, Left/Right arrows or right stick to turn, and
+`Escape` to return to the 2D UI.
+
+The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
+current controls, and points to the SDL build logs. See
+`docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.
 
 ## Testing
 
@@ -100,7 +113,7 @@ Current controller implementation is primarily XInput:
 - D-pad: cardinal movement
 - Left stick: 8-way numpad-style movement
 - Start: Escape
-- Back: map/menu gestures
+- Back: map after the gesture window, double Back opens the command menu, triple Back opens button configuration
 - LB: rest (`R`)
 - RB: search (`s`)
 
@@ -108,9 +121,12 @@ SDL2 first-person prototype:
 
 - `Ctrl+F12`: show/hide the SDL first-person prototype window.
 - `L3 + R3`: controller shortcut to show/hide the SDL first-person prototype window.
-- Right stick: turn camera while first-person mode is active.
+- `W`/Up: move forward relative to the camera.
+- `S`/Down: move backward relative to the camera.
+- `A`/`D`: strafe left/right relative to the camera.
+- Left/Right arrows or right stick: turn camera while first-person mode is active.
 - `Escape` or `Ctrl+F12` in the SDL window exits first-person mode.
-- Basic keyboard commands in the SDL window are forwarded to the legacy game input queue.
+- Other keyboard commands in the SDL window are forwarded to the legacy game input queue.
 
 ## Repository Process
 

@@ -29,6 +29,12 @@ python tools/license_scan.py --details
 - Path: `third_party/unity/`
 - License: MIT
 - License file: `third_party/unity/LICENSE.txt`
+- Version observed: `2.6.0` in `third_party/unity/library.json`
+
+- Component: Microsoft DIB sample code
+- Paths: `src/readdib.c`, `src/readdib.h`
+- Source: Historical Angband Windows bitmap-loading code
+- License/status: `src/readdib.c` includes Microsoft sample-file terms allowing royalty-free use, modification, reproduction, and distribution of Sample Files and modified versions, with no Microsoft warranty obligation or liability. Preserve the notice and review packaging requirements before release.
 
 - Component: SDL2
 - Path: External dependency installed locally via vcpkg at `C:/Users/bkars/vcpkg`

@@ -4,6 +4,34 @@ Last updated: 2026-04-25
 
 Use this checklist for current 2D baseline smoke tests and near-term SDL2 first-person prototype tests.
 
+## Fast ROG Ally First-Person Smoke
+
+Use this when the goal is simply to launch the current SDL2 prototype and verify the handheld controls quickly.
+
+For the shortest local run, use the smoke launcher from the repository root:
+
+```bat
+tools\launch_rog_ally_fp_smoke.cmd
+```
+
+See `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused ROG Ally launch guide, controls, and log review notes.
+
+```bash
+cmake -S . -B build-rescue-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON
+cmake --build build-rescue-sdl2 --config Debug
+ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
+build-rescue-sdl2/Debug/SteambandRedux.exe
+```
+
+Quick pass:
+
+- At the legacy prompt, press `N` for a new game or `O` to open a save.
+- Confirm the launch screen shows the ROG Ally control hints, including `A`/`B`/`X`/`Y`, `Back=Map/Menu/Config`, and the first-person toggle hint.
+- Toggle first-person mode with `Ctrl+F12`; on Ally/controller hardware also test `L3 + R3`.
+- In first-person mode, use D-pad or left stick for roguelike movement and right stick for camera turn.
+- Press `Escape` or `Ctrl+F12` while the SDL window is focused to return to the 2D fallback.
+- Check `build-rescue-sdl2/Debug/lib/logs/steamband.log` for controller init, renderer init, DDA startup, and first-person activation lines.
+
 ## Preflight Record
 
 ```text
@@ -29,6 +57,7 @@ ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
 Pass if:
 
 - Game launches to the legacy prompt.
+- Launch-screen control hints are readable at 720p and 1080p and do not obscure the `New`/`Open` prompt.
 - `N` starts new-game flow.
 - `O` opens load flow.
 - `Escape` cancels/backtracks.
@@ -41,6 +70,7 @@ Fail if:
 - Any required action becomes controller-only.
 - Keyboard input is lost after controller use.
 - Window focus moves so keys no longer reach the game.
+- The launch hints advertise controls that are unavailable in the current build.
 
 ## Default Controller Mapping
 
@@ -56,9 +86,10 @@ Pass if:
 - Holding D-pad repeats movement at a usable rate.
 - Left stick provides 8-way movement: `7/8/9/4/6/1/2/3`.
 - `Start` behaves as Escape.
-- `Back` opens map via `M` unless a menu gesture consumes it.
+- Single `Back` opens map via `M` after the double/triple gesture window expires.
 - `LB` rests via `R`.
 - `RB` searches via `s`.
+- The launch screen summarizes these defaults before a new game or save is opened.
 
 Record:
 
@@ -93,11 +124,13 @@ Pass if:
 - D-pad up/down navigates mappings.
 - `A` enters remap mode.
 - Pressing another mapped button updates the target mapping.
+- The `A` press used to enter remap mode is ignored until released.
 - `B` or `Back` saves/exits in normal config mode.
+- `B` or `Back` cancels remap mode after the entry press is released.
 - `lib/user/controller.prf` is created or updated.
 - Restarting the game reloads saved mappings.
 
-Record whether `B` cancels remap or becomes a remap source.
+Fail if `B` becomes a remap source instead of cancelling remap mode.
 
 ## Save/Load And Core Gameplay
 
@@ -120,7 +153,7 @@ Record explicitly:
 - Left-stick drift/deadzone.
 - Idle CPU/heat in menus.
 - Double/triple `Back` discoverability.
-- Right stick behavior. Current expected result: first-person camera turning only after implemented.
+- Right stick behavior. Current expected result: first-person camera turns only while first-person mode is active.
 
 ## First-Person Prototype
 
@@ -131,14 +164,44 @@ Pass if:
 - Legacy 2D UI still launches and remains available.
 - `Ctrl+F12` and `L3 + R3` show/hide the SDL renderer window in SDL2 builds.
 - Renderer syncs to real player position after movement, stairs, load, and new level.
-- Keyboard movement still matches original command behavior.
+- Focused SDL keyboard uses first-person movement: `W`/Up move forward relative to the camera, `S`/Down move backward, `A`/`D` strafe, and Left/Right arrows turn.
+- Non-movement keyboard commands such as inventory/equipment/stairs still forward to the legacy command queue where not reserved for first-person movement.
 - Keyboard commands still work while the SDL first-person window has focus.
-- Controller left stick/D-pad movement works without breaking roguelike turns.
+- Controller left stick/D-pad movement is camera-relative while first-person mode is active and still consumes normal roguelike turns.
 - Right stick turns the first-person camera while the SDL window is active.
 - `Escape` and `Ctrl+F12` exit first-person mode predictably when the SDL window has focus.
 - Window resize preserves readable UI.
+- Window resize is clamped to a playable viewport and does not distort or crash the raycaster.
+- Atmospheric ceiling/floor gradients, distance fog, side shading, and wall color variation are visible without unapproved art assets.
+- Debug minimap is hidden by default so the first-person view feels immersive rather than like a test overlay.
 - SDL window close does not crash the main game.
 - Shutdown/relaunch does not leave orphan windows or locked input.
+
+Record log evidence from `build-rescue-sdl2/Debug/lib/logs/steamband.log` when available:
+
+```text
+Controller init line:
+Renderer init line:
+DDA startup line:
+First-person activation line:
+First-person exit/fallback line:
+```
+
+Without physical ROG Ally hardware, validate:
+
+- SDL2 and non-SDL builds/tests pass.
+- SDL2 launch stays alive long enough to reach the legacy prompt.
+- `Ctrl+F12` activates first-person mode and logs activation.
+- `Escape`/`Ctrl+F12` exit behavior is checked with a focused SDL window.
+- Log output records whether SDL controller mapping is available or falls back to XInput.
+
+Requires ROG Ally or XInput hardware:
+
+- `L3 + R3` first-person toggle.
+- Right-stick camera turn feel, deadzone, drift, and turn speed.
+- D-pad/left-stick camera-relative movement reliability during live roguelike turns.
+- Confirm forward/back/strafe directions match the visible camera direction after rotating.
+- 720p/1080p readability, sleep/resume, and thermal/idle behavior.
 
 ## Recording Format
 

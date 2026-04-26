@@ -8,7 +8,7 @@ Restore Steamband as a modern, controller-first, first-person steampunk dungeon 
 
 ## Phase 0: Rescue Baseline
 
-Status: in progress
+Status: mostly complete; dirty rescue-slice edits still need review/commit
 
 - Make repository state truthful and reviewable.
 - Separate generated files, logs, saves, and source edits.
@@ -24,7 +24,7 @@ Exit criteria:
 
 ## Phase 1: Playable Legacy Baseline
 
-Status: pending verification
+Status: automated baseline verified; manual keyboard/controller playtest pending
 
 - Confirm the current 2D Windows client launches.
 - Verify keyboard basics and original command behavior.
@@ -34,7 +34,7 @@ Status: pending verification
 
 ## Phase 2: Renderer Integration Prototype
 
-Status: not yet live
+Status: live prototype behind toggle; not a finished gameplay mode
 
 - Drive `renderer_render()` from the actual game loop.
 - Add mode switching without breaking the legacy 2D display.
@@ -45,7 +45,7 @@ Status: not yet live
 
 ## Phase 3: Controller-First UI And ROG Ally UX
 
-Status: pending
+Status: partially implemented; hardware playtest pending
 
 - Map right stick to look/turn in first-person mode.
 - Rework command groupings for inventory/equipment/character, map/journal, combat, and utility actions.
@@ -54,7 +54,7 @@ Status: pending
 
 ## Phase 4: Assets And Visual Direction
 
-Status: blocked on asset approval
+Status: blocked on asset approval; renderer texture slots intentionally empty
 
 - Source only CC0, Public Domain, MIT, or clearly commercial-permissive assets.
 - Document all art/audio in `ASSETS.md`.

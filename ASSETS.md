@@ -4,6 +4,10 @@ Last updated: 2026-04-25
 
 No new first-person art, audio, fonts, or texture packs are approved for use yet.
 
+The SDL first-person renderer keeps texture slots empty by default. Texture
+loading must remain disabled until an asset is listed here with a verified
+commercial-permissive license and durable source/license reference.
+
 ## Approval Requirements
 
 Before adding an asset:
