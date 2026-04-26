@@ -113,6 +113,12 @@ To launch with the CC0 Puny World proof-of-concept atlas:
 tools\launch_puny_world_tiles.cmd
 ```
 
+To launch with the Kenney CC0 Roguelike/RPG proof-of-concept atlas:
+
+```bat
+tools\launch_kenney_tiles.cmd
+```
+
 The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
 current controls, and points to the SDL build logs. See
 `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.

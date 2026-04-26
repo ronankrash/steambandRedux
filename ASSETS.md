@@ -67,3 +67,15 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Commercial-use notes: source page permits commercial use, modification, and no required credit. This is not Ultima, Balor, Wizardry, or other proprietary art; it is a permissive old-school RPG tileset used as a legal visual proof of concept.
 - Renderer use: optional `topdown-v1` atlas. Launch with `tools/launch_puny_world_tiles.cmd` or set `STEAMBAND_TOPDOWN_TILESET` to this BMP.
 - Generation: run `python tools/build_puny_world_topdown_poc.py` from the repository root.
+
+### SDL2 Kenney Roguelike/RPG Top-Down Proof Of Concept
+
+- File: `lib/xtra/graf/topdown_poc_kenney.bmp`
+- Source art: `third_party/assets/kenney_roguelike_rpg/Spritesheet/roguelikeSheet_transparent.png`
+- Source page: https://opengameart.org/content/roguelikerpg-pack-1700-tiles
+- Original author: Kenney Vleugels for Kenney (www.kenney.nl), with help by Lynn Evers.
+- License: CC0 / Creative Commons Zero v1.0 Universal
+- License copy: `third_party/assets/kenney_roguelike_rpg/License.txt`
+- Commercial-use notes: included license permits personal and commercial use; credit is appreciated but not mandatory. This is not Ultima, Balor, Wizardry, or other proprietary art; it is a permissive roguelike/RPG pack used as a legal visual proof of concept.
+- Renderer use: optional `topdown-v1` atlas. Launch with `tools/launch_kenney_tiles.cmd` or set `STEAMBAND_TOPDOWN_TILESET` to this BMP.
+- Generation: run `python tools/build_kenney_topdown_poc.py` from the repository root.

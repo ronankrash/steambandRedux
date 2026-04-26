@@ -146,6 +146,8 @@ The packaged Ally drop also includes `launch_topdown_tiles.cmd`, which sets `STE
 
 For the legal Ultima-like proof of concept, run `tools\launch_puny_world_tiles.cmd` on the development PC or `launch_puny_world_tiles.cmd` from the packaged Ally drop. This uses the documented CC0 Puny World atlas at `lib\xtra\graf\topdown_poc_puny_world.bmp`.
 
+For a broader CC0 roguelike/RPG proof of concept, run `tools\launch_kenney_tiles.cmd` on the development PC or `launch_kenney_tiles.cmd` from the packaged Ally drop. This uses the documented Kenney atlas at `lib\xtra\graf\topdown_poc_kenney.bmp`.
+
 ## Record Results
 
 ```text
