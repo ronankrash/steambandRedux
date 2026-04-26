@@ -87,4 +87,14 @@ cptr ANGBAND_DIR_USER = NULL; /* Will be NULL for tests, which is fine */
  */
 byte (*cave_feat)[DUNGEON_WID] = NULL;
 player_type *p_ptr = NULL;
+player_other *op_ptr = NULL;
+
+s16b message_num(void) {
+    return 0;
+}
+
+cptr message_str(s16b age) {
+    (void)age;
+    return "";
+}
 

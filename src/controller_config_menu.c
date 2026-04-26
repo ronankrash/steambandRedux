@@ -1,5 +1,6 @@
 /* File: controller_config_menu.c */
 #include "controller_config_menu.h"
+#include "controller_menu.h"
 #include "controller.h"
 #include "angband.h"
 #include "logging.h"
@@ -105,6 +106,9 @@ void controller_config_menu_init(void) {
  * Show the controller configuration menu
  */
 void controller_config_menu_show(void) {
+    if (controller_menu_is_active()) {
+        controller_menu_hide();
+    }
     g_config_menu_active = TRUE;
     g_config_menu_selected = 0;
     g_config_menu_remapping = FALSE;

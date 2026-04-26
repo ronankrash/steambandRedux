@@ -13,6 +13,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <stddef.h>
 #include <SDL.h>
 #include "angband.h"  /* for cave_feat, p_ptr, DUNGEON_*, in_bounds */
 
@@ -50,6 +51,27 @@ typedef struct {
     Uint8 b;
     Uint8 a;
 } RendererColor;
+
+typedef struct {
+    int current_hp;
+    int max_hp;
+    int current_sp;
+    int max_sp;
+    int depth;
+    bool use_feet_depth;
+    bool keyboard_focus;
+    bool has_message;
+    bool blind;
+    bool confused;
+    bool poisoned;
+    bool afraid;
+    bool cut;
+    bool stunned;
+    char depth_label[16];
+    char status_label[32];
+    char last_message[80];
+    char title[160];
+} RendererHudSnapshot;
 
 /* Renderer context - extensible for approved textures */
 typedef struct {
@@ -101,9 +123,24 @@ void renderer_clamp_viewport(RendererContext* ctx, int width, int height);
 RendererColor renderer_atmosphere_color(int y, int height);
 RendererColor renderer_wall_base_color(const RendererRayHit* hit);
 RendererColor renderer_depth_shade(RendererColor base, double distance, int side);
+int renderer_hud_bar_width(int current, int maximum, int max_width);
+void renderer_hud_depth_label(int depth, bool use_feet, char* out, size_t out_size);
+void renderer_hud_status_label(bool blind, bool confused, bool poisoned, bool afraid,
+                               bool cut, bool stunned, char* out, size_t out_size);
+void renderer_hud_title(const RendererHudSnapshot* hud, char* out, size_t out_size);
+RendererHudSnapshot renderer_hud_snapshot_from_values(int current_hp, int max_hp,
+                                                       int current_sp, int max_sp,
+                                                       int depth, bool use_feet,
+                                                       bool keyboard_focus,
+                                                       bool blind, bool confused,
+                                                       bool poisoned, bool afraid,
+                                                       bool cut, bool stunned,
+                                                       const char* last_message);
+RendererHudSnapshot renderer_collect_hud_snapshot(const RendererContext* ctx);
 int renderer_direction_to_command(double dx, double dy);
 int renderer_camera_move_command(const RendererContext* ctx, int move);
 int renderer_first_person_key_to_command(RendererContext* ctx, SDL_Keycode key, SDL_Keymod mod);
+void renderer_set_overlay_message(const char* message);
 bool renderer_should_forward_key_event(const RendererContext* ctx);
 bool renderer_texture_loading_allowed(const RendererContext* ctx);
 int renderer_key_to_command(SDL_Keycode key, SDL_Keymod mod);

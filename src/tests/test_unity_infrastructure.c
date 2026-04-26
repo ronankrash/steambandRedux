@@ -65,6 +65,10 @@ void test_renderer_basic(void) {
     RendererColor quartz_wall;
     RendererColor ceiling_top;
     RendererColor floor_bottom;
+    RendererHudSnapshot hud;
+    char label[16];
+    char status[32];
+    char title[160];
 
     /* Test wall detection security and logic */
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(0, 0), "Edge walls should return true");
@@ -162,6 +166,48 @@ void test_renderer_basic(void) {
     TEST_ASSERT_FALSE_MESSAGE(ctx->keyboard_focus, "2D fallback should stop SDL key forwarding");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_handle_events(NULL, 32), "Null event context should be safe");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_handle_events(ctx, 0), "Zero event budget should be safe");
+
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_hud_bar_width(0, 100, 80),
+                                  "Empty HUD bars should render as zero width");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(40, renderer_hud_bar_width(50, 100, 80),
+                                  "HUD bar width should scale by current/max values");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(80, renderer_hud_bar_width(125, 100, 80),
+                                  "Overfull HUD bars should clamp to max width");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_hud_bar_width(10, 0, 80),
+                                  "HUD bars should guard zero maximum values");
+    renderer_hud_depth_label(0, FALSE, label, sizeof(label));
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("Town", label, "Depth zero should use the town label");
+    renderer_hud_depth_label(7, FALSE, label, sizeof(label));
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("Lev 7", label, "Level depth label should fit the title");
+    renderer_hud_depth_label(7, TRUE, label, sizeof(label));
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("350 ft", label, "Feet depth label should match legacy depth option");
+    renderer_hud_status_label(FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, status, sizeof(status));
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("OK", status, "No timed statuses should be explicit");
+    renderer_hud_status_label(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, status, sizeof(status));
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(status, "Blind"), "HUD status should mention blindness");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(status, "Conf"), "HUD status should mention confusion");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(status, "Pois"), "HUD status should mention poison");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(status, "Fear"), "HUD status should mention fear");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(status, "Cut"), "HUD status should mention cuts");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(status, "Stun"), "HUD status should mention stun");
+    hud = renderer_hud_snapshot_from_values(23, 40, 5, 12, 9, TRUE, TRUE,
+                                            TRUE, FALSE, TRUE, FALSE, FALSE, TRUE,
+                                            "The automaton whistles.");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(23, hud.current_hp, "HUD snapshot should preserve HP");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("450 ft", hud.depth_label, "HUD snapshot should format depth");
+    TEST_ASSERT_TRUE_MESSAGE(hud.has_message, "HUD snapshot should flag recent command feedback");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(hud.last_message, "automaton"), "HUD snapshot should copy recent messages");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(hud.status_label, "Blind"), "HUD snapshot should include status labels");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(hud.title, "HP 23/40"), "HUD title should communicate HP numerically");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(hud.title, "automaton"), "HUD title should expose recent legacy messages");
+    renderer_set_overlay_message("Command menu: Inventory");
+    hud = renderer_collect_hud_snapshot(NULL);
+    TEST_ASSERT_TRUE_MESSAGE(hud.has_message, "Overlay command feedback should appear as HUD message activity");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("Command menu: Inventory", hud.last_message,
+                                     "Overlay command feedback should override stale legacy messages");
+    renderer_set_overlay_message(NULL);
+    renderer_hud_title(NULL, title, sizeof(title));
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(title, "no game state"), "Null HUD title should be safe");
 
     ctx->dirX = -1.0;
     ctx->dirY = 0.0;

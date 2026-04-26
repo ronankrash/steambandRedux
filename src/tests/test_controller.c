@@ -280,10 +280,35 @@ void test_controller_menu_mutual_exclusivity(void) {
     /* Note: The actual implementation may or may not auto-hide, but we test state */
     controller_config_menu_show();
     TEST_ASSERT_TRUE(controller_config_menu_is_active());
+    TEST_ASSERT_FALSE(controller_menu_is_active());
 
     /* Hide config menu */
     controller_config_menu_hide();
     TEST_ASSERT_FALSE(controller_config_menu_is_active());
+}
+
+void test_controller_command_menu_core_fp_coverage(void) {
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_get_command_count() >= 30,
+                             "Command grid should expose core dungeon and system commands");
+
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('i'), "Inventory should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('e'), "Equipment should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('R'), "Rest should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('s'), "Search should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('S'), "Search mode should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('M'), "Map should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('<'), "Up stairs should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('>'), "Down stairs should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('f'), "Fire should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('a'), "Aim ray should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('v'), "Throw should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('l'), "Look should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('*'), "Target should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('?'), "Help should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('='), "Options should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key(19), "Save should be reachable");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('N'), "New game should be reachable at title");
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('O'), "Load game should be reachable at title");
 }
 
 /* Test 8.3.1: Test button mapping count consistency */

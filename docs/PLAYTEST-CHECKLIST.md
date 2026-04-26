@@ -169,6 +169,9 @@ Pass if:
 - Keyboard commands still work while the SDL first-person window has focus.
 - Controller left stick/D-pad movement is camera-relative while first-person mode is active and still consumes normal roguelike turns.
 - Right stick turns the first-person camera while the SDL window is active.
+- First-person HUD gauges update for HP, SP, dungeon depth, SDL focus, status ailments, and recent-message activity.
+- SDL window title includes exact HP/SP/depth/status text for readable fallback feedback.
+- Double `Back` command-menu selection is visible through the first-person HUD/title as a short command overlay message.
 - `Escape` and `Ctrl+F12` exit first-person mode predictably when the SDL window has focus.
 - Window resize preserves readable UI.
 - Window resize is clamped to a playable viewport and does not distort or crash the raycaster.

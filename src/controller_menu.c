@@ -1,10 +1,15 @@
 /* File: controller_menu.c */
 #include "controller_menu.h"
+#include "controller_config_menu.h"
 #include "angband.h"
 #include "logging.h"
 #include "controller.h"
+#ifdef STEAMBAND_HAS_SDL2
+#include "renderer.h"
+#endif
 #include <windows.h>
 #include <xinput.h>
+#include <stdio.h>
 #include <string.h>
 
 /*
@@ -33,9 +38,13 @@ static const menu_item_t g_menu_items[] = {
     { "Open Door", 'o', "Actions" },
     { "Close Door", 'c', "Actions" },
     { "Search", 's', "Actions" },
+    { "Search Mode", 'S', "Actions" },
     { "Rest", 'R', "Actions" },
     { "Look", 'l', "Actions" },
-    { "Fire/Throw", 'f', "Actions" },
+    { "Target", '*', "Actions" },
+    { "Fire", 'f', "Actions" },
+    { "Aim Ray", 'a', "Actions" },
+    { "Throw", 'v', "Actions" },
     
     /* Magic */
     { "Cast Spell", 'm', "Magic" },
@@ -66,6 +75,12 @@ static const menu_item_t g_menu_items[] = {
     { "Locate", 'L', "Info" },
     { "Help", '?', "Info" },
     { "Character", 'C', "Info" },
+
+    /* System / title-screen bridge commands */
+    { "Options", '=', "System" },
+    { "Save Game", KTRL('S'), "System" },
+    { "New Game", 'N', "System" },
+    { "Load Game", 'O', "System" },
     
     /* Terminator */
     { NULL, 0, NULL }
@@ -94,6 +109,33 @@ static int menu_item_count(void) {
         count++;
     }
     return count;
+}
+
+static void menu_update_first_person_hint(void) {
+#ifdef STEAMBAND_HAS_SDL2
+    char hint[80];
+    if (!g_menu_active || !g_menu_items[g_menu_selected].name) {
+        renderer_set_overlay_message(NULL);
+        return;
+    }
+    snprintf(hint, sizeof(hint), "Command menu: %s", g_menu_items[g_menu_selected].name);
+    hint[sizeof(hint) - 1] = '\0';
+    renderer_set_overlay_message(hint);
+#endif
+}
+
+int controller_menu_get_command_count(void) {
+    return menu_item_count();
+}
+
+int controller_menu_has_command_key(int key_code) {
+    int i;
+
+    for (i = 0; g_menu_items[i].name != NULL; i++) {
+        if (g_menu_items[i].key_code == key_code) return TRUE;
+    }
+
+    return FALSE;
 }
 
 /*
@@ -136,6 +178,8 @@ static void menu_display(void) {
         y = menu_start_y + row;
         Term_putstr(x, y, 1, TERM_YELLOW, ">");
     }
+
+    menu_update_first_person_hint();
 }
 
 /*
@@ -152,6 +196,9 @@ void controller_menu_init(void) {
  * Show the controller command menu
  */
 void controller_menu_show(void) {
+    if (controller_config_menu_is_active()) {
+        controller_config_menu_hide();
+    }
     g_menu_active = TRUE;
     g_menu_selected = 0;
     menu_display();
@@ -171,6 +218,7 @@ void controller_menu_hide(void) {
         }
     }
     g_menu_active = FALSE;
+    menu_update_first_person_hint();
 }
 
 /*

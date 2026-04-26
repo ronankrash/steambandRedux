@@ -33,5 +33,12 @@ void controller_menu_hide(void);
  */
 int controller_menu_is_active(void);
 
+/*
+ * Test/support helpers for validating command-grid coverage without requiring
+ * controller hardware.
+ */
+int controller_menu_get_command_count(void);
+int controller_menu_has_command_key(int key_code);
+
 #endif /* INCLUDED_CONTROLLER_MENU_H */
 

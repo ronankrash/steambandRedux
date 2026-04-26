@@ -40,8 +40,10 @@ ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
 5. Move in first-person mode:
    - Keyboard: `W`/Up forward, `S`/Down back, `A`/`D` strafe, Left/Right arrows turn.
    - Controller: D-pad/left stick move, right stick turns.
-6. Press `Escape` or `Ctrl+F12` while the SDL window is focused to return to the 2D fallback.
-7. Exit the game and review the logs.
+6. Confirm the first-person HUD updates HP/SP/depth/focus/status gauges and the SDL title bar shows exact HP/SP/depth/status text.
+7. Double-press `Back` to open the command menu and confirm the selected command appears as a short first-person HUD/title overlay.
+8. Press `Escape` or `Ctrl+F12` while the SDL window is focused to return to the 2D fallback.
+9. Exit the game and review the logs.
 
 ## Controller Controls
 

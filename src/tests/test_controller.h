@@ -11,6 +11,7 @@ void test_controller_menu_init(void);
 void test_controller_menu_show_hide(void);
 void test_controller_config_menu_show_hide(void);
 void test_controller_menu_mutual_exclusivity(void);
+void test_controller_command_menu_core_fp_coverage(void);
 void test_controller_mapping_count_consistency(void);
 void test_controller_invalid_mapping_index(void);
 void test_controller_back_single_delays_map_until_gesture_window(void);

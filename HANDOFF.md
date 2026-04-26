@@ -1,6 +1,6 @@
 # SteambandRedux Handoff
 
-Last updated: 2026-04-25
+Last updated: 2026-04-26
 Branch: `steambranch`
 Remote status at update: branch is ahead of `origin/steambranch`; working tree has uncommitted rescue-slice edits.
 
@@ -51,6 +51,9 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Renderer ray/strip math now has deterministic Unity coverage via pure trace helpers.
   - SDL key forwarding is gated on first-person mode plus SDL keyboard focus.
   - In-window HUD hint blocks show mode/focus state plus compact move/turn glyphs without adding font or art assets.
+  - In-window first-person HUD now mirrors legacy state with asset-free HP/SP bars, depth gauge, focus gauge, status pips, and recent-message activity.
+  - SDL window title now exposes readable first-person state: HP/SP, depth, status labels, focus hint, and the latest legacy message when available.
+  - Controller command-menu selection publishes a short overlay message into the first-person HUD/title, so double-Back command selection is visible from the SDL view.
   - Wall strips use deterministic feature-aware colors plus distance/side shading; debug minimap is hidden by default for immersion.
   - SDL resize events clamp renderer dimensions to a safe readable viewport range.
   - Texture slots remain empty unless assets are explicitly approved in `ASSETS.md`.
@@ -108,6 +111,15 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - `cmake --build build-rescue-sdl2 --config Debug`
   - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
   - Bounded SDL launch probe: `build-rescue-sdl2/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
+- Latest first-person HUD/game-feedback slice added pure HUD snapshot helpers and asset-free SDL HUD/status/title feedback. Verification passed:
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+- Latest command feedback slice bridges controller command-menu selection into the first-person HUD/title and passed:
+  - `cmake --build build --config Debug`
+  - `ctest --test-dir build -C Debug --output-on-failure`
+  - Bounded launch probe: `build/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
 - Bounded SDL launch probe passed: `build-rescue-sdl2/Debug/SteambandRedux.exe` stayed running for 3 seconds before forced test shutdown.
 - `python tools/license_scan.py --details` still reports inherited release blockers: 70 educational/not-for-profit files, 75 not-for-profit matches, 1 sell-or-market match, 1 commercial-use help match, 1 legacy/GPL coexistence match, 2 embedded copyright-string locations, and 1 Microsoft sample-file match.
 - Interactive keyboard/controller/ROG Ally smoke testing is still pending and must use `docs/PLAYTEST-CHECKLIST.md`.

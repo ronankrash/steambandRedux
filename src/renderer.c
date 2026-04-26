@@ -22,10 +22,12 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "logging.h"  /* For secure logging */
 
 /* Global for 2D fallback coordination */
 bool g_use_2d_fallback = TRUE;
+static char g_overlay_message[80];
 
 /* Test map for when cave not initialized (TDD/unit test support) */
 static int test_map[16][16] = {
@@ -67,6 +69,258 @@ static byte renderer_feature_at(int y, int x) {
         case 2: return FEAT_QUARTZ;
         default: return FEAT_FLOOR;
     }
+}
+
+static void renderer_copy_text(char* out, size_t out_size, const char* text) {
+    size_t i;
+
+    if (!out || out_size == 0) return;
+    if (!text) text = "";
+
+    for (i = 0; i + 1 < out_size && text[i]; i++) {
+        out[i] = text[i];
+    }
+    out[i] = '\0';
+}
+
+void renderer_set_overlay_message(const char* message) {
+    renderer_copy_text(g_overlay_message, sizeof(g_overlay_message), message);
+}
+
+static void renderer_append_token(char* out, size_t out_size, const char* token) {
+    size_t len;
+
+    if (!out || out_size == 0 || !token || !token[0]) return;
+
+    len = strlen(out);
+    if (len + 1 >= out_size) return;
+
+    if (len > 0) {
+        out[len++] = ' ';
+        out[len] = '\0';
+    }
+
+    renderer_copy_text(out + len, out_size - len, token);
+}
+
+int renderer_hud_bar_width(int current, int maximum, int max_width) {
+    long width;
+
+    if (max_width <= 0 || maximum <= 0) return 0;
+    if (current <= 0) return 0;
+    if (current >= maximum) return max_width;
+
+    width = ((long)current * (long)max_width + maximum / 2) / maximum;
+    if (width < 1) width = 1;
+    if (width > max_width) width = max_width;
+    return (int)width;
+}
+
+void renderer_hud_depth_label(int depth, bool use_feet, char* out, size_t out_size) {
+    if (!out || out_size == 0) return;
+
+    if (depth <= 0) {
+        renderer_copy_text(out, out_size, "Town");
+    } else if (use_feet) {
+        snprintf(out, out_size, "%d ft", depth * 50);
+        out[out_size - 1] = '\0';
+    } else {
+        snprintf(out, out_size, "Lev %d", depth);
+        out[out_size - 1] = '\0';
+    }
+}
+
+void renderer_hud_status_label(bool blind, bool confused, bool poisoned, bool afraid,
+                               bool cut, bool stunned, char* out, size_t out_size) {
+    if (!out || out_size == 0) return;
+
+    out[0] = '\0';
+    if (blind) renderer_append_token(out, out_size, "Blind");
+    if (confused) renderer_append_token(out, out_size, "Conf");
+    if (poisoned) renderer_append_token(out, out_size, "Pois");
+    if (afraid) renderer_append_token(out, out_size, "Fear");
+    if (cut) renderer_append_token(out, out_size, "Cut");
+    if (stunned) renderer_append_token(out, out_size, "Stun");
+    if (!out[0]) renderer_copy_text(out, out_size, "OK");
+}
+
+void renderer_hud_title(const RendererHudSnapshot* hud, char* out, size_t out_size) {
+    char focus[16];
+    char message_suffix[96];
+
+    if (!out || out_size == 0) return;
+    if (!hud) {
+        renderer_copy_text(out, out_size, "SteambandRedux FP - no game state");
+        return;
+    }
+
+    renderer_copy_text(focus, sizeof(focus), hud->keyboard_focus ? "focused" : "click SDL");
+    message_suffix[0] = '\0';
+    if (hud->has_message) {
+        snprintf(message_suffix, sizeof(message_suffix), " - %s", hud->last_message);
+        message_suffix[sizeof(message_suffix) - 1] = '\0';
+    }
+
+    snprintf(out, out_size, "SteambandRedux FP - HP %d/%d SP %d/%d %s %s - %s%s",
+             hud->current_hp, hud->max_hp, hud->current_sp, hud->max_sp,
+             hud->depth_label, hud->status_label, focus, message_suffix);
+    out[out_size - 1] = '\0';
+}
+
+RendererHudSnapshot renderer_hud_snapshot_from_values(int current_hp, int max_hp,
+                                                       int current_sp, int max_sp,
+                                                       int depth, bool use_feet,
+                                                       bool keyboard_focus,
+                                                       bool blind, bool confused,
+                                                       bool poisoned, bool afraid,
+                                                       bool cut, bool stunned,
+                                                       const char* last_message) {
+    RendererHudSnapshot hud;
+
+    memset(&hud, 0, sizeof(hud));
+    hud.current_hp = current_hp;
+    hud.max_hp = max_hp;
+    hud.current_sp = current_sp;
+    hud.max_sp = max_sp;
+    hud.depth = depth;
+    hud.use_feet_depth = use_feet;
+    hud.keyboard_focus = keyboard_focus;
+    hud.blind = blind;
+    hud.confused = confused;
+    hud.poisoned = poisoned;
+    hud.afraid = afraid;
+    hud.cut = cut;
+    hud.stunned = stunned;
+    hud.has_message = (last_message && last_message[0]) ? TRUE : FALSE;
+
+    renderer_hud_depth_label(depth, use_feet, hud.depth_label, sizeof(hud.depth_label));
+    renderer_hud_status_label(blind, confused, poisoned, afraid, cut, stunned,
+                              hud.status_label, sizeof(hud.status_label));
+    renderer_copy_text(hud.last_message, sizeof(hud.last_message), last_message);
+    renderer_hud_title(&hud, hud.title, sizeof(hud.title));
+    return hud;
+}
+
+RendererHudSnapshot renderer_collect_hud_snapshot(const RendererContext* ctx) {
+    const char* recent_message = "";
+
+    if (g_overlay_message[0]) {
+        recent_message = g_overlay_message;
+    } else if (message_num() > 0) {
+        recent_message = message_str(0);
+    }
+
+    if (!p_ptr) {
+        return renderer_hud_snapshot_from_values(0, 0, 0, 0, 0, FALSE,
+                                                 ctx ? ctx->keyboard_focus : FALSE,
+                                                 FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
+                                                 recent_message);
+    }
+
+    return renderer_hud_snapshot_from_values(p_ptr->chp, p_ptr->mhp, p_ptr->csp, p_ptr->msp,
+                                             p_ptr->depth, (op_ptr && depth_in_feet) ? TRUE : FALSE,
+                                             ctx ? ctx->keyboard_focus : FALSE,
+                                             p_ptr->blind ? TRUE : FALSE,
+                                             p_ptr->confused ? TRUE : FALSE,
+                                             p_ptr->poisoned ? TRUE : FALSE,
+                                             p_ptr->afraid ? TRUE : FALSE,
+                                             p_ptr->cut ? TRUE : FALSE,
+                                             p_ptr->stun ? TRUE : FALSE,
+                                             recent_message);
+}
+
+static void renderer_draw_bar(RendererContext* ctx, int x, int y, int width, int height,
+                              int current, int maximum, RendererColor fill) {
+    SDL_Rect back;
+    SDL_Rect front;
+    int filled;
+
+    if (!ctx || !ctx->renderer || width <= 0 || height <= 0) return;
+
+    back.x = x;
+    back.y = y;
+    back.w = width;
+    back.h = height;
+    SDL_SetRenderDrawColor(ctx->renderer, 38, 31, 24, 230);
+    SDL_RenderFillRect(ctx->renderer, &back);
+
+    filled = renderer_hud_bar_width(current, maximum, width);
+    if (filled > 0) {
+        front = back;
+        front.w = filled;
+        SDL_SetRenderDrawColor(ctx->renderer, fill.r, fill.g, fill.b, fill.a);
+        SDL_RenderFillRect(ctx->renderer, &front);
+    }
+}
+
+static void renderer_draw_hud_status(RendererContext* ctx, const RendererHudSnapshot* hud) {
+    SDL_Rect panel;
+    SDL_Rect pip;
+    int x;
+    int message_width;
+    RendererColor hp_color = {76, 170, 86, 255};
+    RendererColor sp_color = {72, 126, 180, 255};
+
+    if (!ctx || !ctx->renderer || !hud) return;
+
+    if (hud->max_hp > 0 && hud->current_hp <= hud->max_hp / 4) {
+        hp_color.r = 188; hp_color.g = 58; hp_color.b = 48;
+    } else if (hud->max_hp > 0 && hud->current_hp <= hud->max_hp / 2) {
+        hp_color.r = 198; hp_color.g = 148; hp_color.b = 42;
+    }
+
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_BLEND);
+    panel.x = 8;
+    panel.y = 8;
+    panel.w = ctx->width - 16;
+    if (panel.w > 424) panel.w = 424;
+    if (panel.w < 160) panel.w = 160;
+    panel.h = hud->has_message ? 58 : 44;
+    SDL_SetRenderDrawColor(ctx->renderer, 14, 12, 10, 222);
+    SDL_RenderFillRect(ctx->renderer, &panel);
+
+    renderer_draw_bar(ctx, panel.x + 10, panel.y + 8, panel.w - 120, 10,
+                      hud->current_hp, hud->max_hp, hp_color);
+    renderer_draw_bar(ctx, panel.x + 10, panel.y + 24, panel.w - 120, 8,
+                      hud->current_sp, hud->max_sp, sp_color);
+
+    /* Depth and command focus are shown as stable gauges until font assets are approved. */
+    renderer_draw_bar(ctx, panel.x + panel.w - 100, panel.y + 8, 82, 8,
+                      hud->depth > 0 ? hud->depth : 1, MAX_DEPTH, (RendererColor){166, 124, 62, 255});
+    renderer_draw_bar(ctx, panel.x + panel.w - 100, panel.y + 24, 82, 8,
+                      hud->keyboard_focus ? 1 : 0, 1,
+                      hud->keyboard_focus ? (RendererColor){64, 154, 82, 255} : (RendererColor){130, 74, 64, 255});
+
+    x = panel.x + 10;
+    pip.y = panel.y + 38;
+    pip.w = 10;
+    pip.h = 8;
+    if (hud->blind || hud->confused || hud->poisoned || hud->afraid || hud->cut || hud->stunned) {
+        bool flags[6] = {hud->blind, hud->confused, hud->poisoned, hud->afraid, hud->cut, hud->stunned};
+        int i;
+        for (i = 0; i < 6; i++) {
+            pip.x = x + i * 14;
+            SDL_SetRenderDrawColor(ctx->renderer, flags[i] ? 190 : 55,
+                                   flags[i] ? 82 : 45,
+                                   flags[i] ? 56 : 38, 255);
+            SDL_RenderFillRect(ctx->renderer, &pip);
+        }
+    } else {
+        pip.x = x;
+        pip.w = 54;
+        SDL_SetRenderDrawColor(ctx->renderer, 72, 150, 86, 255);
+        SDL_RenderFillRect(ctx->renderer, &pip);
+    }
+
+    if (hud->has_message) {
+        message_width = (int)strlen(hud->last_message) * (panel.w - 20) / (int)(sizeof(hud->last_message) - 1);
+        if (message_width < 8) message_width = 8;
+        if (message_width > panel.w - 20) message_width = panel.w - 20;
+        renderer_draw_bar(ctx, panel.x + 10, panel.y + 48, panel.w - 20, 5,
+                          message_width, panel.w - 20, (RendererColor){188, 144, 72, 255});
+    }
+
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
 }
 
 static void renderer_draw_hud_hint(RendererContext* ctx) {
@@ -707,6 +961,8 @@ int renderer_trace_column(const RendererContext* ctx, int screen_x, RendererRayH
  * Prepares wallX for texture coord (future u = wallX * TEX_WIDTH).
  */
 void renderer_render(RendererContext* ctx) {
+    RendererHudSnapshot hud;
+
     if (!ctx || !ctx->renderer || !ctx->first_person_mode) {
         return;
     }
@@ -755,7 +1011,10 @@ void renderer_render(RendererContext* ctx) {
         SDL_RenderFillRect(ctx->renderer, &player_dot);
     }
 
+    hud = renderer_collect_hud_snapshot(ctx);
+    if (ctx->window) SDL_SetWindowTitle(ctx->window, hud.title);
     renderer_draw_vignette(ctx);
+    renderer_draw_hud_status(ctx, &hud);
     renderer_draw_hud_hint(ctx);
     SDL_RenderPresent(ctx->renderer);
 
