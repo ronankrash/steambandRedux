@@ -29,12 +29,7 @@ Optional automated check before manual play:
 
 ```bash
 ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
-powershell -ExecutionPolicy Bypass -File tools\probe_rog_ally_fp.ps1
 ```
-
-The probe launches the SDL build, sends `Ctrl+F12`, checks renderer startup and
-first-person activation in the log, then closes the process. It is not a
-replacement for the manual controller pass below.
 
 Optional no-hardware first-person keyboard probe:
 
