@@ -104,6 +104,14 @@ Risk: distinct Microsoft sample-file terms must be preserved and reviewed for pa
 
 ## Search Patterns
 
+Preferred repeatable scan:
+
+```bash
+python tools/license_scan.py --details
+```
+
+Use the script output to refresh this manifest before release planning or license remediation PRs.
+
 ```bash
 rg -n "This software may be copied and distributed for educational" --glob "*.{c,h}"
 rg -n "not for profit" -i --glob "*.{c,h,txt,md}"

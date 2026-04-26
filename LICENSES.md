@@ -4,6 +4,12 @@ Last updated: 2026-04-25
 
 This file is a working inventory, not legal advice.
 
+For repeatable risk inventory, run:
+
+```bash
+python tools/license_scan.py --details
+```
+
 ## Base Game
 
 - Component: Steamband 0.2.2 / Angband-derived source and data
