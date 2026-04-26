@@ -1078,6 +1078,18 @@ int renderer_tile_category_from_values(byte feat, bool remembered,
     return RENDERER_TILE_FLOOR;
 }
 
+int renderer_monster_family_category_from_values(u32b flags3, char d_char) {
+    if (flags3 & RF3_AUTOMATA) return RENDERER_TILE_MONSTER_AUTOMATA;
+    if (flags3 & (RF3_UNDEAD | RF3_DEMON)) return RENDERER_TILE_MONSTER_UNDEAD;
+    if (flags3 & (RF3_ANIMAL | RF3_DRAGON | RF3_ALIEN | RF3_BEASTMAN |
+                  RF3_TROLL | RF3_GIANT)) {
+        return RENDERER_TILE_MONSTER_BEAST;
+    }
+
+    if (strchr("pht", d_char)) return RENDERER_TILE_MONSTER_HUMANOID;
+    return RENDERER_TILE_MONSTER;
+}
+
 RendererTileInfo renderer_classify_tile(int y, int x) {
     RendererTileInfo info;
 
@@ -1101,6 +1113,14 @@ RendererTileInfo renderer_classify_tile(int y, int x) {
     info.category = renderer_tile_category_from_values(info.feat, info.remembered,
                                                        info.has_player, info.has_monster,
                                                        info.has_object);
+    if (info.category == RENDERER_TILE_MONSTER && m_list && r_info) {
+        s16b m_idx = cave_m_idx[y][x];
+        s16b r_idx = (m_idx > 0) ? m_list[m_idx].r_idx : 0;
+        if (r_idx > 0) {
+            monster_race* r_ptr = &r_info[r_idx];
+            info.category = renderer_monster_family_category_from_values(r_ptr->flags3, r_ptr->d_char);
+        }
+    }
     return info;
 }
 
@@ -1157,6 +1177,14 @@ RendererColor renderer_tile_color(int category) {
             color.r = 214; color.g = 190; color.b = 116; break;
         case RENDERER_TILE_MONSTER:
             color.r = 170; color.g = 56; color.b = 48; break;
+        case RENDERER_TILE_MONSTER_AUTOMATA:
+            color.r = 142; color.g = 122; color.b = 80; break;
+        case RENDERER_TILE_MONSTER_UNDEAD:
+            color.r = 116; color.g = 84; color.b = 146; break;
+        case RENDERER_TILE_MONSTER_BEAST:
+            color.r = 150; color.g = 88; color.b = 52; break;
+        case RENDERER_TILE_MONSTER_HUMANOID:
+            color.r = 154; color.g = 92; color.b = 70; break;
         case RENDERER_TILE_OBJECT:
             color.r = 188; color.g = 142; color.b = 66; break;
         case RENDERER_TILE_WALL:
@@ -1186,7 +1214,7 @@ RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
     memset(&spec, 0, sizeof(spec));
     spec.tile_width = 24;
     spec.tile_height = 24;
-    spec.columns = 5;
+    spec.columns = 7;
     spec.rows = 2;
     for (i = 0; i < RENDERER_TILE_CATEGORY_COUNT; i++) {
         spec.category_to_tile[i] = i;

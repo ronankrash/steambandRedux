@@ -41,8 +41,8 @@ The current SDL2 top-down mode has a small project-generated placeholder BMP at 
 Initial custom tilesheets should use this atlas contract:
 
 - BMP format loaded through SDL2 `SDL_LoadBMP`; no `SDL2_image` dependency yet.
-- 24x24 source tiles, 5 columns by 2 rows.
-- Row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, monster, player.
+- 24x24 source tiles, 7 columns by 2 rows.
+- Row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
 - Runtime override for experiments: set `STEAMBAND_TOPDOWN_TILESET` to a compatible BMP path.
 
 ## Handheld UX Goals

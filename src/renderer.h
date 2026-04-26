@@ -43,8 +43,12 @@
 #define RENDERER_TILE_TRAP      6
 #define RENDERER_TILE_OBJECT    7
 #define RENDERER_TILE_MONSTER   8
-#define RENDERER_TILE_PLAYER    9
-#define RENDERER_TILE_CATEGORY_COUNT 10
+#define RENDERER_TILE_MONSTER_AUTOMATA 9
+#define RENDERER_TILE_MONSTER_UNDEAD   10
+#define RENDERER_TILE_MONSTER_BEAST    11
+#define RENDERER_TILE_MONSTER_HUMANOID 12
+#define RENDERER_TILE_PLAYER    13
+#define RENDERER_TILE_CATEGORY_COUNT 14
 
 typedef struct {
     bool hit;
@@ -193,6 +197,7 @@ RendererMarkerProjection renderer_project_marker(const RendererContext* ctx,
 int renderer_tile_category_from_values(byte feat, bool remembered,
                                        bool has_player, bool has_monster,
                                        bool has_object);
+int renderer_monster_family_category_from_values(u32b flags3, char d_char);
 RendererTileInfo renderer_classify_tile(int y, int x);
 RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile_size);
 RendererColor renderer_tile_color(int category);

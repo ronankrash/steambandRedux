@@ -89,6 +89,8 @@ byte (*cave_feat)[DUNGEON_WID] = NULL;
 byte (*cave_info)[256] = NULL;
 s16b (*cave_o_idx)[DUNGEON_WID] = NULL;
 s16b (*cave_m_idx)[DUNGEON_WID] = NULL;
+monster_type *m_list = NULL;
+monster_race *r_info = NULL;
 player_type *p_ptr = NULL;
 player_other *op_ptr = NULL;
 

@@ -180,6 +180,27 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_TRAP,
                                   renderer_tile_category_from_values(FEAT_TRAP_HEAD, TRUE, FALSE, FALSE, FALSE),
                                   "Traps should classify as hazard tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_AUTOMATA,
+                                  renderer_monster_family_category_from_values(RF3_AUTOMATA, 'g'),
+                                  "Automata monsters should select a machinery family tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_UNDEAD,
+                                  renderer_monster_family_category_from_values(RF3_UNDEAD, 'Z'),
+                                  "Undead monsters should select a spectral family tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_UNDEAD,
+                                  renderer_monster_family_category_from_values(RF3_DEMON, 'U'),
+                                  "Demons should share the occult threat family tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_BEAST,
+                                  renderer_monster_family_category_from_values(RF3_ANIMAL, 'q'),
+                                  "Animal monsters should select a beast family tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_BEAST,
+                                  renderer_monster_family_category_from_values(RF3_DRAGON, 'D'),
+                                  "Dragons should select a large beast family tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_HUMANOID,
+                                  renderer_monster_family_category_from_values(0, 'p'),
+                                  "Humanoid display chars should select a humanoid family tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER,
+                                  renderer_monster_family_category_from_values(0, 'j'),
+                                  "Unknown monster families should keep the generic monster tile");
     tile = renderer_classify_tile(-1, 0);
     TEST_ASSERT_FALSE_MESSAGE(tile.in_bounds, "Out-of-bounds top-down classification should be safe");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_DARKNESS, tile.category,
@@ -198,7 +219,7 @@ void test_renderer_basic(void) {
     tile_spec = renderer_default_top_down_tileset_spec();
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_width, "Default top-down tilesheet should use 24px source tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_height, "Default top-down tilesheet should use square source tiles");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(5, tile_spec.columns, "Default top-down tilesheet should map ten tiles over five columns");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(7, tile_spec.columns, "Default top-down tilesheet should map fourteen tiles over seven columns");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
                                   renderer_top_down_tile_index(&tile_spec, RENDERER_TILE_PLAYER),
                                   "Default tilesheet maps each category to its matching tile index");
@@ -207,7 +228,7 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_top_down_tile_index(&tile_spec, 999),
                                   "Invalid high tile category should fall back to darkness tile");
     tile_src = renderer_top_down_source_rect(&tile_spec, RENDERER_TILE_PLAYER);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(96, tile_src.x, "Player tile should be in the second row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(144, tile_src.x, "Player tile should be in the second row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.y, "Player tile should be in the second row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.w, "Source tile width should match the atlas contract");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.h, "Source tile height should match the atlas contract");

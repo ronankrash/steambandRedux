@@ -71,7 +71,8 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - It mirrors cave/player state through a tested tile-classification layer with safe out-of-bounds handling.
   - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.
   - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` without changing code.
-  - Current atlas contract: 24x24 tiles, 5 columns x 2 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, monster, player.
+  - Current atlas contract: 24x24 tiles, 7 columns x 2 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
+  - Monster family tiles are renderer-only and derived from `r_info` flags/chars when available; unknown or unavailable race data falls back to the generic monster tile.
   - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
 
