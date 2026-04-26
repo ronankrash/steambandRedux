@@ -229,6 +229,9 @@ SDL_Rect renderer_top_down_cell_rect(const RendererTileViewport* view,
                                      int col, int row);
 RendererColor renderer_tile_color(int category);
 RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void);
+int renderer_top_down_expected_width(const RendererTopDownTilesetSpec* spec);
+int renderer_top_down_expected_height(const RendererTopDownTilesetSpec* spec);
+bool renderer_top_down_dimensions_valid(const RendererTopDownTilesetSpec* spec, int width, int height);
 int renderer_top_down_tile_index(const RendererTopDownTilesetSpec* spec, int category);
 SDL_Rect renderer_top_down_source_rect(const RendererTopDownTilesetSpec* spec, int category);
 bool renderer_load_top_down_tilesheet(RendererContext* ctx);

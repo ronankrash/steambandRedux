@@ -1435,6 +1435,22 @@ RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
     return spec;
 }
 
+int renderer_top_down_expected_width(const RendererTopDownTilesetSpec* spec) {
+    if (!spec || spec->tile_width <= 0 || spec->columns <= 0) return 0;
+    return spec->tile_width * spec->columns;
+}
+
+int renderer_top_down_expected_height(const RendererTopDownTilesetSpec* spec) {
+    if (!spec || spec->tile_height <= 0 || spec->rows <= 0) return 0;
+    return spec->tile_height * spec->rows;
+}
+
+bool renderer_top_down_dimensions_valid(const RendererTopDownTilesetSpec* spec, int width, int height) {
+    if (!spec || width <= 0 || height <= 0) return FALSE;
+    return (width == renderer_top_down_expected_width(spec) &&
+            height == renderer_top_down_expected_height(spec)) ? TRUE : FALSE;
+}
+
 int renderer_top_down_tile_index(const RendererTopDownTilesetSpec* spec, int category) {
     if (!spec) return 0;
     if (category < 0 || category >= RENDERER_TILE_CATEGORY_COUNT) return 0;
@@ -1493,6 +1509,16 @@ bool renderer_load_top_down_tilesheet(RendererContext* ctx) {
     if (!surface) {
         ctx->top_down_tiles_loaded = FALSE;
         LOG_W("SDL2 top-down tilesheet not found; using procedural tile glyph fallback.");
+        return FALSE;
+    }
+
+    if (!renderer_top_down_dimensions_valid(&ctx->top_down_tileset, surface->w, surface->h)) {
+        LOG_W("SDL2 top-down tilesheet has invalid dimensions %dx%d; expected %dx%d. Using procedural fallback.",
+              surface->w, surface->h,
+              renderer_top_down_expected_width(&ctx->top_down_tileset),
+              renderer_top_down_expected_height(&ctx->top_down_tileset));
+        SDL_FreeSurface(surface);
+        ctx->top_down_tiles_loaded = FALSE;
         return FALSE;
     }
 

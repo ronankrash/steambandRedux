@@ -347,6 +347,16 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_width, "Default top-down tilesheet should use 24px source tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_height, "Default top-down tilesheet should use square source tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(9, tile_spec.columns, "Default top-down tilesheet should map thirty-six tiles over nine columns");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(216, renderer_top_down_expected_width(&tile_spec),
+                                  "Default top-down atlas width should match the documented BMP contract");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(96, renderer_top_down_expected_height(&tile_spec),
+                                  "Default top-down atlas height should match the documented BMP contract");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_top_down_dimensions_valid(&tile_spec, 216, 96),
+                             "Exact atlas dimensions should validate");
+    TEST_ASSERT_FALSE_MESSAGE(renderer_top_down_dimensions_valid(&tile_spec, 168, 96),
+                              "Wrong atlas width should reject custom BMPs safely");
+    TEST_ASSERT_FALSE_MESSAGE(renderer_top_down_dimensions_valid(NULL, 216, 96),
+                              "Null atlas spec should reject dimensions safely");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
                                   renderer_top_down_tile_index(&tile_spec, RENDERER_TILE_PLAYER),
                                   "Default tilesheet maps each category to its matching tile index");

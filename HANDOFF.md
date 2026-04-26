@@ -73,6 +73,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - The placeholder atlas is reproducible via `python tools/generate_topdown_tilesheet.py`.
   - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` without changing code.
   - Current atlas contract: 24x24 tiles, 9 columns x 4 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, glyph, shop, General Store shop, Clothing store shop, Gun shop, Machinist shop, Alchemy shop, Magic shop, Black Market shop, Home, rubble, ore vein, object, food/anodyne object, scroll/book object, potion/flask object, weapon/tool object, armor object, ray gun/launcher object, ammo object, money object, jewelry object, device/chest object, generic monster, automata, undead/demon, beast, humanoid, player.
+  - Custom top-down BMPs are validated against the active atlas dimensions before texture creation; wrong-size sheets fall back to procedural tiles.
   - Shop features now map to individual shop facade tiles instead of one generic shop tile.
   - Special terrain tiles now distinguish glyphs, shops, rubble, and ore veins from generic floors/walls.
   - Object family tiles are renderer-only and derived from bounded `cave_o_idx -> o_list` lookups; invalid or unavailable object data falls back to terrain or the generic object tile.
