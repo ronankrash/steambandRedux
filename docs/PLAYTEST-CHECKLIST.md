@@ -176,6 +176,7 @@ Pass if:
 - First-person HUD gauges update for HP, SP, dungeon depth, SDL focus, status ailments, and recent-message activity.
 - SDL window title includes exact HP/SP/depth/status text for readable fallback feedback.
 - Double `Back` command-menu selection is visible through the first-person HUD/title as a short command overlay message.
+- Visible monsters, objects, stairs, doors, and traps get color-coded first-person markers without requiring the 2D map.
 - `Escape` and `Ctrl+F12` exit first-person mode predictably when the SDL window has focus.
 - Window resize preserves readable UI.
 - Window resize is clamped to a playable viewport and does not distort or crash the raycaster.

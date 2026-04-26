@@ -56,6 +56,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - SDL window title now exposes readable first-person state: HP/SP, depth, status labels, focus hint, and the latest legacy message when available.
   - Controller command-menu selection publishes category/name overlay feedback into the first-person HUD/title, so double-Back command focus is visible from the SDL view.
   - Controller command menu now uses a three-column 80-column-safe layout with short category prefixes and redraw clearing to avoid stale/overlapping rows.
+  - First-person view renders asset-free world markers for visible monsters, objects, stairs, doors, and traps so actionable dungeon state is no longer limited to the 2D map.
   - Wall strips use deterministic feature-aware colors plus distance/side shading; debug minimap is hidden by default for immersion.
   - SDL resize events clamp renderer dimensions to a safe readable viewport range.
   - Texture slots remain empty unless assets are explicitly approved in `ASSETS.md`.
