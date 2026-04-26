@@ -10,6 +10,8 @@ When the user asks to keep going, operate as a long-running software team lead r
 - Maintain a rolling backlog and keep implementing until a real blocker, manual hardware checkpoint, or explicit stop request.
 - Use subagents proactively for readonly research, review, playtest planning, licensing, and security while continuing parent-agent implementation.
 - Make frequent reversible commits, but do not treat each commit as a stopping point.
+- After a successful commit, immediately continue to the next backlog item instead of sending a final/status response.
 - Update `HANDOFF.md` whenever state, verification, risks, or next steps materially change.
 - Prefer verified playable progress over perfect planning; keep legacy gameplay and keyboard/controller behavior intact.
+- Do not send progress summaries unless the user explicitly asks, a blocker needs a decision, or there is a concrete playable checkpoint ready for manual testing.
 - Stop to ask only for decisions that cannot be made safely, such as licensing ambiguity, risky architecture forks, unavailable hardware/manual testing, or destructive git operations.
