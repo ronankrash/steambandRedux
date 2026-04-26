@@ -87,14 +87,29 @@ void renderer_test_dda(void) {
     int mapY = 2;
     double sideDistX, sideDistY;
     double deltaDistX = fabs(1.0 / rayDirX);
-    double deltaDistY = fabs(1.0 / rayDirY);  /* Handle div0 safely */
-    if (rayDirY == 0) deltaDistY = 1e30;
+    double deltaDistY = (rayDirY == 0.0) ? 1e30 : fabs(1.0 / rayDirY);
     int stepX = (rayDirX < 0) ? -1 : 1;
     int stepY = (rayDirY < 0) ? -1 : 1;
-    sideDistX = (rayDirX < 0) ? (mapX + 1.0 - 2.5) * deltaDistX : (2.5 - mapX) * deltaDistX; /* adjusted */
-    /* ... simplified test, logs result */
-    LOG_I("Renderer DDA test: map bounds check passed for test ray");
-    /* In full test, assert hit detection */
+    int side = 0;
+    int steps = 0;
+
+    sideDistX = (rayDirX < 0) ? (2.5 - mapX) * deltaDistX : (mapX + 1.0 - 2.5) * deltaDistX;
+    sideDistY = (rayDirY < 0) ? (2.5 - mapY) * deltaDistY : (mapY + 1.0 - 2.5) * deltaDistY;
+
+    while (!renderer_is_wall(mapY, mapX) && steps < 64) {
+        if (sideDistX < sideDistY) {
+            sideDistX += deltaDistX;
+            mapX += stepX;
+            side = 0;
+        } else {
+            sideDistY += deltaDistY;
+            mapY += stepY;
+            side = 1;
+        }
+        steps++;
+    }
+
+    LOG_I("Renderer DDA test: hit=(%d,%d) side=%d steps=%d", mapY, mapX, side, steps);
 }
 
 /* Initialize SDL2 renderer and camera for first-person prototype.
