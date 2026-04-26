@@ -23,6 +23,8 @@ static int g_config_menu_remap_target = -1; /* Button index being remapped */
  * Get key code display name
  */
 static void get_key_display_name(int key_code, char *buf, int buf_size) {
+    if (!buf || buf_size <= 0) return;
+
     if (key_code >= 32 && key_code <= 126) {
         /* Printable ASCII character */
         snprintf(buf, buf_size, "'%c' (%d)", key_code, key_code);
@@ -34,6 +36,8 @@ static void get_key_display_name(int key_code, char *buf, int buf_size) {
             default: snprintf(buf, buf_size, "Key %d", key_code); break;
         }
     }
+
+    buf[buf_size - 1] = '\0';
 }
 
 /*
