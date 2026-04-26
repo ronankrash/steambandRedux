@@ -77,6 +77,11 @@ void test_renderer_basic(void) {
     SDL_Rect tile_src;
     RendererColor player_tile;
     RendererColor floor_tile;
+    byte fake_cave_info[DUNGEON_HGT][256];
+    s16b fake_cave_m_idx[DUNGEON_HGT][DUNGEON_WID];
+    monster_type fake_m_list[2];
+    monster_race fake_r_info[2];
+    maxima fake_z_info;
     RendererHudSnapshot hud;
     char label[16];
     char status[32];
@@ -212,6 +217,46 @@ void test_renderer_basic(void) {
     tile = renderer_classify_tile(5, 5);
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
                                   "Fallback test-map floors should become top-down floor tiles");
+    memset(fake_cave_info, 0, sizeof(fake_cave_info));
+    memset(fake_cave_m_idx, 0, sizeof(fake_cave_m_idx));
+    memset(fake_m_list, 0, sizeof(fake_m_list));
+    memset(fake_r_info, 0, sizeof(fake_r_info));
+    memset(&fake_z_info, 0, sizeof(fake_z_info));
+    fake_z_info.m_max = 2;
+    fake_z_info.r_max = 2;
+    fake_cave_info[5][5] = CAVE_MARK | CAVE_SEEN;
+    fake_cave_m_idx[5][5] = 1;
+    fake_m_list[1].r_idx = 1;
+    fake_m_list[1].ml = TRUE;
+    fake_r_info[1].flags3 = RF3_AUTOMATA;
+    fake_r_info[1].x_char = 'g';
+    cave_info = fake_cave_info;
+    cave_m_idx = fake_cave_m_idx;
+    m_list = fake_m_list;
+    r_info = fake_r_info;
+    z_info = &fake_z_info;
+    m_max = 2;
+    tile = renderer_classify_tile(5, 5);
+    TEST_ASSERT_TRUE_MESSAGE(tile.has_monster, "Visible bounded live monsters should be detected");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_AUTOMATA, tile.category,
+                                  "Visible automata should select the automata family tile");
+    fake_m_list[1].ml = FALSE;
+    tile = renderer_classify_tile(5, 5);
+    TEST_ASSERT_FALSE_MESSAGE(tile.has_monster, "Unseen monsters should not leak into the top-down tile view");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
+                                  "Unseen monsters should leave the remembered terrain tile visible");
+    fake_cave_m_idx[5][5] = 5;
+    fake_m_list[1].ml = TRUE;
+    tile = renderer_classify_tile(5, 5);
+    TEST_ASSERT_FALSE_MESSAGE(tile.has_monster, "Out-of-range m_idx should be ignored safely");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
+                                  "Out-of-range m_idx should fall back to terrain");
+    cave_info = NULL;
+    cave_m_idx = NULL;
+    m_list = NULL;
+    r_info = NULL;
+    z_info = NULL;
+    m_max = 1;
     player_tile = renderer_tile_color(RENDERER_TILE_PLAYER);
     floor_tile = renderer_tile_color(RENDERER_TILE_FLOOR);
     TEST_ASSERT_TRUE_MESSAGE(player_tile.r > floor_tile.r && player_tile.g > floor_tile.g,

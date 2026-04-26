@@ -91,6 +91,9 @@ s16b (*cave_o_idx)[DUNGEON_WID] = NULL;
 s16b (*cave_m_idx)[DUNGEON_WID] = NULL;
 monster_type *m_list = NULL;
 monster_race *r_info = NULL;
+maxima *z_info = NULL;
+s16b m_max = 1;
+s16b m_cnt = 0;
 player_type *p_ptr = NULL;
 player_other *op_ptr = NULL;
 

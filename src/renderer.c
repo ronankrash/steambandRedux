@@ -1090,8 +1090,28 @@ int renderer_monster_family_category_from_values(u32b flags3, char d_char) {
     return RENDERER_TILE_MONSTER;
 }
 
+static bool renderer_monster_race_for_grid(int y, int x, monster_race** race_out) {
+    s16b m_idx;
+    s16b r_idx;
+
+    if (race_out) *race_out = NULL;
+    if (!race_out || !cave_m_idx || !m_list || !r_info || !z_info) return FALSE;
+    if (y < 0 || x < 0 || y >= DUNGEON_HGT || x >= DUNGEON_WID) return FALSE;
+
+    m_idx = cave_m_idx[y][x];
+    if (m_idx <= 0 || m_idx >= m_max || m_idx >= (s16b)z_info->m_max) return FALSE;
+    if (!m_list[m_idx].ml) return FALSE;
+
+    r_idx = m_list[m_idx].r_idx;
+    if (r_idx <= 0 || r_idx >= (s16b)z_info->r_max) return FALSE;
+
+    *race_out = &r_info[r_idx];
+    return TRUE;
+}
+
 RendererTileInfo renderer_classify_tile(int y, int x) {
     RendererTileInfo info;
+    monster_race* r_ptr = NULL;
 
     memset(&info, 0, sizeof(info));
     info.category = RENDERER_TILE_DARKNESS;
@@ -1108,18 +1128,14 @@ RendererTileInfo renderer_classify_tile(int y, int x) {
         info.remembered = (cave_info[y][x] & (CAVE_MARK | CAVE_SEEN)) ? TRUE : FALSE;
     }
     info.has_player = (p_ptr && p_ptr->py == y && p_ptr->px == x) ? TRUE : FALSE;
-    info.has_monster = (cave_m_idx && cave_m_idx[y][x] > 0) ? TRUE : FALSE;
+    info.has_monster = renderer_monster_race_for_grid(y, x, &r_ptr);
     info.has_object = (cave_o_idx && cave_o_idx[y][x] != 0) ? TRUE : FALSE;
     info.category = renderer_tile_category_from_values(info.feat, info.remembered,
                                                        info.has_player, info.has_monster,
                                                        info.has_object);
-    if (info.category == RENDERER_TILE_MONSTER && m_list && r_info) {
-        s16b m_idx = cave_m_idx[y][x];
-        s16b r_idx = (m_idx > 0) ? m_list[m_idx].r_idx : 0;
-        if (r_idx > 0) {
-            monster_race* r_ptr = &r_info[r_idx];
-            info.category = renderer_monster_family_category_from_values(r_ptr->flags3, r_ptr->d_char);
-        }
+    if (info.category == RENDERER_TILE_MONSTER && r_ptr) {
+        char display_char = r_ptr->x_char ? r_ptr->x_char : r_ptr->d_char;
+        info.category = renderer_monster_family_category_from_values(r_ptr->flags3, display_char);
     }
     return info;
 }
