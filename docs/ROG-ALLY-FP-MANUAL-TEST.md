@@ -37,7 +37,7 @@ Optional no-hardware first-person keyboard probe:
 powershell -ExecutionPolicy Bypass -File tools\probe_rog_ally_fp.ps1
 ```
 
-The default probe launches the SDL2 Debug build, foregrounds the native Win32 window, injects `Ctrl+F12`, waits briefly, exits, and reports whether the new log segment proves renderer init, DDA startup, first-person activation, and clean shutdown. Add `-TryNewGame` for a separate best-effort title-screen `N` injection; that mode does not run the first-person activation check, and the character birth prompts remain visual and require manual confirmation.
+The default probe launches the SDL2 Debug build, foregrounds the native Win32 window, injects `Ctrl+F12`, waits briefly, exits, and reports whether the new log segment proves renderer init, DDA startup, first-person activation, and clean shutdown. Add `-TryNewGame` for a separate best-effort title-screen `N` attempt; that mode does not run the first-person activation check, and the character birth prompts remain visual and require manual confirmation.
 
 ## First Minute Smoke
 

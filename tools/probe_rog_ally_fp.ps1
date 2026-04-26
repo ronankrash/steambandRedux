@@ -121,7 +121,7 @@ $Checks = [ordered]@{
 }
 
 if ($TryNewGame) {
-    $Checks["Title-screen New injected"] = $true
+    $Checks["Title-screen New attempted"] = $true
     $Checks["Clean renderer shutdown"] = $NewLog.Contains("Renderer shutdown complete") -or $NewLog.Contains("Exited first-person mode")
 } else {
     $Checks["First-person activated"] = $NewLog.Contains("First-person mode activated")
