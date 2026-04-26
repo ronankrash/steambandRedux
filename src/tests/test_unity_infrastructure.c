@@ -75,6 +75,7 @@ void test_renderer_basic(void) {
     RendererTileViewport tile_view;
     RendererTopDownTilesetSpec tile_spec;
     SDL_Rect tile_src;
+    SDL_Rect cell_rect;
     RendererColor player_tile;
     RendererColor floor_tile;
     byte fake_cave_info[DUNGEON_HGT][256];
@@ -425,6 +426,16 @@ void test_renderer_basic(void) {
                              "Top-down viewport should keep a playable minimum visible area");
     TEST_ASSERT_TRUE_MESSAGE(tile_view.origin_x >= 0 && tile_view.origin_y >= 0,
                              "Top-down viewport should clamp origins safely");
+    cell_rect = renderer_top_down_cell_rect(&tile_view, 12, 18, 2, 3);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(12 + 2 * tile_view.tile_size, cell_rect.x,
+                                  "Top-down cell rect should use viewport tile size for X");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(18 + 3 * tile_view.tile_size, cell_rect.y,
+                                  "Top-down cell rect should use viewport tile size for Y");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(tile_view.tile_size, cell_rect.w,
+                                  "Top-down cell rect should preserve square tile width");
+    cell_rect = renderer_top_down_cell_rect(&tile_view, 12, 18, -1, 3);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, cell_rect.w,
+                                  "Invalid top-down cell columns should return an empty rect");
     renderer_toggle_top_down_mode(ctx);
     TEST_ASSERT_FALSE_MESSAGE(ctx->top_down_mode, "Top-down SDL tile mode should close cleanly");
     TEST_ASSERT_TRUE_MESSAGE(g_use_2d_fallback, "Closing top-down mode should restore legacy fallback");

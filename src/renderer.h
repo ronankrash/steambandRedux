@@ -224,6 +224,9 @@ int renderer_object_family_category_from_tval(byte tval);
 int renderer_shop_category_from_feat(byte feat);
 RendererTileInfo renderer_classify_tile(int y, int x);
 RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile_size);
+SDL_Rect renderer_top_down_cell_rect(const RendererTileViewport* view,
+                                     int offset_x, int offset_y,
+                                     int col, int row);
 RendererColor renderer_tile_color(int category);
 RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void);
 int renderer_top_down_tile_index(const RendererTopDownTilesetSpec* spec, int category);

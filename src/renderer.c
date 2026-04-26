@@ -1322,6 +1322,22 @@ RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile
     return view;
 }
 
+SDL_Rect renderer_top_down_cell_rect(const RendererTileViewport* view,
+                                     int offset_x, int offset_y,
+                                     int col, int row) {
+    SDL_Rect rect;
+
+    memset(&rect, 0, sizeof(rect));
+    if (!view || view->tile_size <= 0) return rect;
+    if (col < 0 || row < 0 || col >= view->cols || row >= view->rows) return rect;
+
+    rect.x = offset_x + col * view->tile_size;
+    rect.y = offset_y + row * view->tile_size;
+    rect.w = view->tile_size;
+    rect.h = view->tile_size;
+    return rect;
+}
+
 RendererColor renderer_tile_color(int category) {
     RendererColor color;
 
@@ -1620,6 +1636,31 @@ static void renderer_draw_tile_glyph(RendererContext* ctx, const SDL_Rect* rect,
     }
 }
 
+static void renderer_draw_top_down_player_focus(RendererContext* ctx, const SDL_Rect* rect) {
+    int cx;
+    int cy;
+    SDL_Rect outline;
+
+    if (!ctx || !ctx->renderer || !rect || rect->w <= 0 || rect->h <= 0) return;
+
+    cx = rect->x + rect->w / 2;
+    cy = rect->y + rect->h / 2;
+    outline = *rect;
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(ctx->renderer, 232, 198, 92, 235);
+    SDL_RenderDrawRect(ctx->renderer, &outline);
+    if (outline.w > 4 && outline.h > 4) {
+        outline.x += 1;
+        outline.y += 1;
+        outline.w -= 2;
+        outline.h -= 2;
+        SDL_RenderDrawRect(ctx->renderer, &outline);
+    }
+    SDL_RenderDrawLine(ctx->renderer, cx, rect->y + 2, cx, rect->y + rect->h - 3);
+    SDL_RenderDrawLine(ctx->renderer, rect->x + 2, cy, rect->x + rect->w - 3, cy);
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
+}
+
 static void renderer_render_top_down(RendererContext* ctx) {
     RendererHudSnapshot hud;
     RendererTileViewport view;
@@ -1650,10 +1691,7 @@ static void renderer_render_top_down(RendererContext* ctx) {
             }
 
             color = renderer_tile_color(info.category);
-            rect.x = offset_x + col * view.tile_size;
-            rect.y = offset_y + row * view.tile_size;
-            rect.w = view.tile_size;
-            rect.h = view.tile_size;
+            rect = renderer_top_down_cell_rect(&view, offset_x, offset_y, col, row);
 
             if (ctx->top_down_tiles_loaded && ctx->top_down_tilesheet) {
                 SDL_Rect src = renderer_top_down_source_rect(&ctx->top_down_tileset, info.category);
@@ -1662,6 +1700,9 @@ static void renderer_render_top_down(RendererContext* ctx) {
                 SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
                 SDL_RenderFillRect(ctx->renderer, &rect);
                 renderer_draw_tile_glyph(ctx, &rect, info.category, color);
+            }
+            if (info.category == RENDERER_TILE_PLAYER) {
+                renderer_draw_top_down_player_focus(ctx, &rect);
             }
         }
     }

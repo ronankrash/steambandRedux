@@ -79,6 +79,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Monster family tiles are renderer-only and derived from visible live monsters using bounded `cave_m_idx -> m_list -> r_info` lookups; unknown, unseen, or unavailable race data falls back to terrain or the generic monster tile.
   - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
   - SDL window title and bottom hint glyphs now distinguish top-down mode from first-person mode (`Ctrl+F11`/Escape exits, keyboard commands forward).
+  - The player tile now gets a bright focus/crosshair overlay in top-down mode so the current position is easier to spot at handheld scale.
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
   - Asset matching is tracked by `docs/TOPDOWN-ASSET-COVERAGE.md`, generated with `python tools/report_topdown_asset_coverage.py`.
   - Current coverage is category-level: terrain is mostly covered, objects use broad item-family tiles, and monsters use broad family tiles.
