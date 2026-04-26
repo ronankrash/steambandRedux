@@ -234,8 +234,8 @@ static void menu_handle_selection(XINPUT_STATE *state) {
         }
     }
     
-    /* B button cancels */
-    if (state->Gamepad.wButtons & XINPUT_GAMEPAD_B) {
+    /* B or BACK cancels */
+    if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
         controller_menu_hide();
     }
 }

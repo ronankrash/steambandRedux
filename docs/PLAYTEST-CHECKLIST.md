@@ -78,7 +78,7 @@ Pass if:
 - Double `Back` within roughly 500 ms opens `Controller Command Menu` after the triple-press window expires.
 - D-pad navigates the grid.
 - `A` selects a command and closes the menu.
-- `B` cancels and closes the menu.
+- `B` or `Back` cancels and closes the menu.
 - Selected commands match keyboard behavior.
 
 High-risk item: double/triple `Back` gesture overlap may still be hard to perform reliably. Record failures as UX bugs, not tester error.
@@ -93,7 +93,7 @@ Pass if:
 - D-pad up/down navigates mappings.
 - `A` enters remap mode.
 - Pressing another mapped button updates the target mapping.
-- `B` saves/exits in normal config mode.
+- `B` or `Back` saves/exits in normal config mode.
 - `lib/user/controller.prf` is created or updated.
 - Restarting the game reloads saved mappings.
 

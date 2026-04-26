@@ -185,8 +185,8 @@ static void config_menu_handle_selection(XINPUT_STATE *state) {
             }
         }
         
-        /* B button cancels remapping */
-        if (state->Gamepad.wButtons & XINPUT_GAMEPAD_B) {
+        /* B or BACK cancels remapping */
+        if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
             g_config_menu_remapping = FALSE;
             g_config_menu_remap_target = -1;
             config_menu_display();
@@ -202,8 +202,8 @@ static void config_menu_handle_selection(XINPUT_STATE *state) {
             }
         }
         
-        /* B button saves and exits */
-        if (state->Gamepad.wButtons & XINPUT_GAMEPAD_B) {
+        /* B or BACK saves and exits */
+        if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
             /* Save configuration */
             controller_save_config();
             /* Hide menu */
