@@ -49,6 +49,7 @@ void renderer_shutdown(RendererContext* ctx);
 void renderer_render(RendererContext* ctx);
 void renderer_toggle_mode(RendererContext* ctx);
 void renderer_sync_from_player(RendererContext* ctx);  /* Syncs from p_ptr if available */
+void renderer_rotate(RendererContext* ctx, double radians);  /* Rotate camera direction and plane */
 
 /* Test/utility functions */
 bool renderer_is_wall(int y, int x);  /* Uses cave data or test map */

@@ -12,6 +12,7 @@
 #include "test_helpers.h"
 #ifdef STEAMBAND_HAS_SDL2
 #include "renderer.h"
+#include <math.h>
 #endif
 
 /* Test Unity assertion macros work correctly */
@@ -76,6 +77,16 @@ void test_renderer_basic(void) {
     renderer_toggle_mode(ctx);
     TEST_ASSERT_FALSE_MESSAGE(ctx->first_person_mode, "Renderer mode should return to 2D fallback");
     TEST_ASSERT_TRUE_MESSAGE(g_use_2d_fallback, "2D fallback should be restored");
+
+    ctx->dirX = -1.0;
+    ctx->dirY = 0.0;
+    ctx->planeX = 0.0;
+    ctx->planeY = 0.66;
+    renderer_rotate(ctx, 3.14159265358979323846 / 2.0);
+    TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->dirX) < 0.0001, "Rotation should turn dirX near zero");
+    TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->dirY + 1.0) < 0.0001, "Rotation should turn direction left");
+    TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->planeX + 0.66) < 0.0001, "Rotation should rotate camera plane X");
+    TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->planeY) < 0.0001, "Rotation should rotate camera plane Y near zero");
 
     TEST_PASS_MESSAGE("Renderer DDA and wall tests passed - ready for steampunk textures");
 #else

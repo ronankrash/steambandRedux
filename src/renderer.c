@@ -192,6 +192,25 @@ void renderer_sync_from_player(RendererContext* ctx) {
     }
 }
 
+void renderer_rotate(RendererContext* ctx, double radians) {
+    double oldDirX, oldPlaneX;
+    double cosAngle, sinAngle;
+
+    if (!ctx) return;
+    if (radians == 0.0) return;
+
+    cosAngle = cos(radians);
+    sinAngle = sin(radians);
+
+    oldDirX = ctx->dirX;
+    ctx->dirX = ctx->dirX * cosAngle - ctx->dirY * sinAngle;
+    ctx->dirY = oldDirX * sinAngle + ctx->dirY * cosAngle;
+
+    oldPlaneX = ctx->planeX;
+    ctx->planeX = ctx->planeX * cosAngle - ctx->planeY * sinAngle;
+    ctx->planeY = oldPlaneX * sinAngle + ctx->planeY * cosAngle;
+}
+
 /* Core DDA raycasting render function.
  * For each screen column: calculate ray, DDA step through map (using renderer_is_wall),
  * compute wall height with perspective correction (1 / perpWallDist), draw vertical strip.
