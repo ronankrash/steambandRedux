@@ -83,6 +83,12 @@ Custom top-down sheets must target `topdown-v1`: a 216x96 BMP with 24x24 cells,
 9 columns, and 4 rows. Wrong-size sheets are rejected and the renderer falls
 back safely to the project placeholder or procedural tiles.
 
+Validate a custom sheet before launching with:
+
+```bash
+python tools/validate_topdown_tileset.py path/to/topdown_tileset.bmp
+```
+
 Regenerate the checked-in placeholder atlas with:
 
 ```bash
