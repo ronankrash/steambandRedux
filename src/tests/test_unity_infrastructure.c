@@ -507,6 +507,8 @@ void test_renderer_basic(void) {
                                  "Top-down title should explain keyboard command forwarding");
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "HP"),
                                  "Top-down title should preserve readable HP fallback");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "Inventory"),
+                                 "Top-down title should expose recent legacy/command feedback");
 
     ctx->dirX = -1.0;
     ctx->dirY = 0.0;

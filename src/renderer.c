@@ -175,16 +175,24 @@ void renderer_hud_title(const RendererHudSnapshot* hud, char* out, size_t out_si
 }
 
 void renderer_top_down_title(const RendererHudSnapshot* hud, char* out, size_t out_size) {
+    char message_suffix[96];
+
     if (!out || out_size == 0) return;
     if (!hud) {
         renderer_copy_text(out, out_size, "SteambandRedux 2D Tiles - no game state - Ctrl+F11 exits");
         return;
     }
 
+    message_suffix[0] = '\0';
+    if (hud->has_message) {
+        snprintf(message_suffix, sizeof(message_suffix), " - %s", hud->last_message);
+        message_suffix[sizeof(message_suffix) - 1] = '\0';
+    }
+
     snprintf(out, out_size,
-             "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s - Ctrl+F11/Esc exits, keys forward",
+             "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s - Ctrl+F11/Esc exits, keys forward%s",
              hud->current_hp, hud->max_hp, hud->current_sp, hud->max_sp,
-             hud->depth_label, hud->status_label);
+             hud->depth_label, hud->status_label, message_suffix);
     out[out_size - 1] = '\0';
 }
 
