@@ -1136,6 +1136,75 @@ int renderer_monster_family_category_from_values(u32b flags3, char d_char) {
     return RENDERER_TILE_MONSTER;
 }
 
+int renderer_object_family_category_from_tval(byte tval) {
+    switch (tval) {
+        case TV_FOOD:
+            return RENDERER_TILE_OBJECT_FOOD;
+        case TV_TEXT:
+        case TV_MAGIC_BOOK:
+        case TV_DEVICE_BOOK:
+            return RENDERER_TILE_OBJECT_SCROLL;
+        case TV_TONIC:
+        case TV_FLASK:
+        case TV_BOTTLE:
+            return RENDERER_TILE_OBJECT_POTION;
+        case TV_DIGGING:
+        case TV_HAFTED:
+        case TV_POLEARM:
+        case TV_SWORD:
+        case TV_TOOL:
+        case TV_RAY:
+        case TV_APPARATUS:
+            return RENDERER_TILE_OBJECT_WEAPON;
+        case TV_BOOTS:
+        case TV_GLOVES:
+        case TV_HELM:
+        case TV_CROWN:
+        case TV_SHIELD:
+        case TV_CLOAK:
+        case TV_SOFT_ARMOR:
+        case TV_HARD_ARMOR:
+        case TV_DRAG_ARMOR:
+        case TV_MECHA_TORSO:
+        case TV_MECHA_HEAD:
+        case TV_MECHA_ARMS:
+        case TV_MECHA_FEET:
+            return RENDERER_TILE_OBJECT_ARMOR;
+        case TV_GUN:
+            return RENDERER_TILE_OBJECT_GUN;
+        case TV_AMMO:
+        case TV_BULLET:
+        case TV_SHOT:
+            return RENDERER_TILE_OBJECT_AMMO;
+        case TV_GOLD:
+            return RENDERER_TILE_OBJECT_MONEY;
+        case TV_RING:
+        case TV_AMULET:
+            return RENDERER_TILE_OBJECT_JEWELRY;
+        case TV_CHEST:
+        case TV_LITE:
+        case TV_MECHANISM:
+            return RENDERER_TILE_OBJECT_DEVICE;
+        default:
+            return RENDERER_TILE_OBJECT;
+    }
+}
+
+static bool renderer_object_for_grid(int y, int x, object_type** object_out) {
+    s16b o_idx;
+
+    if (object_out) *object_out = NULL;
+    if (!object_out || !cave_o_idx || !o_list || !z_info) return FALSE;
+    if (y < 0 || x < 0 || y >= DUNGEON_HGT || x >= DUNGEON_WID) return FALSE;
+
+    o_idx = cave_o_idx[y][x];
+    if (o_idx <= 0 || o_idx >= o_max || o_idx >= (s16b)z_info->o_max) return FALSE;
+    if (!o_list[o_idx].k_idx) return FALSE;
+
+    *object_out = &o_list[o_idx];
+    return TRUE;
+}
+
 static bool renderer_monster_race_for_grid(int y, int x, monster_race** race_out) {
     s16b m_idx;
     s16b r_idx;
@@ -1158,6 +1227,7 @@ static bool renderer_monster_race_for_grid(int y, int x, monster_race** race_out
 RendererTileInfo renderer_classify_tile(int y, int x) {
     RendererTileInfo info;
     monster_race* r_ptr = NULL;
+    object_type* o_ptr = NULL;
 
     memset(&info, 0, sizeof(info));
     info.category = RENDERER_TILE_DARKNESS;
@@ -1175,10 +1245,13 @@ RendererTileInfo renderer_classify_tile(int y, int x) {
     }
     info.has_player = (p_ptr && p_ptr->py == y && p_ptr->px == x) ? TRUE : FALSE;
     info.has_monster = renderer_monster_race_for_grid(y, x, &r_ptr);
-    info.has_object = (cave_o_idx && cave_o_idx[y][x] != 0) ? TRUE : FALSE;
+    info.has_object = renderer_object_for_grid(y, x, &o_ptr);
     info.category = renderer_tile_category_from_values(info.feat, info.remembered,
                                                        info.has_player, info.has_monster,
                                                        info.has_object);
+    if (info.category == RENDERER_TILE_OBJECT && o_ptr) {
+        info.category = renderer_object_family_category_from_tval(o_ptr->tval);
+    }
     if (info.category == RENDERER_TILE_MONSTER && r_ptr) {
         char display_char = r_ptr->x_char ? r_ptr->x_char : r_ptr->d_char;
         info.category = renderer_monster_family_category_from_values(r_ptr->flags3, display_char);
@@ -1249,6 +1322,26 @@ RendererColor renderer_tile_color(int category) {
             color.r = 154; color.g = 92; color.b = 70; break;
         case RENDERER_TILE_OBJECT:
             color.r = 188; color.g = 142; color.b = 66; break;
+        case RENDERER_TILE_OBJECT_FOOD:
+            color.r = 116; color.g = 146; color.b = 72; break;
+        case RENDERER_TILE_OBJECT_SCROLL:
+            color.r = 180; color.g = 160; color.b = 116; break;
+        case RENDERER_TILE_OBJECT_POTION:
+            color.r = 90; color.g = 136; color.b = 172; break;
+        case RENDERER_TILE_OBJECT_WEAPON:
+            color.r = 150; color.g = 138; color.b = 120; break;
+        case RENDERER_TILE_OBJECT_ARMOR:
+            color.r = 116; color.g = 124; color.b = 132; break;
+        case RENDERER_TILE_OBJECT_GUN:
+            color.r = 126; color.g = 102; color.b = 70; break;
+        case RENDERER_TILE_OBJECT_AMMO:
+            color.r = 170; color.g = 130; color.b = 58; break;
+        case RENDERER_TILE_OBJECT_MONEY:
+            color.r = 206; color.g = 164; color.b = 62; break;
+        case RENDERER_TILE_OBJECT_JEWELRY:
+            color.r = 152; color.g = 92; color.b = 166; break;
+        case RENDERER_TILE_OBJECT_DEVICE:
+            color.r = 94; color.g = 118; color.b = 126; break;
         case RENDERER_TILE_WALL:
             color.r = 96; color.g = 88; color.b = 78; break;
         case RENDERER_TILE_DOOR:
@@ -1276,8 +1369,8 @@ RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
     memset(&spec, 0, sizeof(spec));
     spec.tile_width = 24;
     spec.tile_height = 24;
-    spec.columns = 7;
-    spec.rows = 2;
+    spec.columns = 8;
+    spec.rows = 3;
     for (i = 0; i < RENDERER_TILE_CATEGORY_COUNT; i++) {
         spec.category_to_tile[i] = i;
     }

@@ -78,7 +78,9 @@ void test_renderer_basic(void) {
     RendererColor player_tile;
     RendererColor floor_tile;
     byte fake_cave_info[DUNGEON_HGT][256];
+    s16b fake_cave_o_idx[DUNGEON_HGT][DUNGEON_WID];
     s16b fake_cave_m_idx[DUNGEON_HGT][DUNGEON_WID];
+    object_type fake_o_list[2];
     monster_type fake_m_list[2];
     monster_race fake_r_info[2];
     maxima fake_z_info;
@@ -186,6 +188,36 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_TRAP,
                                   renderer_tile_category_from_values(FEAT_TRAP_HEAD, TRUE, FALSE, FALSE, FALSE),
                                   "Traps should classify as hazard tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_FOOD,
+                                  renderer_object_family_category_from_tval(TV_FOOD),
+                                  "Food/anodynes should select the food object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_SCROLL,
+                                  renderer_object_family_category_from_tval(TV_TEXT),
+                                  "Texts/books should select the scroll object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_POTION,
+                                  renderer_object_family_category_from_tval(TV_TONIC),
+                                  "Tonics should select the potion object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_WEAPON,
+                                  renderer_object_family_category_from_tval(TV_SWORD),
+                                  "Weapons should select the weapon object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_ARMOR,
+                                  renderer_object_family_category_from_tval(TV_HARD_ARMOR),
+                                  "Armor should select the armor object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_GUN,
+                                  renderer_object_family_category_from_tval(TV_GUN),
+                                  "Guns should select the ray gun object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_AMMO,
+                                  renderer_object_family_category_from_tval(TV_BULLET),
+                                  "Ammo should select the ammo object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_MONEY,
+                                  renderer_object_family_category_from_tval(TV_GOLD),
+                                  "Gold should select the money object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_JEWELRY,
+                                  renderer_object_family_category_from_tval(TV_RING),
+                                  "Rings should select the jewelry object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_DEVICE,
+                                  renderer_object_family_category_from_tval(TV_CHEST),
+                                  "Chests/devices should select the device object tile");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER_AUTOMATA,
                                   renderer_monster_family_category_from_values(RF3_AUTOMATA, 'g'),
                                   "Automata monsters should select a machinery family tile");
@@ -219,13 +251,34 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
                                   "Fallback test-map floors should become top-down floor tiles");
     memset(fake_cave_info, 0, sizeof(fake_cave_info));
+    memset(fake_cave_o_idx, 0, sizeof(fake_cave_o_idx));
     memset(fake_cave_m_idx, 0, sizeof(fake_cave_m_idx));
+    memset(fake_o_list, 0, sizeof(fake_o_list));
     memset(fake_m_list, 0, sizeof(fake_m_list));
     memset(fake_r_info, 0, sizeof(fake_r_info));
     memset(&fake_z_info, 0, sizeof(fake_z_info));
     fake_z_info.m_max = 2;
+    fake_z_info.o_max = 2;
     fake_z_info.r_max = 2;
     fake_cave_info[5][5] = CAVE_MARK | CAVE_SEEN;
+    fake_cave_o_idx[5][5] = 1;
+    fake_o_list[1].k_idx = 1;
+    fake_o_list[1].tval = TV_GUN;
+    cave_info = fake_cave_info;
+    cave_o_idx = fake_cave_o_idx;
+    o_list = fake_o_list;
+    z_info = &fake_z_info;
+    o_max = 2;
+    tile = renderer_classify_tile(5, 5);
+    TEST_ASSERT_TRUE_MESSAGE(tile.has_object, "Bounded live objects should be detected");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_GUN, tile.category,
+                                  "Live gun objects should select the gun family tile");
+    fake_cave_o_idx[5][5] = 5;
+    tile = renderer_classify_tile(5, 5);
+    TEST_ASSERT_FALSE_MESSAGE(tile.has_object, "Out-of-range o_idx should be ignored safely");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
+                                  "Out-of-range o_idx should fall back to terrain");
+    fake_cave_o_idx[5][5] = 0;
     fake_cave_m_idx[5][5] = 1;
     fake_m_list[1].r_idx = 1;
     fake_m_list[1].ml = TRUE;
@@ -253,10 +306,13 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
                                   "Out-of-range m_idx should fall back to terrain");
     cave_info = NULL;
+    cave_o_idx = NULL;
     cave_m_idx = NULL;
+    o_list = NULL;
     m_list = NULL;
     r_info = NULL;
     z_info = NULL;
+    o_max = 1;
     m_max = 1;
     player_tile = renderer_tile_color(RENDERER_TILE_PLAYER);
     floor_tile = renderer_tile_color(RENDERER_TILE_FLOOR);
@@ -265,7 +321,7 @@ void test_renderer_basic(void) {
     tile_spec = renderer_default_top_down_tileset_spec();
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_width, "Default top-down tilesheet should use 24px source tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_height, "Default top-down tilesheet should use square source tiles");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(7, tile_spec.columns, "Default top-down tilesheet should map fourteen tiles over seven columns");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(8, tile_spec.columns, "Default top-down tilesheet should map twenty-four tiles over eight columns");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
                                   renderer_top_down_tile_index(&tile_spec, RENDERER_TILE_PLAYER),
                                   "Default tilesheet maps each category to its matching tile index");
@@ -274,8 +330,8 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_top_down_tile_index(&tile_spec, 999),
                                   "Invalid high tile category should fall back to darkness tile");
     tile_src = renderer_top_down_source_rect(&tile_spec, RENDERER_TILE_PLAYER);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(144, tile_src.x, "Player tile should be in the second row source atlas");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.y, "Player tile should be in the second row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(168, tile_src.x, "Player tile should be in the third row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(48, tile_src.y, "Player tile should be in the third row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.w, "Source tile width should match the atlas contract");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.h, "Source tile height should match the atlas contract");
     TEST_ASSERT_FALSE_MESSAGE(renderer_load_top_down_tilesheet(NULL),

@@ -8,7 +8,7 @@ This report maps the current SDL2 top-down tile contract to legacy game data in
 ## Current Atlas
 
 The checked-in placeholder atlas is `lib/xtra/graf/sdl2_topdown_24.bmp`.
-It is project-generated and currently provides 14 broad tiles:
+It is project-generated and currently provides 24 broad tiles:
 
 - darkness
 - floor
@@ -18,6 +18,16 @@ It is project-generated and currently provides 14 broad tiles:
 - down stairs
 - trap
 - object
+- food/anodyne object
+- scroll/book object
+- potion/flask object
+- weapon/tool object
+- armor object
+- ray gun/launcher object
+- ammo object
+- money object
+- jewelry object
+- device/chest object
 - generic monster
 - automata
 - undead/demon
@@ -41,9 +51,10 @@ facade fallback rather than distinct store tiles.
 
 ## Object Coverage
 
-Objects are not individually matched yet. The live renderer uses one generic
-`object` tile for every floor object. The groups below show the art coverage
-needed for better readability.
+Objects are now matched to broad item-family tiles in the live renderer when
+bounded `cave_o_idx -> o_list` data is available. Unknown or invalid object data
+falls back to terrain or the generic object tile. The groups below are the
+coverage buckets used to guide future art polish.
 
 - `ammo`: 6 entries. Examples: 78: & Rifle bullet~; 79: & Hollow-point rifle bullet~; 80: & Shotgun buckshot; 81: & Steel shotgun slug~
 - `amulet`: 13 entries. Examples: 163: Wisdom; 164: Charisma; 165: Searching; 166: Teleportation
@@ -79,9 +90,9 @@ generic monster tile.
 ## Gaps To Close Before A Real Tileset Claim
 
 - Add distinct shop/town facade tiles for store features `0x08` through `0x0F`.
-- Split generic objects into at least food/anodynes, scroll/books, potions,
-  weapons/tools, armor, ray guns/launchers, ammo, money, lights/devices, rings,
-  and amulets.
+- Split object-family placeholders into higher-quality final art for food,
+  scroll/books, potions, weapons/tools, armor, ray guns/launchers, ammo, money,
+  devices/lights, rings, and amulets.
 - Consider separate monster tiles for dragon, alien, animal, brute, undead,
   demon, automata, townsfolk/humanoid, and generic oddities instead of the
   current broad buckets.

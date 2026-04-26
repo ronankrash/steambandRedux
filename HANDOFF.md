@@ -72,13 +72,14 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.
   - The placeholder atlas is reproducible via `python tools/generate_topdown_tilesheet.py`.
   - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` without changing code.
-  - Current atlas contract: 24x24 tiles, 7 columns x 2 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
+  - Current atlas contract: 24x24 tiles, 8 columns x 3 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, food/anodyne object, scroll/book object, potion/flask object, weapon/tool object, armor object, ray gun/launcher object, ammo object, money object, jewelry object, device/chest object, generic monster, automata, undead/demon, beast, humanoid, player.
+  - Object family tiles are renderer-only and derived from bounded `cave_o_idx -> o_list` lookups; invalid or unavailable object data falls back to terrain or the generic object tile.
   - Monster family tiles are renderer-only and derived from visible live monsters using bounded `cave_m_idx -> m_list -> r_info` lookups; unknown, unseen, or unavailable race data falls back to terrain or the generic monster tile.
   - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
   - SDL window title and bottom hint glyphs now distinguish top-down mode from first-person mode (`Ctrl+F11`/Escape exits, keyboard commands forward).
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
   - Asset matching is tracked by `docs/TOPDOWN-ASSET-COVERAGE.md`, generated with `python tools/report_topdown_asset_coverage.py`.
-  - Current coverage is category-level: terrain is mostly covered, monsters use broad family tiles, and objects still use one generic object tile pending item-family tiles.
+  - Current coverage is category-level: terrain is mostly covered, objects use broad item-family tiles, and monsters use broad family tiles.
 
 ## Controller State
 

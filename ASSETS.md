@@ -50,6 +50,6 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - License: same project distribution terms as newly authored repository content; no third-party art source.
 - Commercial-use notes: not copied, traced, recolored, or derived from Ultima, Balor, Wizardry, or other reference games. Intended as a temporary permissive placeholder so the SDL2 tile pipeline can be tested before sourcing final art.
 - Renderer use: SDL2 top-down mode loads this BMP through `SDL_LoadBMP` when present. A custom compatible BMP can be tested by setting `STEAMBAND_TOPDOWN_TILESET` to another path.
-- Tile contract: 24x24 tiles, 7 columns x 2 rows, row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
+- Tile contract: 24x24 tiles, 8 columns x 3 rows, row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, food/anodyne object, scroll/book object, potion/flask object, weapon/tool object, armor object, ray gun/launcher object, ammo object, money object, jewelry object, device/chest object, generic monster, automata, undead/demon, beast, humanoid, player.
 - Regeneration: run `python tools/generate_topdown_tilesheet.py` from the repository root.
 - Coverage report: run `python tools/report_topdown_asset_coverage.py` to compare current tiles against legacy terrain, object, and monster data.

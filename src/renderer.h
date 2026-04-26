@@ -42,13 +42,23 @@
 #define RENDERER_TILE_STAIRS_DN 5
 #define RENDERER_TILE_TRAP      6
 #define RENDERER_TILE_OBJECT    7
-#define RENDERER_TILE_MONSTER   8
-#define RENDERER_TILE_MONSTER_AUTOMATA 9
-#define RENDERER_TILE_MONSTER_UNDEAD   10
-#define RENDERER_TILE_MONSTER_BEAST    11
-#define RENDERER_TILE_MONSTER_HUMANOID 12
-#define RENDERER_TILE_PLAYER    13
-#define RENDERER_TILE_CATEGORY_COUNT 14
+#define RENDERER_TILE_OBJECT_FOOD      8
+#define RENDERER_TILE_OBJECT_SCROLL    9
+#define RENDERER_TILE_OBJECT_POTION    10
+#define RENDERER_TILE_OBJECT_WEAPON    11
+#define RENDERER_TILE_OBJECT_ARMOR     12
+#define RENDERER_TILE_OBJECT_GUN       13
+#define RENDERER_TILE_OBJECT_AMMO      14
+#define RENDERER_TILE_OBJECT_MONEY     15
+#define RENDERER_TILE_OBJECT_JEWELRY   16
+#define RENDERER_TILE_OBJECT_DEVICE    17
+#define RENDERER_TILE_MONSTER   18
+#define RENDERER_TILE_MONSTER_AUTOMATA 19
+#define RENDERER_TILE_MONSTER_UNDEAD   20
+#define RENDERER_TILE_MONSTER_BEAST    21
+#define RENDERER_TILE_MONSTER_HUMANOID 22
+#define RENDERER_TILE_PLAYER    23
+#define RENDERER_TILE_CATEGORY_COUNT 24
 
 typedef struct {
     bool hit;
@@ -198,6 +208,7 @@ int renderer_tile_category_from_values(byte feat, bool remembered,
                                        bool has_player, bool has_monster,
                                        bool has_object);
 int renderer_monster_family_category_from_values(u32b flags3, char d_char);
+int renderer_object_family_category_from_tval(byte tval);
 RendererTileInfo renderer_classify_tile(int y, int x);
 RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile_size);
 RendererColor renderer_tile_color(int category);
