@@ -29,6 +29,7 @@ New-Item -ItemType Directory -Force -Path $dropRoot | Out-Null
 $dropExe = Join-Path $dropRoot "SteambandRedux.exe"
 $dropLib = Join-Path $dropRoot "lib"
 $dropLauncher = Join-Path $dropRoot "launch_topdown_tiles.cmd"
+$dropPocLauncher = Join-Path $dropRoot "launch_puny_world_tiles.cmd"
 
 Copy-Item -Force -Path $gameExe -Destination $dropExe
 
@@ -57,6 +58,17 @@ start "" /wait "%~dp0SteambandRedux.exe"
 popd >nul
 "@ | Set-Content -Encoding ASCII -Path $dropLauncher
 
+@"
+@echo off
+setlocal
+set "STEAMBAND_LOG_LEVEL=INFO"
+set "STEAMBAND_START_TOPDOWN=1"
+set "STEAMBAND_TOPDOWN_TILESET=%~dp0lib\xtra\graf\topdown_poc_puny_world.bmp"
+pushd "%~dp0" >nul
+start "" /wait "%~dp0SteambandRedux.exe"
+popd >nul
+"@ | Set-Content -Encoding ASCII -Path $dropPocLauncher
+
 $logs = Join-Path $dropLib "logs"
 New-Item -ItemType Directory -Force -Path $logs | Out-Null
 
@@ -66,6 +78,7 @@ Write-Host ""
 Write-Host "Run on the Ally:"
 Write-Host "  SteambandRedux.exe"
 Write-Host "  launch_topdown_tiles.cmd  (opens the SDL2 tile window automatically)"
+Write-Host "  launch_puny_world_tiles.cmd  (uses the CC0 Puny World proof-of-concept atlas)"
 Write-Host ""
 Write-Host "Logs will be written under:"
 Write-Host "  $(Join-Path $dropLib 'logs')"

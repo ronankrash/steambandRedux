@@ -107,6 +107,12 @@ To launch directly into the SDL2 top-down tile view from the SDL2 Debug build:
 tools\launch_topdown_tiles.cmd
 ```
 
+To launch with the CC0 Puny World proof-of-concept atlas:
+
+```bat
+tools\launch_puny_world_tiles.cmd
+```
+
 The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
 current controls, and points to the SDL build logs. See
 `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.

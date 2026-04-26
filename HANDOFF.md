@@ -87,6 +87,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - The player tile now gets a bright focus/crosshair overlay in top-down mode so the current position is easier to spot at handheld scale.
   - If the SDL top-down window loses keyboard focus, a centered warning panel is drawn so input loss reads as a focus problem, not a game bug.
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
+  - A legal proof-of-concept external atlas exists at `lib/xtra/graf/topdown_poc_puny_world.bmp`, generated from Shade's CC0 Puny World tileset and launched with `tools\launch_puny_world_tiles.cmd`.
   - Asset matching is tracked by `docs/TOPDOWN-ASSET-COVERAGE.md`, generated with `python tools/report_topdown_asset_coverage.py`.
   - Current coverage is category-level: terrain is mostly covered, objects use broad item-family tiles, and monsters use broad family tiles.
 

@@ -55,3 +55,15 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Validation: run `python tools/validate_topdown_tileset.py path/to/topdown_tileset.bmp` before using a custom sheet.
 - Regeneration: run `python tools/generate_topdown_tilesheet.py` from the repository root.
 - Coverage report: run `python tools/report_topdown_asset_coverage.py` to compare current tiles against legacy terrain, object, and monster data.
+
+### SDL2 Puny World Top-Down Proof Of Concept
+
+- File: `lib/xtra/graf/topdown_poc_puny_world.bmp`
+- Source art: `third_party/assets/puny_world/punyworld-overworld-tileset.png`
+- Source page: https://opengameart.org/content/16x16-puny-world-tileset
+- Author: Shade
+- License: CC0 / Creative Commons Zero v1.0 Universal
+- License copy: `third_party/assets/puny_world/LICENSE.txt`
+- Commercial-use notes: source page permits commercial use, modification, and no required credit. This is not Ultima, Balor, Wizardry, or other proprietary art; it is a permissive old-school RPG tileset used as a legal visual proof of concept.
+- Renderer use: optional `topdown-v1` atlas. Launch with `tools/launch_puny_world_tiles.cmd` or set `STEAMBAND_TOPDOWN_TILESET` to this BMP.
+- Generation: run `python tools/build_puny_world_topdown_poc.py` from the repository root.

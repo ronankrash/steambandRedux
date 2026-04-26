@@ -1,0 +1,18 @@
+Free 16x16 Puny World Tileset
+
+Author: Shade
+Source: https://opengameart.org/content/16x16-puny-world-tileset
+Original itch.io page: https://merchant-shade.itch.io/16x16-puny-world
+
+License: Creative Commons Zero v1.0 Universal (CC0)
+
+License text from the source page:
+
+"This is a free asset pack!
+Feel free to use this for your game (commercially or not).
+Feel free to creatively modify these sprites however you like.
+No need to give me credit(s)."
+
+The SteambandRedux proof-of-concept atlas uses this asset as a permissive
+Ultima-like old-school RPG style reference source. It is not copied, traced, or
+derived from Ultima, Balor, Wizardry, or other proprietary game assets.
