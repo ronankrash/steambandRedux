@@ -82,7 +82,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Object family tiles are renderer-only and derived from bounded `cave_o_idx -> o_list` lookups; invalid or unavailable object data falls back to terrain or the generic object tile.
   - Monster family tiles are renderer-only and derived from visible live monsters using bounded `cave_m_idx -> m_list -> r_info` lookups; unknown, unseen, or unavailable race data falls back to terrain or the generic monster tile.
   - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
-  - SDL window title and bottom hint glyphs now distinguish top-down mode from first-person mode (`Ctrl+F11`/Escape exits, keyboard commands forward).
+  - SDL window title and bottom hint glyphs now distinguish top-down mode from first-person mode (`Ctrl+F11` exits, Escape cancels in-game, keyboard commands forward).
   - The player tile now gets a bright focus/crosshair overlay in top-down mode so the current position is easier to spot at handheld scale.
   - If the SDL top-down window loses keyboard focus, a centered warning panel is drawn so input loss reads as a focus problem, not a game bug.
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.

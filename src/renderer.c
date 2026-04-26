@@ -190,7 +190,7 @@ void renderer_top_down_title(const RendererHudSnapshot* hud, char* out, size_t o
     }
 
     snprintf(out, out_size,
-             "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s - Ctrl+F11/Esc exits, keys forward%s",
+             "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s - Ctrl+F11 exits, Esc cancels, keys forward%s",
              hud->current_hp, hud->max_hp, hud->current_sp, hud->max_sp,
              hud->depth_label, hud->status_label, message_suffix);
     out[out_size - 1] = '\0';
@@ -1944,11 +1944,11 @@ void renderer_toggle_top_down_mode(RendererContext* ctx) {
         }
         if (ctx->window) {
             SDL_SetWindowTitle(ctx->window,
-                               "SteambandRedux 2D Tiles - Ctrl+F11/Esc exits, keyboard commands forward");
+                               "SteambandRedux 2D Tiles - Ctrl+F11 exits, Esc cancels, keyboard commands forward");
             SDL_ShowWindow(ctx->window);
             SDL_RaiseWindow(ctx->window);
         }
-        LOG_I("Top-down SDL tile mode activated: original/permissive no-asset pencil tiles, Ctrl+F11 or Esc exits.");
+        LOG_I("Top-down SDL tile mode activated: original/permissive no-asset pencil tiles, Ctrl+F11 exits, Esc cancels.");
     } else {
         ctx->keyboard_focus = FALSE;
         if (ctx->window) SDL_HideWindow(ctx->window);

@@ -505,6 +505,8 @@ void test_renderer_basic(void) {
                                  "Top-down title should identify the renderer mode");
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "keys forward"),
                                  "Top-down title should explain keyboard command forwarding");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "Esc cancels"),
+                                 "Top-down title should explain Escape forwards cancel instead of exiting");
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "HP"),
                                  "Top-down title should preserve readable HP fallback");
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "Inventory"),
