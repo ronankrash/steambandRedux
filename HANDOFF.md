@@ -67,7 +67,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
 - SDL2 top-down tile renderer now exists as a no-asset prototype:
   - Hidden by default.
   - Toggle with `Ctrl+F11`.
-  - Escape or `Ctrl+F11` exits back to the legacy 2D fallback.
+  - `Ctrl+F11` exits back to the legacy 2D fallback; Escape is forwarded to the legacy game as cancel while top-down mode is focused.
   - It mirrors cave/player state through a tested tile-classification layer with safe out-of-bounds handling.
   - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.
   - The placeholder atlas is reproducible via `python tools/generate_topdown_tilesheet.py`.

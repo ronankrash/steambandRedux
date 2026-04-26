@@ -602,8 +602,7 @@ int renderer_handle_events(RendererContext* ctx, int max_events) {
 
         if (e.type == SDL_QUIT ||
             (e.type == SDL_KEYDOWN &&
-             (e.key.keysym.sym == SDLK_ESCAPE ||
-              (e.key.keysym.sym == SDLK_F12 && (e.key.keysym.mod & KMOD_CTRL))))) {
+             renderer_key_exits_mode(ctx, e.key.keysym.sym, (SDL_Keymod)e.key.keysym.mod))) {
             ctx->first_person_mode = FALSE;
             ctx->top_down_mode = FALSE;
             ctx->keyboard_focus = FALSE;
@@ -660,6 +659,7 @@ int renderer_key_to_command(SDL_Keycode key, SDL_Keymod mod) {
         case SDLK_KP_5: return '5';
         case SDLK_RETURN:
         case SDLK_KP_ENTER: return 13;
+        case SDLK_ESCAPE: return 27;
         case SDLK_SPACE: return ' ';
         case SDLK_TAB: return '\t';
         case SDLK_BACKSPACE: return '\010';
@@ -749,6 +749,13 @@ int renderer_first_person_key_to_command(RendererContext* ctx, SDL_Keycode key, 
         default:
             return renderer_key_to_command(key, mod);
     }
+}
+
+bool renderer_key_exits_mode(const RendererContext* ctx, SDL_Keycode key, SDL_Keymod mod) {
+    if (!ctx) return FALSE;
+    if (key == SDLK_ESCAPE) return ctx->first_person_mode ? TRUE : FALSE;
+    if (key == SDLK_F12 && (mod & KMOD_CTRL)) return TRUE;
+    return FALSE;
 }
 
 /* Simple sync from player if game state available. Uses p_ptr from variable.c */

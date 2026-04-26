@@ -432,7 +432,22 @@ void test_renderer_basic(void) {
                                   "SDL shift letters should preserve uppercase commands");
     TEST_ASSERT_EQUAL_INT_MESSAGE('>', renderer_key_to_command(SDLK_PERIOD, KMOD_SHIFT),
                                   "SDL shifted period should map to stairs down");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(27, renderer_key_to_command(SDLK_ESCAPE, KMOD_NONE),
+                                  "SDL Escape should be forwardable as legacy cancel");
     ctx->first_person_mode = TRUE;
+    ctx->top_down_mode = FALSE;
+    TEST_ASSERT_TRUE_MESSAGE(renderer_key_exits_mode(ctx, SDLK_ESCAPE, KMOD_NONE),
+                             "Escape should exit first-person mode");
+    ctx->first_person_mode = FALSE;
+    ctx->top_down_mode = TRUE;
+    TEST_ASSERT_FALSE_MESSAGE(renderer_key_exits_mode(ctx, SDLK_ESCAPE, KMOD_NONE),
+                              "Escape should forward to legacy cancel in top-down mode");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_key_exits_mode(ctx, SDLK_F12, KMOD_CTRL),
+                             "Ctrl+F12 should remain a renderer exit shortcut");
+    TEST_ASSERT_FALSE_MESSAGE(renderer_key_exits_mode(ctx, SDLK_F11, KMOD_CTRL),
+                              "Ctrl+F11 is handled by the top-down toggle path, not generic exit");
+    ctx->first_person_mode = TRUE;
+    ctx->top_down_mode = FALSE;
     ctx->keyboard_focus = TRUE;
     ctx->dirX = -1.0;
     ctx->dirY = 0.0;

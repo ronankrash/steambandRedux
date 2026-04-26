@@ -223,6 +223,7 @@ RendererHudSnapshot renderer_collect_hud_snapshot(const RendererContext* ctx);
 int renderer_direction_to_command(double dx, double dy);
 int renderer_camera_move_command(const RendererContext* ctx, int move);
 int renderer_first_person_key_to_command(RendererContext* ctx, SDL_Keycode key, SDL_Keymod mod);
+bool renderer_key_exits_mode(const RendererContext* ctx, SDL_Keycode key, SDL_Keymod mod);
 void renderer_set_overlay_message(const char* message);
 bool renderer_should_forward_key_event(const RendererContext* ctx);
 bool renderer_texture_loading_allowed(const RendererContext* ctx);
