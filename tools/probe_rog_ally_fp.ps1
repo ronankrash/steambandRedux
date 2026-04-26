@@ -4,7 +4,8 @@ param(
     [int]$HoldSeconds = 2,
     [switch]$TryNewGame,
     [switch]$TopDown,
-    [switch]$AutoTopDown
+    [switch]$AutoTopDown,
+    [switch]$BadTileset
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +24,17 @@ if (!(Test-Path $GameExe)) {
 
 if ($AutoTopDown) {
     $env:STEAMBAND_START_TOPDOWN = "1"
+}
+if ($BadTileset) {
+    $BadTilesetPath = Join-Path $env:TEMP "steamband_bad_topdown_tileset.bmp"
+    [byte[]]$BadBmp = 0x42,0x4D,0x3A,0,0,0,0,0,0,0,0x36,0,0,0,
+        0x28,0,0,0,0x01,0,0,0,0x01,0,0,0,0x01,0,0,0,0x18,0,0,0,
+        0,0,0,0,0x04,0,0,0,0x13,0x0B,0,0,0x13,0x0B,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0
+    [System.IO.File]::WriteAllBytes($BadTilesetPath, $BadBmp)
+    $env:STEAMBAND_TOPDOWN_TILESET = $BadTilesetPath
+    $env:STEAMBAND_START_TOPDOWN = "1"
+    $AutoTopDown = $true
 }
 
 $NativeInput = @"
@@ -192,8 +204,14 @@ if ($TryNewGame) {
     $Checks["Default birth keys sent"] = $true
     if ($TopDown -or $AutoTopDown) {
         $Checks["Top-down tile mode activated after New attempt"] = $NewLog.Contains("Top-down SDL tile mode activated")
-        $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
-        $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: 216x96 pixels, 9x4 tiles, 36 categories")
+        if ($BadTileset) {
+            $Checks["Bad top-down tilesheet rejected"] = $NewLog.Contains("invalid dimensions") -or
+                $NewLog.Contains("top-down tilesheet override failed")
+            $Checks["Fallback top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
+        } else {
+            $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
+            $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: 216x96 pixels, 9x4 tiles, 36 categories")
+        }
     } else {
         $Checks["First-person activated after New attempt"] = $NewLog.Contains("First-person mode activated")
     }
@@ -203,8 +221,14 @@ if ($TryNewGame) {
 } else {
     if ($TopDown -or $AutoTopDown) {
         $Checks["Top-down tile mode activated"] = $NewLog.Contains("Top-down SDL tile mode activated")
-        $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
-        $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: 216x96 pixels, 9x4 tiles, 36 categories")
+        if ($BadTileset) {
+            $Checks["Bad top-down tilesheet rejected"] = $NewLog.Contains("invalid dimensions") -or
+                $NewLog.Contains("top-down tilesheet override failed")
+            $Checks["Fallback top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
+        } else {
+            $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
+            $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: 216x96 pixels, 9x4 tiles, 36 categories")
+        }
     } else {
         $Checks["First-person activated"] = $NewLog.Contains("First-person mode activated")
     }
