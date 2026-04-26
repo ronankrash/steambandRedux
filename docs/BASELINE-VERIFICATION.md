@@ -43,7 +43,8 @@ cd build/Debug
 - SDL2 Debug build succeeds with `cmake --build build-rescue-sdl2 --config Debug`.
 - SDL2 CTest succeeds with `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`.
 - Both builds emit legacy MSVC warnings, mostly narrowing/sign conversion warnings in older game code.
-- Manual game launch was not run in this pass.
+- Bounded SDL launch probe passed: `build-rescue-sdl2/Debug/SteambandRedux.exe` started and stayed alive for 3 seconds before test termination.
+- Interactive keyboard/controller gameplay smoke testing was not run in this pass.
 
 Previous SDL2-required CMake failure, now addressed for baseline builds:
 
@@ -63,13 +64,13 @@ CMake Error at CMakeLists.txt:8 (find_package):
 - `UnityTestRunner` builds and passes. Status: passed through CTest.
 - `ctest -C Debug --output-on-failure` passes. Status: passed.
 - SDL2 renderer build configures/builds/tests with vcpkg. Status: passed.
-- The game launches to the current 2D Windows terminal UI.
+- The game process launches and stays alive under a bounded SDL smoke probe. Status: passed.
 - Keyboard basics work: `N`, `O`, arrow/numpad movement when in game, Enter, Escape.
 - Controller status is recorded with hardware present or explicitly marked untested.
 
 ## Known Test Gaps
 
-- `renderer_render()` is not tested or called by the game loop.
+- `renderer_render()` is called from the Win32 loop in SDL2 builds, but deterministic visual output is not tested.
 - SDL controller hardware behavior is not covered by automated tests.
 - BACK double/triple press timing has no automated coverage.
 - `test_util.c` is not part of current CMake test targets.

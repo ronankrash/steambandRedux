@@ -8,7 +8,7 @@ Last updated: 2026-04-25
 - Build: CMake with Visual Studio/MSVC on Windows.
 - Current UI: Win32 Term/GDI path in `src/main-win.c`.
 - Controller: XInput-driven input in `src/controller.c`; SDL controller open is compiled only when SDL2 is available and is not used for polling yet.
-- Renderer prototype: SDL2 DDA raycaster in `src/renderer.c`, compiled only when SDL2 is available and not yet driven by the game loop.
+- Renderer prototype: SDL2 DDA raycaster in `src/renderer.c`, compiled only when SDL2 is available and pulsed from the Win32 event loop in SDL2 builds.
 - Tests: Unity framework in `third_party/unity/` and `src/tests/`.
 - Logging: `src/logging.c`.
 

@@ -54,6 +54,8 @@ void test_unity_fixtures_available(void) {
  * DDA logic, security bounds checking. Uses test map fallback. */
 void test_renderer_basic(void) {
 #ifdef STEAMBAND_HAS_SDL2
+    RendererContext *ctx;
+
     /* Test wall detection security and logic */
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(0, 0), "Edge walls should return true");
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(2, 2), "Test map walls detected");
@@ -64,6 +66,17 @@ void test_renderer_basic(void) {
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(1000, 1000), "Large OOB treated as wall");
     
     renderer_test_dda();
+
+    ctx = get_renderer();
+    ctx->first_person_mode = FALSE;
+    g_use_2d_fallback = TRUE;
+    renderer_toggle_mode(ctx);
+    TEST_ASSERT_TRUE_MESSAGE(ctx->first_person_mode, "Renderer mode should enable first-person");
+    TEST_ASSERT_FALSE_MESSAGE(g_use_2d_fallback, "2D fallback should be disabled in first-person mode");
+    renderer_toggle_mode(ctx);
+    TEST_ASSERT_FALSE_MESSAGE(ctx->first_person_mode, "Renderer mode should return to 2D fallback");
+    TEST_ASSERT_TRUE_MESSAGE(g_use_2d_fallback, "2D fallback should be restored");
+
     TEST_PASS_MESSAGE("Renderer DDA and wall tests passed - ready for steampunk textures");
 #else
     TEST_IGNORE_MESSAGE("SDL2 renderer disabled at build time");

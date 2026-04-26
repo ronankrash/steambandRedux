@@ -13,8 +13,8 @@ Verified from source inspection:
 - The legacy C codebase remains the gameplay source of truth.
 - CMake, logging, Unity tests, XInput controller code, controller menus, and a basic SDL2 renderer prototype exist.
 - `src/renderer.c` contains a DDA-style SDL2 raycaster prototype.
-- The first-person renderer is not yet a live playable feature because the game initializes it but does not call `renderer_render()` from the main loop.
-- SDL2 is required by `CMakeLists.txt`; the current readable build cache shows `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`.
+- SDL2 builds initialize, pulse, and shut down the renderer from the Win32 event loop, but first-person mode remains a prototype rather than a finished playable feature.
+- SDL2 is optional for the baseline build and installed locally via vcpkg for renderer builds.
 - Licensing needs review before Steam distribution or any paid release because legacy source headers include not-for-profit language.
 
 See:

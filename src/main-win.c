@@ -1932,6 +1932,23 @@ static errr Term_xtra_win_react(void)
 	return (0);
 }
 
+#ifdef STEAMBAND_HAS_SDL2
+/*
+ * Render one first-person frame when the SDL prototype is active.
+ * The legacy Term/GDI path remains the source of truth; this only mirrors
+ * current player/cave state into the SDL window for the prototype view.
+ */
+static void win_renderer_pulse(void)
+{
+	RendererContext *renderer = get_renderer();
+
+	if (!renderer || !renderer->first_person_mode) return;
+
+	renderer_sync_from_player(renderer);
+	renderer_render(renderer);
+}
+#endif
+
 
 /*
  * Process at least one event
@@ -1972,6 +1989,10 @@ static errr Term_xtra_win_event(int v)
 			DispatchMessage(&msg);
 		}
 	}
+
+#ifdef STEAMBAND_HAS_SDL2
+	win_renderer_pulse();
+#endif
 
 	/* Success */
 	return 0;
@@ -5153,6 +5174,10 @@ static void hook_quit(cptr str)
 		save_prefs();
 	}
 
+#ifdef STEAMBAND_HAS_SDL2
+	renderer_shutdown(get_renderer());
+#endif
+
 	/*** Could use 'Term_nuke_win()' XXX XXX XXX */
 
 	/* Destroy all windows */
@@ -5748,6 +5773,10 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
+#ifdef STEAMBAND_HAS_SDL2
+		win_renderer_pulse();
+#endif
 	}
 
 	/* Paranoia */

@@ -16,8 +16,8 @@ Do not trust older claims unless they are backed by source code or repeatable co
 - Controller work exists in `src/controller.c`, `src/controller_menu.c`, and `src/controller_config_menu.c`.
 - Practical controller polling is XInput-based. SDL2 controller initialization is compiled only when SDL2 is available, and SDL controller events are not yet used by `controller_check()`.
 - `src/renderer.c` contains a standalone SDL2 DDA raycaster prototype and is compiled only when SDL2 is available.
-- `src/main-win.c` initializes the renderer only in SDL2 builds, but does not call `renderer_render()`, `renderer_toggle_mode()`, or `renderer_shutdown()`.
-- The first-person renderer is not yet a live playable game feature.
+- `src/main-win.c` initializes, pulses, and shuts down the SDL renderer in SDL2 builds. The renderer mirrors player/cave state into the SDL prototype window during the Win32 event loop.
+- The first-person renderer is now loop-integrated as a prototype, but not yet a finished playable feature.
 - `agent-os/` still exists and is historical only unless a future PR explicitly migrates or removes it.
 - `.gitignore`, `ASSETS.md`, and `LICENSES.md` now exist to support safer repo hygiene and asset/license tracking.
 
@@ -34,7 +34,8 @@ Do not trust older claims unless they are backed by source code or repeatable co
   - `cmake -S . -B build-rescue-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON`
   - `cmake --build build-rescue-sdl2 --config Debug`
   - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
-- Manual launch and controller hardware smoke tests remain pending.
+- Bounded SDL launch probe passed: `build-rescue-sdl2/Debug/SteambandRedux.exe` started and stayed alive for 3 seconds before test termination.
+- Interactive keyboard/controller hardware smoke tests remain pending.
 - See `docs/BASELINE-VERIFICATION.md` for required commands and pass criteria.
 
 ## Test Status
@@ -43,7 +44,7 @@ Do not trust older claims unless they are backed by source code or repeatable co
 - `UnityTestRunner` is the primary Unity runner.
 - `UnitTests` is an older logging-focused runner and does not execute the full Unity suite.
 - Known gaps:
-  - `renderer_render()` has no automated coverage.
+  - `renderer_render()` has only loop-level smoke coverage, not deterministic framebuffer or interaction coverage.
   - SDL2-specific smoke tests are ignored when SDL2 is disabled.
   - `test_util.c` is not part of the current CMake targets.
   - Controller timing and hardware paths require more tests and physical playtesting.
@@ -70,9 +71,9 @@ Do not trust older claims unless they are backed by source code or repeatable co
 
 ## Next Actions
 
-1. Launch the current build and record keyboard/controller smoke-test results.
+1. Run interactive keyboard/controller smoke tests on the current build.
 2. Resolve or document the base license constraints before any Steam/commercial commitment.
-3. Integrate the renderer into the real game loop with tests.
+3. Expand renderer tests beyond smoke coverage and tune event handling.
 4. Add real SDL controller polling or document XInput-only controller scope.
 
 ## Handoff Rule
