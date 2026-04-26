@@ -18,6 +18,7 @@
  */
 
 #include "renderer.h"
+#include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include "logging.h"  /* For secure logging */
@@ -196,10 +197,60 @@ int renderer_handle_events(RendererContext* ctx, int max_events) {
             g_use_2d_fallback = TRUE;
             if (ctx->window) SDL_HideWindow(ctx->window);
             LOG_I("Exited first-person mode, restored 2D fallback.");
+        } else if (e.type == SDL_KEYDOWN) {
+            int cmd = renderer_key_to_command(e.key.keysym.sym, (SDL_Keymod)e.key.keysym.mod);
+            if (cmd) Term_keypress(cmd);
         }
     }
 
     return handled;
+}
+
+int renderer_key_to_command(SDL_Keycode key, SDL_Keymod mod) {
+    bool shifted = (mod & KMOD_SHIFT) ? TRUE : FALSE;
+
+    switch (key) {
+        case SDLK_UP:
+        case SDLK_KP_8: return '8';
+        case SDLK_DOWN:
+        case SDLK_KP_2: return '2';
+        case SDLK_LEFT:
+        case SDLK_KP_4: return '4';
+        case SDLK_RIGHT:
+        case SDLK_KP_6: return '6';
+        case SDLK_HOME:
+        case SDLK_KP_7: return '7';
+        case SDLK_PAGEUP:
+        case SDLK_KP_9: return '9';
+        case SDLK_END:
+        case SDLK_KP_1: return '1';
+        case SDLK_PAGEDOWN:
+        case SDLK_KP_3: return '3';
+        case SDLK_CLEAR:
+        case SDLK_KP_5: return '5';
+        case SDLK_RETURN:
+        case SDLK_KP_ENTER: return 13;
+        case SDLK_SPACE: return ' ';
+        case SDLK_TAB: return '\t';
+        case SDLK_BACKSPACE: return '\010';
+        case SDLK_COMMA: return shifted ? '<' : ',';
+        case SDLK_PERIOD: return shifted ? '>' : '.';
+        case SDLK_SLASH: return shifted ? '?' : '/';
+        case SDLK_MINUS: return shifted ? '_' : '-';
+        default:
+            break;
+    }
+
+    if (key >= SDLK_a && key <= SDLK_z) {
+        int c = 'a' + (int)(key - SDLK_a);
+        return shifted ? toupper(c) : c;
+    }
+
+    if (key >= SDLK_0 && key <= SDLK_9) {
+        return '0' + (int)(key - SDLK_0);
+    }
+
+    return 0;
 }
 
 /* Simple sync from player if game state available. Uses p_ptr from variable.c */

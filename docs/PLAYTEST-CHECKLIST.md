@@ -132,6 +132,7 @@ Pass if:
 - `Ctrl+F12` and `L3 + R3` show/hide the SDL renderer window in SDL2 builds.
 - Renderer syncs to real player position after movement, stairs, load, and new level.
 - Keyboard movement still matches original command behavior.
+- Keyboard commands still work while the SDL first-person window has focus.
 - Controller left stick/D-pad movement works without breaking roguelike turns.
 - Right stick turns the first-person camera while the SDL window is active.
 - `Escape` and `Ctrl+F12` exit first-person mode predictably when the SDL window has focus.

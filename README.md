@@ -110,6 +110,7 @@ SDL2 first-person prototype:
 - `L3 + R3`: controller shortcut to show/hide the SDL first-person prototype window.
 - Right stick: turn camera while first-person mode is active.
 - `Escape` or `Ctrl+F12` in the SDL window exits first-person mode.
+- Basic keyboard commands in the SDL window are forwarded to the legacy game input queue.
 
 ## Repository Process
 

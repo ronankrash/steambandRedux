@@ -59,6 +59,7 @@ double renderer_safe_perp_distance(int side, int map_x, int map_y,
                                    double pos_x, double pos_y,
                                    int step_x, int step_y,
                                    double ray_dir_x, double ray_dir_y);
+int renderer_key_to_command(SDL_Keycode key, SDL_Keymod mod);
 RendererContext* get_renderer(void);
 
 /* 2D fallback indicator */

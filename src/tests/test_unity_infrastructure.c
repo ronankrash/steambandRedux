@@ -93,6 +93,14 @@ void test_renderer_basic(void) {
                              "Perpendicular distance should guard zero X rays");
     TEST_ASSERT_TRUE_MESSAGE(renderer_safe_perp_distance(1, 5, 5, 5.5, 5.5, 1, 1, 1.0, 0.0) > 0.0,
                              "Perpendicular distance should guard zero Y rays");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('8', renderer_key_to_command(SDLK_UP, KMOD_NONE),
+                                  "SDL up should map to Angband north");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('i', renderer_key_to_command(SDLK_i, KMOD_NONE),
+                                  "SDL letters should map to Angband commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('R', renderer_key_to_command(SDLK_r, KMOD_SHIFT),
+                                  "SDL shift letters should preserve uppercase commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('>', renderer_key_to_command(SDLK_PERIOD, KMOD_SHIFT),
+                                  "SDL shifted period should map to stairs down");
 
     TEST_PASS_MESSAGE("Renderer DDA and wall tests passed - ready for steampunk textures");
 #else
