@@ -43,26 +43,34 @@
 #define RENDERER_TILE_TRAP      6
 #define RENDERER_TILE_GLYPH     7
 #define RENDERER_TILE_SHOP      8
-#define RENDERER_TILE_RUBBLE    9
-#define RENDERER_TILE_ORE       10
-#define RENDERER_TILE_OBJECT    11
-#define RENDERER_TILE_OBJECT_FOOD      12
-#define RENDERER_TILE_OBJECT_SCROLL    13
-#define RENDERER_TILE_OBJECT_POTION    14
-#define RENDERER_TILE_OBJECT_WEAPON    15
-#define RENDERER_TILE_OBJECT_ARMOR     16
-#define RENDERER_TILE_OBJECT_GUN       17
-#define RENDERER_TILE_OBJECT_AMMO      18
-#define RENDERER_TILE_OBJECT_MONEY     19
-#define RENDERER_TILE_OBJECT_JEWELRY   20
-#define RENDERER_TILE_OBJECT_DEVICE    21
-#define RENDERER_TILE_MONSTER   22
-#define RENDERER_TILE_MONSTER_AUTOMATA 23
-#define RENDERER_TILE_MONSTER_UNDEAD   24
-#define RENDERER_TILE_MONSTER_BEAST    25
-#define RENDERER_TILE_MONSTER_HUMANOID 26
-#define RENDERER_TILE_PLAYER    27
-#define RENDERER_TILE_CATEGORY_COUNT 28
+#define RENDERER_TILE_SHOP_GENERAL     9
+#define RENDERER_TILE_SHOP_CLOTHING    10
+#define RENDERER_TILE_SHOP_GUN         11
+#define RENDERER_TILE_SHOP_MACHINIST   12
+#define RENDERER_TILE_SHOP_ALCHEMY     13
+#define RENDERER_TILE_SHOP_MAGIC       14
+#define RENDERER_TILE_SHOP_BLACK_MARKET 15
+#define RENDERER_TILE_SHOP_HOME        16
+#define RENDERER_TILE_RUBBLE    17
+#define RENDERER_TILE_ORE       18
+#define RENDERER_TILE_OBJECT    19
+#define RENDERER_TILE_OBJECT_FOOD      20
+#define RENDERER_TILE_OBJECT_SCROLL    21
+#define RENDERER_TILE_OBJECT_POTION    22
+#define RENDERER_TILE_OBJECT_WEAPON    23
+#define RENDERER_TILE_OBJECT_ARMOR     24
+#define RENDERER_TILE_OBJECT_GUN       25
+#define RENDERER_TILE_OBJECT_AMMO      26
+#define RENDERER_TILE_OBJECT_MONEY     27
+#define RENDERER_TILE_OBJECT_JEWELRY   28
+#define RENDERER_TILE_OBJECT_DEVICE    29
+#define RENDERER_TILE_MONSTER   30
+#define RENDERER_TILE_MONSTER_AUTOMATA 31
+#define RENDERER_TILE_MONSTER_UNDEAD   32
+#define RENDERER_TILE_MONSTER_BEAST    33
+#define RENDERER_TILE_MONSTER_HUMANOID 34
+#define RENDERER_TILE_PLAYER    35
+#define RENDERER_TILE_CATEGORY_COUNT 36
 
 typedef struct {
     bool hit;
@@ -213,6 +221,7 @@ int renderer_tile_category_from_values(byte feat, bool remembered,
                                        bool has_object);
 int renderer_monster_family_category_from_values(u32b flags3, char d_char);
 int renderer_object_family_category_from_tval(byte tval);
+int renderer_shop_category_from_feat(byte feat);
 RendererTileInfo renderer_classify_tile(int y, int x);
 RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile_size);
 RendererColor renderer_tile_color(int category);

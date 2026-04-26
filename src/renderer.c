@@ -1115,7 +1115,7 @@ int renderer_tile_category_from_values(byte feat, bool remembered,
     if (feat == FEAT_LESS) return RENDERER_TILE_STAIRS_UP;
     if (feat == FEAT_MORE) return RENDERER_TILE_STAIRS_DN;
     if (feat == FEAT_GLYPH) return RENDERER_TILE_GLYPH;
-    if (feat >= FEAT_SHOP_HEAD && feat <= FEAT_SHOP_TAIL) return RENDERER_TILE_SHOP;
+    if (feat >= FEAT_SHOP_HEAD && feat <= FEAT_SHOP_TAIL) return renderer_shop_category_from_feat(feat);
     if (feat >= FEAT_TRAP_HEAD && feat <= FEAT_TRAP_TAIL) return RENDERER_TILE_TRAP;
     if (feat == FEAT_OPEN || feat == FEAT_BROKEN ||
         (feat >= FEAT_DOOR_HEAD && feat <= FEAT_DOOR_TAIL)) {
@@ -1126,6 +1126,20 @@ int renderer_tile_category_from_values(byte feat, bool remembered,
     if (feat >= FEAT_SECRET && feat <= FEAT_PERM_SOLID) return RENDERER_TILE_WALL;
     if (feat == FEAT_NONE) return RENDERER_TILE_DARKNESS;
     return RENDERER_TILE_FLOOR;
+}
+
+int renderer_shop_category_from_feat(byte feat) {
+    switch (feat) {
+        case FEAT_SHOP_HEAD + 0: return RENDERER_TILE_SHOP_GENERAL;
+        case FEAT_SHOP_HEAD + 1: return RENDERER_TILE_SHOP_CLOTHING;
+        case FEAT_SHOP_HEAD + 2: return RENDERER_TILE_SHOP_GUN;
+        case FEAT_SHOP_HEAD + 3: return RENDERER_TILE_SHOP_MACHINIST;
+        case FEAT_SHOP_HEAD + 4: return RENDERER_TILE_SHOP_ALCHEMY;
+        case FEAT_SHOP_HEAD + 5: return RENDERER_TILE_SHOP_MAGIC;
+        case FEAT_SHOP_HEAD + 6: return RENDERER_TILE_SHOP_BLACK_MARKET;
+        case FEAT_SHOP_HEAD + 7: return RENDERER_TILE_SHOP_HOME;
+        default: return RENDERER_TILE_SHOP;
+    }
 }
 
 int renderer_monster_family_category_from_values(u32b flags3, char d_char) {
@@ -1360,6 +1374,22 @@ RendererColor renderer_tile_color(int category) {
             color.r = 156; color.g = 132; color.b = 68; break;
         case RENDERER_TILE_SHOP:
             color.r = 112; color.g = 92; color.b = 58; break;
+        case RENDERER_TILE_SHOP_GENERAL:
+            color.r = 138; color.g = 102; color.b = 62; break;
+        case RENDERER_TILE_SHOP_CLOTHING:
+            color.r = 118; color.g = 112; color.b = 118; break;
+        case RENDERER_TILE_SHOP_GUN:
+            color.r = 144; color.g = 118; color.b = 76; break;
+        case RENDERER_TILE_SHOP_MACHINIST:
+            color.r = 104; color.g = 130; color.b = 88; break;
+        case RENDERER_TILE_SHOP_ALCHEMY:
+            color.r = 82; color.g = 110; color.b = 152; break;
+        case RENDERER_TILE_SHOP_MAGIC:
+            color.r = 142; color.g = 76; color.b = 68; break;
+        case RENDERER_TILE_SHOP_BLACK_MARKET:
+            color.r = 58; color.g = 50; color.b = 46; break;
+        case RENDERER_TILE_SHOP_HOME:
+            color.r = 164; color.g = 136; color.b = 72; break;
         case RENDERER_TILE_RUBBLE:
             color.r = 86; color.g = 78; color.b = 68; break;
         case RENDERER_TILE_ORE:
@@ -1381,7 +1411,7 @@ RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
     memset(&spec, 0, sizeof(spec));
     spec.tile_width = 24;
     spec.tile_height = 24;
-    spec.columns = 7;
+    spec.columns = 9;
     spec.rows = 4;
     for (i = 0; i < RENDERER_TILE_CATEGORY_COUNT; i++) {
         spec.category_to_tile[i] = i;

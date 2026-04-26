@@ -192,8 +192,20 @@ void test_renderer_basic(void) {
                                   renderer_tile_category_from_values(FEAT_GLYPH, TRUE, FALSE, FALSE, FALSE),
                                   "Glyphs should get a distinct protection tile");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_SHOP,
-                                  renderer_tile_category_from_values(FEAT_SHOP_HEAD, TRUE, FALSE, FALSE, FALSE),
-                                  "Shops should get a distinct town facade tile");
+                                  renderer_shop_category_from_feat(0),
+                                  "Unknown shop values should fall back to a generic town facade tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_SHOP_GENERAL,
+                                  renderer_shop_category_from_feat(FEAT_SHOP_HEAD + 0),
+                                  "General Store should get a distinct town facade tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_SHOP_GUN,
+                                  renderer_shop_category_from_feat(FEAT_SHOP_HEAD + 2),
+                                  "Gun shop should get a distinct town facade tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_SHOP_HOME,
+                                  renderer_shop_category_from_feat(FEAT_SHOP_HEAD + 7),
+                                  "Home should get a distinct town facade tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_SHOP_GUN,
+                                  renderer_tile_category_from_values(FEAT_SHOP_HEAD + 2, TRUE, FALSE, FALSE, FALSE),
+                                  "Shop terrain should route through specific shop facade tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_RUBBLE,
                                   renderer_tile_category_from_values(FEAT_RUBBLE, TRUE, FALSE, FALSE, FALSE),
                                   "Rubble should get a distinct diggable obstruction tile");
@@ -333,7 +345,7 @@ void test_renderer_basic(void) {
     tile_spec = renderer_default_top_down_tileset_spec();
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_width, "Default top-down tilesheet should use 24px source tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_height, "Default top-down tilesheet should use square source tiles");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(7, tile_spec.columns, "Default top-down tilesheet should map twenty-eight tiles over seven columns");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(9, tile_spec.columns, "Default top-down tilesheet should map thirty-six tiles over nine columns");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
                                   renderer_top_down_tile_index(&tile_spec, RENDERER_TILE_PLAYER),
                                   "Default tilesheet maps each category to its matching tile index");
@@ -342,7 +354,7 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_top_down_tile_index(&tile_spec, 999),
                                   "Invalid high tile category should fall back to darkness tile");
     tile_src = renderer_top_down_source_rect(&tile_spec, RENDERER_TILE_PLAYER);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(144, tile_src.x, "Player tile should be in the fourth row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(192, tile_src.x, "Player tile should be in the fourth row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(72, tile_src.y, "Player tile should be in the fourth row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.w, "Source tile width should match the atlas contract");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.h, "Source tile height should match the atlas contract");

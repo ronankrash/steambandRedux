@@ -8,7 +8,7 @@ This report maps the current SDL2 top-down tile contract to legacy game data in
 ## Current Atlas
 
 The checked-in placeholder atlas is `lib/xtra/graf/sdl2_topdown_24.bmp`.
-It is project-generated and currently provides 28 broad tiles:
+It is project-generated and currently provides 36 broad tiles:
 
 - darkness
 - floor
@@ -19,6 +19,14 @@ It is project-generated and currently provides 28 broad tiles:
 - trap
 - glyph
 - shop
+- General Store shop
+- Clothing store shop
+- Gun shop
+- Machinist shop
+- Alchemy shop
+- Magic shop
+- Black Market shop
+- Home
 - rubble
 - ore vein
 - object

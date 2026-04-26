@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Iterable
 
 TILE_SIZE = 24
-COLUMNS = 7
+COLUMNS = 9
 ROWS = 4
 WIDTH = TILE_SIZE * COLUMNS
 HEIGHT = TILE_SIZE * ROWS
@@ -29,6 +29,14 @@ CATEGORIES: list[tuple[str, tuple[int, int, int]]] = [
     ("trap", (138, 62, 116)),
     ("glyph", (156, 132, 68)),
     ("shop", (112, 92, 58)),
+    ("shop_general", (138, 102, 62)),
+    ("shop_clothing", (118, 112, 118)),
+    ("shop_gun", (144, 118, 76)),
+    ("shop_machinist", (104, 130, 88)),
+    ("shop_alchemy", (82, 110, 152)),
+    ("shop_magic", (142, 76, 68)),
+    ("shop_black_market", (58, 50, 46)),
+    ("shop_home", (164, 136, 72)),
     ("rubble", (86, 78, 68)),
     ("ore", (124, 88, 58)),
     ("object", (188, 142, 66)),
@@ -152,100 +160,109 @@ def draw_tile(pixels: Pixels, index: int, base: Color) -> None:
         line(pixels, ox + 12, oy + 4, ox + 20, oy + 9, dark)
         rect(pixels, ox + 8, oy + 12, 3, 7, dark)
         rect(pixels, ox + 14, oy + 12, 3, 4, light)
-    elif index == 9:  # rubble
+    elif 9 <= index <= 16:  # specific shop facades
+        rect(pixels, ox + 5, oy + 9, 14, 10, mid)
+        line(pixels, ox + 4, oy + 9, ox + 12, oy + 4, dark)
+        line(pixels, ox + 12, oy + 4, ox + 20, oy + 9, dark)
+        rect(pixels, ox + 8, oy + 12, 3, 7, dark)
+        rect(pixels, ox + 14, oy + 12, 3, 4, light)
+        mark_x = ox + 6 + ((index - 9) % 4) * 4
+        mark_y = oy + 6 + ((index - 9) // 4) * 4
+        rect(pixels, mark_x, mark_y, 3, 3, light)
+    elif index == 17:  # rubble
         rect(pixels, ox + 5, oy + 14, 5, 5, mid)
         rect(pixels, ox + 10, oy + 9, 6, 8, dark)
         rect(pixels, ox + 15, oy + 13, 5, 6, mid)
         line(pixels, ox + 4, oy + 20, ox + 20, oy + 20, dark)
-    elif index == 10:  # ore vein
+    elif index == 18:  # ore vein
         line(pixels, ox + 5, oy + 19, ox + 19, oy + 5, dark)
         line(pixels, ox + 8, oy + 20, ox + 21, oy + 7, mid)
         rect(pixels, ox + 9, oy + 14, 3, 3, light)
         rect(pixels, ox + 15, oy + 8, 3, 3, light)
-    elif index == 11:  # object
+    elif index == 19:  # object
         rect(pixels, ox + 7, oy + 8, 10, 9, mid)
         line(pixels, ox + 7, oy + 8, ox + 12, oy + 4, dark)
         line(pixels, ox + 17, oy + 8, ox + 12, oy + 4, dark)
-    elif index == 12:  # food/anodyne
+    elif index == 20:  # food/anodyne
         rect(pixels, ox + 7, oy + 8, 10, 9, mid)
         line(pixels, ox + 8, oy + 8, ox + 12, oy + 4, dark)
         line(pixels, ox + 12, oy + 4, ox + 17, oy + 8, dark)
-    elif index == 13:  # scroll/book
+    elif index == 21:  # scroll/book
         rect(pixels, ox + 6, oy + 5, 12, 15, mid)
         line(pixels, ox + 8, oy + 9, ox + 16, oy + 9, dark)
         line(pixels, ox + 8, oy + 13, ox + 16, oy + 13, dark)
         line(pixels, ox + 8, oy + 17, ox + 13, oy + 17, dark)
-    elif index == 14:  # potion/flask
+    elif index == 22:  # potion/flask
         rect(pixels, ox + 10, oy + 5, 5, 4, light)
         rect(pixels, ox + 8, oy + 9, 9, 11, mid)
         line(pixels, ox + 8, oy + 9, ox + 12, oy + 4, dark)
         line(pixels, ox + 17, oy + 9, ox + 12, oy + 4, dark)
-    elif index == 15:  # weapon/tool
+    elif index == 23:  # weapon/tool
         line(pixels, ox + 5, oy + 19, ox + 18, oy + 6, dark)
         line(pixels, ox + 8, oy + 20, ox + 20, oy + 8, mid)
         rect(pixels, ox + 4, oy + 18, 5, 3, dark)
-    elif index == 16:  # armor
+    elif index == 24:  # armor
         rect(pixels, ox + 7, oy + 6, 10, 14, mid)
         line(pixels, ox + 7, oy + 6, ox + 12, oy + 3, dark)
         line(pixels, ox + 17, oy + 6, ox + 12, oy + 3, dark)
         line(pixels, ox + 9, oy + 11, ox + 15, oy + 11, dark)
-    elif index == 17:  # gun/ray
+    elif index == 25:  # gun/ray
         rect(pixels, ox + 5, oy + 11, 14, 4, mid)
         rect(pixels, ox + 15, oy + 7, 3, 4, dark)
         rect(pixels, ox + 7, oy + 15, 4, 5, dark)
         line(pixels, ox + 18, oy + 12, ox + 21, oy + 10, light)
-    elif index == 18:  # ammo
+    elif index == 26:  # ammo
         for x in (7, 11, 15):
             rect(pixels, ox + x, oy + 6, 3, 13, mid)
             put(pixels, ox + x + 1, oy + 4, light)
-    elif index == 19:  # money
+    elif index == 27:  # money
         rect(pixels, ox + 7, oy + 12, 10, 5, mid)
         rect(pixels, ox + 9, oy + 8, 8, 5, light)
         rect(pixels, ox + 11, oy + 5, 6, 4, mid)
-    elif index == 20:  # jewelry
+    elif index == 28:  # jewelry
         line(pixels, ox + 7, oy + 12, ox + 12, oy + 7, dark)
         line(pixels, ox + 12, oy + 7, ox + 17, oy + 12, dark)
         line(pixels, ox + 7, oy + 12, ox + 12, oy + 18, dark)
         line(pixels, ox + 17, oy + 12, ox + 12, oy + 18, dark)
         rect(pixels, ox + 11, oy + 11, 3, 3, light)
-    elif index == 21:  # device/chest
+    elif index == 29:  # device/chest
         rect(pixels, ox + 6, oy + 8, 12, 10, mid)
         line(pixels, ox + 6, oy + 12, ox + 18, oy + 12, dark)
         rect(pixels, ox + 11, oy + 12, 3, 4, dark)
         line(pixels, ox + 8, oy + 8, ox + 12, oy + 5, dark)
         line(pixels, ox + 16, oy + 8, ox + 12, oy + 5, dark)
-    elif index == 22:  # generic monster
+    elif index == 30:  # generic monster
         line(pixels, ox + 4, oy + 12, ox + 12, oy + 4, dark)
         line(pixels, ox + 12, oy + 4, ox + 20, oy + 12, dark)
         line(pixels, ox + 4, oy + 12, ox + 12, oy + 20, dark)
         line(pixels, ox + 12, oy + 20, ox + 20, oy + 12, dark)
         rect(pixels, ox + 9, oy + 9, 2, 2, mid)
         rect(pixels, ox + 14, oy + 9, 2, 2, mid)
-    elif index == 23:  # automata
+    elif index == 31:  # automata
         rect(pixels, ox + 6, oy + 6, 12, 12, mid)
         line(pixels, ox + 3, oy + 12, ox + 20, oy + 12, dark)
         line(pixels, ox + 12, oy + 3, ox + 12, oy + 20, dark)
         rect(pixels, ox + 10, oy + 10, 4, 4, light)
-    elif index == 24:  # undead/demon
+    elif index == 32:  # undead/demon
         line(pixels, ox + 7, oy + 8, ox + 12, oy + 4, dark)
         line(pixels, ox + 12, oy + 4, ox + 17, oy + 8, dark)
         rect(pixels, ox + 7, oy + 8, 11, 10, mid)
         rect(pixels, ox + 9, oy + 11, 2, 2, dark)
         rect(pixels, ox + 15, oy + 11, 2, 2, dark)
         line(pixels, ox + 10, oy + 19, ox + 16, oy + 19, dark)
-    elif index == 25:  # beast
+    elif index == 33:  # beast
         rect(pixels, ox + 9, oy + 10, 7, 8, mid)
         rect(pixels, ox + 5, oy + 6, 4, 5, light)
         rect(pixels, ox + 10, oy + 4, 4, 5, light)
         rect(pixels, ox + 16, oy + 6, 4, 5, light)
         line(pixels, ox + 6, oy + 19, ox + 18, oy + 19, dark)
-    elif index == 26:  # humanoid
+    elif index == 34:  # humanoid
         rect(pixels, ox + 10, oy + 4, 5, 5, light)
         rect(pixels, ox + 8, oy + 10, 9, 9, mid)
         line(pixels, ox + 5, oy + 20, ox + 20, oy + 20, dark)
         line(pixels, ox + 8, oy + 10, ox + 5, oy + 16, dark)
         line(pixels, ox + 17, oy + 10, ox + 20, oy + 16, dark)
-    elif index == 27:  # player
+    elif index == 35:  # player
         line(pixels, ox + 12, oy + 3, ox + 5, oy + 20, dark)
         line(pixels, ox + 12, oy + 3, ox + 19, oy + 20, dark)
         line(pixels, ox + 7, oy + 13, ox + 17, oy + 13, dark)
