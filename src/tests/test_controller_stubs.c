@@ -86,6 +86,7 @@ cptr ANGBAND_DIR_USER = NULL; /* Will be NULL for tests, which is fine */
  * safely returns early.
  */
 byte (*cave_feat)[DUNGEON_WID] = NULL;
+byte (*cave_info)[256] = NULL;
 s16b (*cave_o_idx)[DUNGEON_WID] = NULL;
 s16b (*cave_m_idx)[DUNGEON_WID] = NULL;
 player_type *p_ptr = NULL;

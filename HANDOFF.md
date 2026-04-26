@@ -33,6 +33,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - configure with `SDL2_DIR=C:/Users/bkars/vcpkg/installed/x64-windows/share/sdl2`
 - `build/Debug` can be configured as the SDL2 build and copies `SDL2d.dll` beside Debug executables.
 - `tools/launch_rog_ally_fp_smoke.cmd` launches the current SDL2 Debug first-person smoke build and prints the playtest controls/log paths.
+- `tools/package_rog_ally_drop.ps1` assembles a lightweight ROG Ally/LAN drop folder with `SteambandRedux.exe`, SDL2 runtime DLL when present, and a full `lib/` tree beside the executable.
 - `tools/probe_rog_ally_fp.ps1` performs a no-hardware native-window keyboard probe against the SDL2 Debug build and verifies renderer init, DDA startup, first-person activation, and shutdown from the new log segment.
 - Generated `build/` artifacts are no longer tracked by Git.
 - `agent-os/` has been removed; current workflow is `.cursor/rules`, `.cursor/skills`, docs, and handoff.
@@ -63,6 +64,16 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - SDL resize events clamp renderer dimensions to a safe readable viewport range.
   - Texture slots remain empty unless assets are explicitly approved in `ASSETS.md`.
 - First-person view is not yet a finished gameplay mode. It is a live prototype/mirror of player position and cave data, not a polished replacement for the 2D UI.
+- SDL2 top-down tile renderer now exists as a no-asset prototype:
+  - Hidden by default.
+  - Toggle with `Ctrl+F11`.
+  - Escape or `Ctrl+F11` exits back to the legacy 2D fallback.
+  - It mirrors cave/player state through a tested tile-classification layer with safe out-of-bounds handling.
+  - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.
+  - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` without changing code.
+  - Current atlas contract: 24x24 tiles, 5 columns x 2 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, monster, player.
+  - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
+  - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
 
 ## Controller State
 
@@ -142,6 +153,18 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Direct `SendInput` probe activated first-person mode and logged renderer shutdown.
 - Character creation could not be fully verified automatically in this pass: title-screen key injection is feasible, but the birth flow remains visual and needs manual confirmation or future UI-state readback.
 - `tools/probe_rog_ally_fp.ps1 -TryNewGame` is intentionally a separate bounded title-screen injection probe and does not assert first-person activation in the same run.
+- Latest SDL2 top-down tile detour slice passed:
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
+  - `powershell -ExecutionPolicy Bypass -File tools/probe_rog_ally_fp.ps1`
+  - `powershell -ExecutionPolicy Bypass -File tools/probe_rog_ally_fp.ps1 -TopDown`
+  - `powershell -ExecutionPolicy Bypass -File tools/package_rog_ally_drop.ps1`
+  - Packaged drop folder contains `lib/xtra/graf/sdl2_topdown_24.bmp`.
+  - Unity coverage now includes top-down tile priority, safe bounds, viewport sizing, fallback colors, and independent top-down mode toggling.
+  - Automated no-hardware probing verifies `Ctrl+F11` top-down activation, placeholder tilesheet load, and clean shutdown from logs.
+  - Manual visual validation of tile readability on the ROG Ally is still pending.
 - `python tools/license_scan.py --details` still reports inherited release blockers: 70 educational/not-for-profit files, 75 not-for-profit matches, 1 sell-or-market match, 1 commercial-use help match, 1 legacy/GPL coexistence match, 2 embedded copyright-string locations, and 1 Microsoft sample-file match.
 - Interactive keyboard/controller/ROG Ally smoke testing is still pending and must use `docs/PLAYTEST-CHECKLIST.md`.
 - Default `build/Debug` can be locked if the game is running; close `SteambandRedux.exe` before rebuilding that tree.
@@ -162,7 +185,7 @@ This is a later release blocker, not the current playability focus.
 1. Prioritize manual ROG Ally playability over licensing/Steam:
    - Run `tools\launch_rog_ally_fp_smoke.cmd`.
    - Follow `docs\ROG-ALLY-FP-MANUAL-TEST.md`.
-   - Record concrete failures around birth, movement, camera, command menu, inventory/equipment, stairs, combat, save/load, focus, and sleep/resume.
+   - Record concrete failures around birth, movement, camera, top-down tile readability, command menu, inventory/equipment, stairs, combat, save/load, focus, and sleep/resume.
 2. Fix first-person usability bugs immediately and commit each verified slice:
    - controller turn/move feel,
    - command coverage from FP,

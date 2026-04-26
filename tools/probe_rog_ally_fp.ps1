@@ -2,7 +2,8 @@ param(
     [string]$BuildDir = "",
     [int]$StartupTimeoutSeconds = 8,
     [int]$HoldSeconds = 2,
-    [switch]$TryNewGame
+    [switch]$TryNewGame,
+    [switch]$TopDown
 )
 
 $ErrorActionPreference = "Stop"
@@ -58,6 +59,15 @@ function Send-CtrlF12 {
     [SteambandProbeInput]::keybd_event(0x11, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
 }
 
+function Send-CtrlF11 {
+    [SteambandProbeInput]::keybd_event(0x11, 0, 0, 0) # Ctrl
+    Start-Sleep -Milliseconds 40
+    [SteambandProbeInput]::keybd_event(0x7A, 0, 0, 0) # F11
+    Start-Sleep -Milliseconds 40
+    [SteambandProbeInput]::keybd_event(0x7A, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
+    [SteambandProbeInput]::keybd_event(0x11, 0, [SteambandProbeInput]::KEYEVENTF_KEYUP, 0)
+}
+
 $PreviousLogLength = 0
 if (Test-Path $GameLog) {
     $PreviousLogLength = (Get-Item $GameLog).Length
@@ -96,18 +106,24 @@ try {
         Start-Sleep -Milliseconds 900
     }
 
-    Send-CtrlF12
+    if ($TopDown) {
+        Send-CtrlF11
+    } else {
+        Send-CtrlF12
+    }
     Start-Sleep -Milliseconds 700
 
     if ($TryNewGame) {
-        Send-KeyDownUp 0x57 # W/forward
+        Send-KeyDownUp 0x57 # W/forward or legacy command
         Start-Sleep -Milliseconds 150
-        Send-KeyDownUp 0x44 # D/strafe right
-        Start-Sleep -Milliseconds 150
-        Send-KeyDownUp 0x25 # Left arrow turn
-        Start-Sleep -Milliseconds 150
-        Send-KeyDownUp 0x27 # Right arrow turn
-        Start-Sleep -Milliseconds 150
+        if (!$TopDown) {
+            Send-KeyDownUp 0x44 # D/strafe right
+            Start-Sleep -Milliseconds 150
+            Send-KeyDownUp 0x25 # Left arrow turn
+            Start-Sleep -Milliseconds 150
+            Send-KeyDownUp 0x27 # Right arrow turn
+            Start-Sleep -Milliseconds 150
+        }
     }
 
     Start-Sleep -Seconds $HoldSeconds
@@ -154,14 +170,32 @@ $Checks = [ordered]@{
 if ($TryNewGame) {
     $Checks["Title-screen New attempted"] = $true
     $Checks["Default birth keys sent"] = $true
-    $Checks["First-person activated after New attempt"] = $NewLog.Contains("First-person mode activated")
-    $Checks["Clean renderer shutdown"] = $NewLog.Contains("Renderer shutdown complete") -or $NewLog.Contains("Exited first-person mode")
+    if ($TopDown) {
+        $Checks["Top-down tile mode activated after New attempt"] = $NewLog.Contains("Top-down SDL tile mode activated")
+        $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
+    } else {
+        $Checks["First-person activated after New attempt"] = $NewLog.Contains("First-person mode activated")
+    }
+    $Checks["Clean renderer shutdown"] = $NewLog.Contains("Renderer shutdown complete") -or
+        $NewLog.Contains("Exited first-person mode") -or
+        $NewLog.Contains("Exited SDL renderer mode")
 } else {
-    $Checks["First-person activated"] = $NewLog.Contains("First-person mode activated")
-    $Checks["Clean renderer shutdown"] = $NewLog.Contains("Renderer shutdown complete") -or $NewLog.Contains("Exited first-person mode")
+    if ($TopDown) {
+        $Checks["Top-down tile mode activated"] = $NewLog.Contains("Top-down SDL tile mode activated")
+        $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
+    } else {
+        $Checks["First-person activated"] = $NewLog.Contains("First-person mode activated")
+    }
+    $Checks["Clean renderer shutdown"] = $NewLog.Contains("Renderer shutdown complete") -or
+        $NewLog.Contains("Exited first-person mode") -or
+        $NewLog.Contains("Exited SDL renderer mode")
 }
 
-Write-Host "SteambandRedux ROG Ally first-person automation probe"
+if ($TopDown) {
+    Write-Host "SteambandRedux ROG Ally top-down tile automation probe"
+} else {
+    Write-Host "SteambandRedux ROG Ally first-person automation probe"
+}
 Write-Host "Process id: $($Process.Id)"
 Write-Host "Build dir: $BuildDir"
 Write-Host "Log: $GameLog"

@@ -29,6 +29,13 @@
 bool g_use_2d_fallback = TRUE;
 static char g_overlay_message[80];
 
+static const char* g_top_down_tilesheet_candidates[] = {
+    "lib/xtra/graf/sdl2_topdown_24.bmp",
+    "../lib/xtra/graf/sdl2_topdown_24.bmp",
+    "../../lib/xtra/graf/sdl2_topdown_24.bmp",
+    NULL
+};
+
 /* Test map for when cave not initialized (TDD/unit test support) */
 static int test_map[16][16] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -467,6 +474,7 @@ bool renderer_init(RendererContext* ctx) {
     ctx->width = RENDER_WIDTH;
     ctx->height = RENDER_HEIGHT;
     ctx->first_person_mode = FALSE;
+    ctx->top_down_mode = FALSE;
     ctx->keyboard_focus = FALSE;
     ctx->show_debug_minimap = FALSE;
     ctx->posX = 5.5;  /* Starting position in test map */
@@ -510,14 +518,17 @@ bool renderer_init(RendererContext* ctx) {
     for (int i = 0; i < 8; i++) {
         ctx->wall_textures[i] = NULL;
     }
+    ctx->top_down_tilesheet = NULL;
+    ctx->top_down_tileset = renderer_default_top_down_tileset_spec();
     /* No asset files are loaded until ASSETS.md documents an approved source. */
     ctx->textures_approved = FALSE;
     ctx->textures_loaded = FALSE;
+    ctx->top_down_tiles_loaded = FALSE;
 
     ctx->first_person_mode = FALSE;  /* Explicitly toggled with Ctrl+F12 */
     g_use_2d_fallback = TRUE;
 
-    LOG_I("Renderer initialized hidden: %dx%d DDA raycaster ready. Press Ctrl+F12 or L3+R3 to toggle first-person prototype.",
+    LOG_I("Renderer initialized hidden: %dx%d DDA raycaster ready. Press Ctrl+F12/L3+R3 for first-person or Ctrl+F11 for top-down tiles.",
           ctx->width, ctx->height);
     renderer_test_dda();
 
@@ -528,6 +539,7 @@ void renderer_shutdown(RendererContext* ctx) {
     if (!ctx) return;
 
     if (ctx->screen_texture) SDL_DestroyTexture(ctx->screen_texture);
+    if (ctx->top_down_tilesheet) SDL_DestroyTexture(ctx->top_down_tilesheet);
     if (ctx->renderer) SDL_DestroyRenderer(ctx->renderer);
     if (ctx->window) SDL_DestroyWindow(ctx->window);
 
@@ -554,10 +566,15 @@ int renderer_handle_events(RendererContext* ctx, int max_events) {
              (e.key.keysym.sym == SDLK_ESCAPE ||
               (e.key.keysym.sym == SDLK_F12 && (e.key.keysym.mod & KMOD_CTRL))))) {
             ctx->first_person_mode = FALSE;
+            ctx->top_down_mode = FALSE;
             ctx->keyboard_focus = FALSE;
             g_use_2d_fallback = TRUE;
             if (ctx->window) SDL_HideWindow(ctx->window);
-            LOG_I("Exited first-person mode, restored 2D fallback.");
+            LOG_I("Exited SDL renderer mode, restored 2D fallback.");
+        } else if (e.type == SDL_KEYDOWN &&
+                   e.key.keysym.sym == SDLK_F11 &&
+                   (e.key.keysym.mod & KMOD_CTRL)) {
+            renderer_toggle_top_down_mode(ctx);
         } else if (e.type == SDL_WINDOWEVENT) {
             if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
                 ctx->keyboard_focus = TRUE;
@@ -569,7 +586,9 @@ int renderer_handle_events(RendererContext* ctx, int max_events) {
             }
         } else if (e.type == SDL_KEYDOWN) {
             if (renderer_should_forward_key_event(ctx)) {
-                int cmd = renderer_first_person_key_to_command(ctx, e.key.keysym.sym, (SDL_Keymod)e.key.keysym.mod);
+                int cmd = ctx->first_person_mode ?
+                    renderer_first_person_key_to_command(ctx, e.key.keysym.sym, (SDL_Keymod)e.key.keysym.mod) :
+                    renderer_key_to_command(e.key.keysym.sym, (SDL_Keymod)e.key.keysym.mod);
                 if (cmd) Term_keypress(cmd);
             }
         }
@@ -1040,6 +1059,217 @@ RendererMarkerProjection renderer_project_marker(const RendererContext* ctx,
     return out;
 }
 
+int renderer_tile_category_from_values(byte feat, bool remembered,
+                                       bool has_player, bool has_monster,
+                                       bool has_object) {
+    if (has_player) return RENDERER_TILE_PLAYER;
+    if (!remembered) return RENDERER_TILE_DARKNESS;
+    if (has_monster) return RENDERER_TILE_MONSTER;
+    if (has_object) return RENDERER_TILE_OBJECT;
+    if (feat == FEAT_LESS) return RENDERER_TILE_STAIRS_UP;
+    if (feat == FEAT_MORE) return RENDERER_TILE_STAIRS_DN;
+    if (feat >= FEAT_TRAP_HEAD && feat <= FEAT_TRAP_TAIL) return RENDERER_TILE_TRAP;
+    if (feat == FEAT_OPEN || feat == FEAT_BROKEN ||
+        (feat >= FEAT_DOOR_HEAD && feat <= FEAT_DOOR_TAIL)) {
+        return RENDERER_TILE_DOOR;
+    }
+    if (feat >= FEAT_SECRET && feat <= FEAT_PERM_SOLID) return RENDERER_TILE_WALL;
+    if (feat == FEAT_NONE) return RENDERER_TILE_DARKNESS;
+    return RENDERER_TILE_FLOOR;
+}
+
+RendererTileInfo renderer_classify_tile(int y, int x) {
+    RendererTileInfo info;
+
+    memset(&info, 0, sizeof(info));
+    info.category = RENDERER_TILE_DARKNESS;
+    info.feat = FEAT_NONE;
+
+    if (y < 0 || x < 0 || y >= DUNGEON_HGT || x >= DUNGEON_WID) {
+        return info;
+    }
+
+    info.in_bounds = TRUE;
+    info.feat = renderer_feature_at(y, x);
+    info.remembered = TRUE;
+    if (cave_info) {
+        info.remembered = (cave_info[y][x] & (CAVE_MARK | CAVE_SEEN)) ? TRUE : FALSE;
+    }
+    info.has_player = (p_ptr && p_ptr->py == y && p_ptr->px == x) ? TRUE : FALSE;
+    info.has_monster = (cave_m_idx && cave_m_idx[y][x] > 0) ? TRUE : FALSE;
+    info.has_object = (cave_o_idx && cave_o_idx[y][x] != 0) ? TRUE : FALSE;
+    info.category = renderer_tile_category_from_values(info.feat, info.remembered,
+                                                       info.has_player, info.has_monster,
+                                                       info.has_object);
+    return info;
+}
+
+RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile_size) {
+    RendererTileViewport view;
+    int center_x = 5;
+    int center_y = 5;
+
+    memset(&view, 0, sizeof(view));
+    if (!ctx || ctx->width <= 0 || ctx->height <= 0) return view;
+
+    if (tile_size <= 0) {
+        int by_width = ctx->width / 41;
+        int by_height = (ctx->height - 48) / 25;
+        tile_size = (by_width < by_height) ? by_width : by_height;
+    }
+    if (tile_size < 8) tile_size = 8;
+    if (tile_size > 32) tile_size = 32;
+
+    view.tile_size = tile_size;
+    view.cols = ctx->width / tile_size;
+    view.rows = (ctx->height - 48) / tile_size;
+    if (view.cols < 9) view.cols = 9;
+    if (view.rows < 7) view.rows = 7;
+    if (view.cols > DUNGEON_WID) view.cols = DUNGEON_WID;
+    if (view.rows > DUNGEON_HGT) view.rows = DUNGEON_HGT;
+    view.pixel_width = view.cols * tile_size;
+    view.pixel_height = view.rows * tile_size;
+
+    if (p_ptr) {
+        center_x = p_ptr->px;
+        center_y = p_ptr->py;
+    } else {
+        center_x = (int)ctx->posX;
+        center_y = (int)ctx->posY;
+    }
+
+    view.origin_x = center_x - view.cols / 2;
+    view.origin_y = center_y - view.rows / 2;
+    if (view.origin_x < 0) view.origin_x = 0;
+    if (view.origin_y < 0) view.origin_y = 0;
+    if (view.origin_x + view.cols > DUNGEON_WID) view.origin_x = DUNGEON_WID - view.cols;
+    if (view.origin_y + view.rows > DUNGEON_HGT) view.origin_y = DUNGEON_HGT - view.rows;
+    if (view.origin_x < 0) view.origin_x = 0;
+    if (view.origin_y < 0) view.origin_y = 0;
+    return view;
+}
+
+RendererColor renderer_tile_color(int category) {
+    RendererColor color;
+
+    switch (category) {
+        case RENDERER_TILE_PLAYER:
+            color.r = 214; color.g = 190; color.b = 116; break;
+        case RENDERER_TILE_MONSTER:
+            color.r = 170; color.g = 56; color.b = 48; break;
+        case RENDERER_TILE_OBJECT:
+            color.r = 188; color.g = 142; color.b = 66; break;
+        case RENDERER_TILE_WALL:
+            color.r = 96; color.g = 88; color.b = 78; break;
+        case RENDERER_TILE_DOOR:
+            color.r = 126; color.g = 82; color.b = 48; break;
+        case RENDERER_TILE_STAIRS_UP:
+            color.r = 92; color.g = 132; color.b = 142; break;
+        case RENDERER_TILE_STAIRS_DN:
+            color.r = 60; color.g = 102; color.b = 132; break;
+        case RENDERER_TILE_TRAP:
+            color.r = 138; color.g = 62; color.b = 116; break;
+        case RENDERER_TILE_FLOOR:
+            color.r = 50; color.g = 48; color.b = 42; break;
+        case RENDERER_TILE_DARKNESS:
+        default:
+            color.r = 13; color.g = 12; color.b = 11; break;
+    }
+    color.a = 255;
+    return color;
+}
+
+RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
+    RendererTopDownTilesetSpec spec;
+    int i;
+
+    memset(&spec, 0, sizeof(spec));
+    spec.tile_width = 24;
+    spec.tile_height = 24;
+    spec.columns = 5;
+    spec.rows = 2;
+    for (i = 0; i < RENDERER_TILE_CATEGORY_COUNT; i++) {
+        spec.category_to_tile[i] = i;
+    }
+    return spec;
+}
+
+int renderer_top_down_tile_index(const RendererTopDownTilesetSpec* spec, int category) {
+    if (!spec) return 0;
+    if (category < 0 || category >= RENDERER_TILE_CATEGORY_COUNT) return 0;
+    if (spec->category_to_tile[category] < 0) return 0;
+    if (spec->columns <= 0 || spec->rows <= 0) return 0;
+    if (spec->category_to_tile[category] >= spec->columns * spec->rows) return 0;
+    return spec->category_to_tile[category];
+}
+
+SDL_Rect renderer_top_down_source_rect(const RendererTopDownTilesetSpec* spec, int category) {
+    SDL_Rect rect;
+    int tile_index;
+
+    memset(&rect, 0, sizeof(rect));
+    if (!spec || spec->tile_width <= 0 || spec->tile_height <= 0 || spec->columns <= 0) {
+        return rect;
+    }
+
+    tile_index = renderer_top_down_tile_index(spec, category);
+    rect.x = (tile_index % spec->columns) * spec->tile_width;
+    rect.y = (tile_index / spec->columns) * spec->tile_height;
+    rect.w = spec->tile_width;
+    rect.h = spec->tile_height;
+    return rect;
+}
+
+bool renderer_load_top_down_tilesheet(RendererContext* ctx) {
+    SDL_Surface* surface = NULL;
+    const char* override_path;
+    int i;
+
+    if (!ctx || !ctx->renderer) return FALSE;
+    if (ctx->top_down_tilesheet) {
+        ctx->top_down_tiles_loaded = TRUE;
+        return TRUE;
+    }
+
+    override_path = SDL_getenv("STEAMBAND_TOPDOWN_TILESET");
+    if (override_path && override_path[0]) {
+        surface = SDL_LoadBMP(override_path);
+        if (surface) {
+            LOG_I("Loaded SDL2 top-down tilesheet override: %s", override_path);
+        } else {
+            LOG_W("SDL2 top-down tilesheet override failed: %s", override_path);
+        }
+    }
+
+    for (i = 0; !surface && g_top_down_tilesheet_candidates[i]; i++) {
+        surface = SDL_LoadBMP(g_top_down_tilesheet_candidates[i]);
+        if (surface) {
+            LOG_I("Loaded SDL2 top-down tilesheet: %s", g_top_down_tilesheet_candidates[i]);
+            break;
+        }
+    }
+
+    if (!surface) {
+        ctx->top_down_tiles_loaded = FALSE;
+        LOG_W("SDL2 top-down tilesheet not found; using procedural tile glyph fallback.");
+        return FALSE;
+    }
+
+    SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255));
+    ctx->top_down_tilesheet = SDL_CreateTextureFromSurface(ctx->renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (!ctx->top_down_tilesheet) {
+        ctx->top_down_tiles_loaded = FALSE;
+        LOG_W("SDL2 top-down tilesheet texture creation failed: %s", SDL_GetError());
+        return FALSE;
+    }
+
+    SDL_SetTextureBlendMode(ctx->top_down_tilesheet, SDL_BLENDMODE_BLEND);
+    ctx->top_down_tiles_loaded = TRUE;
+    return TRUE;
+}
+
 static void renderer_draw_world_markers(RendererContext* ctx) {
     int cy, cx;
     int radius = 8;
@@ -1088,8 +1318,146 @@ static void renderer_draw_world_markers(RendererContext* ctx) {
     SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
 }
 
+static void renderer_draw_tile_glyph(RendererContext* ctx, const SDL_Rect* rect,
+                                     int category, RendererColor base) {
+    SDL_Rect inner;
+    int mid_x;
+    int mid_y;
+
+    if (!ctx || !ctx->renderer || !rect) return;
+
+    inner = *rect;
+    if (inner.w > 4 && inner.h > 4) {
+        inner.x += 2;
+        inner.y += 2;
+        inner.w -= 4;
+        inner.h -= 4;
+    }
+    mid_x = rect->x + rect->w / 2;
+    mid_y = rect->y + rect->h / 2;
+
+    SDL_SetRenderDrawColor(ctx->renderer, 22, 19, 16, 210);
+    SDL_RenderDrawRect(ctx->renderer, rect);
+
+    switch (category) {
+        case RENDERER_TILE_WALL:
+            SDL_SetRenderDrawColor(ctx->renderer,
+                                   renderer_clamp_channel(base.r * 0.72),
+                                   renderer_clamp_channel(base.g * 0.72),
+                                   renderer_clamp_channel(base.b * 0.72), 255);
+            SDL_RenderDrawLine(ctx->renderer, rect->x + 2, mid_y, rect->x + rect->w - 3, mid_y);
+            SDL_RenderDrawLine(ctx->renderer, mid_x, rect->y + 2, mid_x, rect->y + rect->h - 3);
+            break;
+        case RENDERER_TILE_DOOR:
+            SDL_SetRenderDrawColor(ctx->renderer, 36, 24, 16, 230);
+            SDL_RenderDrawLine(ctx->renderer, mid_x, rect->y + 2, mid_x, rect->y + rect->h - 3);
+            SDL_RenderDrawRect(ctx->renderer, &inner);
+            break;
+        case RENDERER_TILE_STAIRS_UP:
+        case RENDERER_TILE_STAIRS_DN:
+            SDL_SetRenderDrawColor(ctx->renderer, 26, 32, 34, 230);
+            for (int i = 3; i < rect->h - 2; i += 4) {
+                SDL_RenderDrawLine(ctx->renderer, rect->x + 3, rect->y + i,
+                                   rect->x + rect->w - 4, rect->y + i);
+            }
+            break;
+        case RENDERER_TILE_TRAP:
+            SDL_SetRenderDrawColor(ctx->renderer, 32, 20, 30, 230);
+            SDL_RenderDrawLine(ctx->renderer, rect->x + 3, rect->y + 3,
+                               rect->x + rect->w - 4, rect->y + rect->h - 4);
+            SDL_RenderDrawLine(ctx->renderer, rect->x + rect->w - 4, rect->y + 3,
+                               rect->x + 3, rect->y + rect->h - 4);
+            break;
+        case RENDERER_TILE_OBJECT:
+            SDL_SetRenderDrawColor(ctx->renderer, 42, 30, 16, 230);
+            SDL_RenderDrawRect(ctx->renderer, &inner);
+            break;
+        case RENDERER_TILE_MONSTER:
+            SDL_SetRenderDrawColor(ctx->renderer, 40, 16, 14, 240);
+            SDL_RenderDrawLine(ctx->renderer, rect->x + 3, mid_y, mid_x, rect->y + 3);
+            SDL_RenderDrawLine(ctx->renderer, mid_x, rect->y + 3, rect->x + rect->w - 4, mid_y);
+            SDL_RenderDrawLine(ctx->renderer, rect->x + 3, mid_y, mid_x, rect->y + rect->h - 4);
+            SDL_RenderDrawLine(ctx->renderer, mid_x, rect->y + rect->h - 4, rect->x + rect->w - 4, mid_y);
+            break;
+        case RENDERER_TILE_PLAYER:
+            SDL_SetRenderDrawColor(ctx->renderer, 42, 32, 14, 255);
+            SDL_RenderDrawLine(ctx->renderer, mid_x, rect->y + 3, rect->x + 3, rect->y + rect->h - 4);
+            SDL_RenderDrawLine(ctx->renderer, mid_x, rect->y + 3, rect->x + rect->w - 4, rect->y + rect->h - 4);
+            SDL_RenderDrawLine(ctx->renderer, rect->x + 5, mid_y, rect->x + rect->w - 6, mid_y);
+            break;
+        case RENDERER_TILE_FLOOR:
+            SDL_SetRenderDrawColor(ctx->renderer, 74, 69, 58, 130);
+            SDL_RenderDrawPoint(ctx->renderer, rect->x + 3, rect->y + 3);
+            SDL_RenderDrawPoint(ctx->renderer, rect->x + rect->w - 4, rect->y + rect->h - 4);
+            break;
+        default:
+            break;
+    }
+}
+
+static void renderer_render_top_down(RendererContext* ctx) {
+    RendererHudSnapshot hud;
+    RendererTileViewport view;
+    int offset_x;
+    int offset_y;
+
+    if (!ctx || !ctx->renderer || !ctx->top_down_mode) return;
+
+    renderer_sync_from_player(ctx);
+    view = renderer_tile_viewport(ctx, 0);
+    offset_x = (ctx->width - view.pixel_width) / 2;
+    if (offset_x < 0) offset_x = 0;
+    offset_y = 10;
+
+    SDL_SetRenderDrawColor(ctx->renderer, 10, 9, 8, 255);
+    SDL_RenderClear(ctx->renderer);
+
+    for (int row = 0; row < view.rows; row++) {
+        for (int col = 0; col < view.cols; col++) {
+            int cy = view.origin_y + row;
+            int cx = view.origin_x + col;
+            RendererTileInfo info = renderer_classify_tile(cy, cx);
+            RendererColor color;
+            SDL_Rect rect;
+
+            if (!p_ptr && cy == (int)ctx->posY && cx == (int)ctx->posX) {
+                info.category = RENDERER_TILE_PLAYER;
+            }
+
+            color = renderer_tile_color(info.category);
+            rect.x = offset_x + col * view.tile_size;
+            rect.y = offset_y + row * view.tile_size;
+            rect.w = view.tile_size;
+            rect.h = view.tile_size;
+
+            if (ctx->top_down_tiles_loaded && ctx->top_down_tilesheet) {
+                SDL_Rect src = renderer_top_down_source_rect(&ctx->top_down_tileset, info.category);
+                SDL_RenderCopy(ctx->renderer, ctx->top_down_tilesheet, &src, &rect);
+            } else {
+                SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
+                SDL_RenderFillRect(ctx->renderer, &rect);
+                renderer_draw_tile_glyph(ctx, &rect, info.category, color);
+            }
+        }
+    }
+
+    hud = renderer_collect_hud_snapshot(ctx);
+    if (ctx->window) {
+        char top_down_title[160];
+        snprintf(top_down_title, sizeof(top_down_title),
+                 "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s",
+                 hud.current_hp, hud.max_hp, hud.current_sp, hud.max_sp,
+                 hud.depth_label, hud.status_label);
+        top_down_title[sizeof(top_down_title) - 1] = '\0';
+        SDL_SetWindowTitle(ctx->window, top_down_title);
+    }
+    renderer_draw_hud_status(ctx, &hud);
+    renderer_draw_hud_hint(ctx);
+    SDL_RenderPresent(ctx->renderer);
+}
+
 bool renderer_should_forward_key_event(const RendererContext* ctx) {
-    return (ctx && ctx->first_person_mode && ctx->keyboard_focus) ? TRUE : FALSE;
+    return (ctx && (ctx->first_person_mode || ctx->top_down_mode) && ctx->keyboard_focus) ? TRUE : FALSE;
 }
 
 bool renderer_texture_loading_allowed(const RendererContext* ctx) {
@@ -1128,9 +1496,16 @@ int renderer_trace_column(const RendererContext* ctx, int screen_x, RendererRayH
 void renderer_render(RendererContext* ctx) {
     RendererHudSnapshot hud;
 
-    if (!ctx || !ctx->renderer || !ctx->first_person_mode) {
+    if (!ctx || !ctx->renderer) {
         return;
     }
+
+    if (ctx->top_down_mode) {
+        renderer_render_top_down(ctx);
+        return;
+    }
+
+    if (!ctx->first_person_mode) return;
 
     SDL_SetRenderDrawColor(ctx->renderer, 0, 0, 0, 255);  /* Clear to black */
     SDL_RenderClear(ctx->renderer);
@@ -1198,7 +1573,8 @@ void renderer_render(RendererContext* ctx) {
 void renderer_toggle_mode(RendererContext* ctx) {
     if (!ctx) return;
     ctx->first_person_mode = !ctx->first_person_mode;
-    g_use_2d_fallback = !ctx->first_person_mode;
+    if (ctx->first_person_mode) ctx->top_down_mode = FALSE;
+    g_use_2d_fallback = (!ctx->first_person_mode && !ctx->top_down_mode) ? TRUE : FALSE;
     if (ctx->first_person_mode) {
         ctx->keyboard_focus = TRUE;
         renderer_sync_from_player(ctx);
@@ -1213,6 +1589,31 @@ void renderer_toggle_mode(RendererContext* ctx) {
         ctx->keyboard_focus = FALSE;
         if (ctx->window) SDL_HideWindow(ctx->window);
         LOG_I("Switched to 2D fallback mode.");
+    }
+}
+
+void renderer_toggle_top_down_mode(RendererContext* ctx) {
+    if (!ctx) return;
+    ctx->top_down_mode = !ctx->top_down_mode;
+    if (ctx->top_down_mode) ctx->first_person_mode = FALSE;
+    g_use_2d_fallback = (!ctx->first_person_mode && !ctx->top_down_mode) ? TRUE : FALSE;
+    if (ctx->top_down_mode) {
+        ctx->keyboard_focus = TRUE;
+        renderer_sync_from_player(ctx);
+        if (!ctx->top_down_tiles_loaded) {
+            renderer_load_top_down_tilesheet(ctx);
+        }
+        if (ctx->window) {
+            SDL_SetWindowTitle(ctx->window,
+                               "SteambandRedux 2D Tiles - Ctrl+F11/Esc exits, keyboard commands forward");
+            SDL_ShowWindow(ctx->window);
+            SDL_RaiseWindow(ctx->window);
+        }
+        LOG_I("Top-down SDL tile mode activated: original/permissive no-asset pencil tiles, Ctrl+F11 or Esc exits.");
+    } else {
+        ctx->keyboard_focus = FALSE;
+        if (ctx->window) SDL_HideWindow(ctx->window);
+        LOG_I("Switched to legacy 2D fallback mode from top-down SDL tiles.");
     }
 }
 

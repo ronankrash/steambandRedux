@@ -1934,11 +1934,12 @@ static errr Term_xtra_win_react(void)
 
 #ifdef STEAMBAND_HAS_SDL2
 static void win_renderer_toggle(void);
+static void win_renderer_toggle_top_down(void);
 
 /*
- * Render one first-person frame when the SDL prototype is active.
+ * Render one SDL frame when a prototype renderer is active.
  * The legacy Term/GDI path remains the source of truth; this only mirrors
- * current player/cave state into the SDL window for the prototype view.
+ * current player/cave state into the SDL window for prototype views.
  */
 static void win_renderer_pulse(void)
 {
@@ -1950,26 +1951,30 @@ static void win_renderer_pulse(void)
 		return;
 	}
 
-	if (!renderer || !renderer->first_person_mode) {
+	if (!renderer || (!renderer->first_person_mode && !renderer->top_down_mode)) {
 		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
 		return;
 	}
 
 	renderer_handle_events(renderer, 32);
-	if (!renderer->first_person_mode) {
+	if (!renderer->first_person_mode && !renderer->top_down_mode) {
 		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
 		return;
 	}
-	if (controller_consume_first_person_cancel()) {
+	if (renderer->first_person_mode && controller_consume_first_person_cancel()) {
 		win_renderer_toggle();
 		return;
 	}
 
 	renderer_sync_from_player(renderer);
-	look_x = controller_get_look_x();
-	if (look_x != 0.0) renderer_rotate(renderer, look_x * 0.08);
-	controller_set_first_person_camera(TRUE, renderer->dirX, renderer->dirY,
-	                                   renderer->planeX, renderer->planeY);
+	if (renderer->first_person_mode) {
+		look_x = controller_get_look_x();
+		if (look_x != 0.0) renderer_rotate(renderer, look_x * 0.08);
+		controller_set_first_person_camera(TRUE, renderer->dirX, renderer->dirY,
+		                                   renderer->planeX, renderer->planeY);
+	} else {
+		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
+	}
 	renderer_render(renderer);
 }
 
@@ -1979,6 +1984,13 @@ static void win_renderer_toggle(void)
 	if (!get_renderer()->first_person_mode) {
 		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
 	}
+	win_renderer_pulse();
+}
+
+static void win_renderer_toggle_top_down(void)
+{
+	renderer_toggle_top_down_mode(get_renderer());
+	controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
 	win_renderer_pulse();
 }
 #endif
@@ -4478,6 +4490,12 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 			if (GetKeyState(VK_MENU)    & 0x8000) ma = TRUE;
 
 #ifdef STEAMBAND_HAS_SDL2
+			if (mc && !ms && !ma && wParam == VK_F11)
+			{
+				win_renderer_toggle_top_down();
+				return 0;
+			}
+
 			if (mc && !ms && !ma && wParam == VK_F12)
 			{
 				win_renderer_toggle();

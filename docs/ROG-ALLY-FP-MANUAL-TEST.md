@@ -37,7 +37,13 @@ Optional no-hardware first-person keyboard probe:
 powershell -ExecutionPolicy Bypass -File tools\probe_rog_ally_fp.ps1
 ```
 
-The default probe launches the SDL2 Debug build, foregrounds the native Win32 window, injects `Ctrl+F12`, waits briefly, exits, and reports whether the new log segment proves renderer init, DDA startup, first-person activation, and clean shutdown. Add `-TryNewGame` for a separate best-effort title-screen `N` attempt; that mode does not run the first-person activation check, and the character birth prompts remain visual and require manual confirmation.
+Optional no-hardware top-down tile keyboard probe:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\probe_rog_ally_fp.ps1 -TopDown
+```
+
+The default probe launches the SDL2 Debug build, foregrounds the native Win32 window, injects `Ctrl+F12`, waits briefly, exits, and reports whether the new log segment proves renderer init, DDA startup, first-person activation, and clean shutdown. Add `-TopDown` to inject `Ctrl+F11` and assert SDL2 top-down tile activation instead. Add `-TryNewGame` for a separate best-effort title-screen `N` attempt; the visual birth prompts remain manual confirmation territory.
 
 ## First Minute Smoke
 
@@ -54,6 +60,19 @@ The default probe launches the SDL2 Debug build, foregrounds the native Win32 wi
 9. Press controller `B`, `Escape`, or `Ctrl+F12` to return to the 2D fallback when no controller menu is active.
 10. Exit the game and review the logs.
 
+## Top-Down Tile Smoke
+
+Use this for the SDL2 custom 2D tile detour.
+
+1. At the legacy prompt, press `N` for a new game or `O` to open an existing save.
+2. Press `Ctrl+F11` to open the SDL2 top-down tile prototype.
+3. Confirm the legacy Win32/GDI window still exists as the fallback source of truth.
+4. Move with keyboard or controller and confirm the SDL2 tile view recenters on the player.
+5. Confirm the loaded placeholder tiles or procedural fallback glyphs are distinct for walls, floors, doors, stairs, traps, objects, monsters, player, and darkness when those cells are present.
+6. Press `Escape` or `Ctrl+F11` to return to the legacy 2D fallback.
+
+To test a compatible custom tilesheet without replacing the repo placeholder, set `STEAMBAND_TOPDOWN_TILESET` to a 24x24 BMP atlas path before launch. The category order is documented in `ASSETS.md`.
+
 ## Controller Controls
 
 - `A`: Enter/confirm.
@@ -68,6 +87,7 @@ The default probe launches the SDL2 Debug build, foregrounds the native Win32 wi
 - `LB`: rest (`R`).
 - `RB`: search (`s`).
 - `L3 + R3`: toggle first-person prototype.
+- `Ctrl+F11`: toggle SDL2 top-down tile prototype from the keyboard.
 
 ## Menu Feel Checks
 
@@ -103,6 +123,16 @@ Known acceptable notes in the current local logs:
 - Missing `8X13.FON` warnings are expected; the game falls back to larger system fixed-pitch fonts.
 - If no controller is attached, the controller line reports no controller detected.
 - Some controllers may report an SDL mapping warning and fall back to XInput.
+
+## LAN Drop Folder
+
+From the development PC, build and test `build-rescue-sdl2`, then assemble a runnable folder for the Ally with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\package_rog_ally_drop.ps1
+```
+
+The package contains `SteambandRedux.exe`, the SDL2 runtime DLL when present, and a full `lib\` tree beside the executable. You can pass `-DestinationPath \\ALLY-SHARE\SteambandRedux` or another local/network path to copy directly to the handheld.
 
 ## Record Results
 

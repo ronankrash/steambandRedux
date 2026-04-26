@@ -28,6 +28,7 @@ Quick pass:
 - At the legacy prompt, press `N` for a new game or `O` to open a save.
 - Confirm the launch screen shows the ROG Ally control hints, including `A`/`B`/`X`/`Y`, `Back=Map/Menu/Config`, and the first-person toggle hint.
 - Toggle first-person mode with `Ctrl+F12`; on Ally/controller hardware also test `L3 + R3`.
+- Toggle the SDL2 top-down tile prototype with `Ctrl+F11`; press `Escape` or `Ctrl+F11` again to return to the legacy 2D fallback.
 - In first-person mode, use D-pad or left stick for roguelike movement and right stick for camera turn.
 - Press `Escape` or `Ctrl+F12` while the SDL window is focused to return to the 2D fallback.
 - Check `build-rescue-sdl2/Debug/lib/logs/steamband.log` for controller init, renderer init, DDA startup, and first-person activation lines.
@@ -200,6 +201,7 @@ Without physical ROG Ally hardware, validate:
 - SDL2 and non-SDL builds/tests pass.
 - SDL2 launch stays alive long enough to reach the legacy prompt.
 - `tools\probe_rog_ally_fp.ps1` can inject `Ctrl+F12` through the native window and verify first-person activation in `steamband.log`.
+- `tools\probe_rog_ally_fp.ps1 -TopDown` can inject `Ctrl+F11` through the native window and verify top-down tile activation in `steamband.log`.
 - `Escape`/`Ctrl+F12` exit behavior is checked with a focused SDL window.
 - Log output records whether SDL controller mapping is available or falls back to XInput.
 - Character creation is only partially automatable with current tooling: `tools\probe_rog_ally_fp.ps1 -TryNewGame` can inject the title-screen `N` as a separate bounded probe, but the visual birth flow and save creation still require manual confirmation or a future UI-state/readback harness.
@@ -211,6 +213,21 @@ Requires ROG Ally or XInput hardware:
 - D-pad/left-stick camera-relative movement reliability during live roguelike turns.
 - Confirm forward/back/strafe directions match the visible camera direction after rotating.
 - 720p/1080p readability, sleep/resume, and thermal/idle behavior.
+
+## SDL2 Top-Down Tile Prototype
+
+Use for SDL2 builds when validating the custom 2D tileset detour.
+
+Pass if:
+
+- `Ctrl+F11` opens the SDL2 top-down tile window without closing or breaking the legacy Win32/GDI UI.
+- `Escape` or `Ctrl+F11` returns to the legacy 2D fallback.
+- The view centers on the player after movement, stairs, load, and new level when game state is available.
+- Floors, walls, doors, stairs, traps, objects, monsters, player, and darkness get distinct readable tiles from the project placeholder BMP or procedural fallback.
+- Keyboard commands still forward while the SDL2 tile window has focus.
+- The tile view remains readable at 720p and 1080p using integer-scaled 16/24-ish tile proportions.
+- `STEAMBAND_TOPDOWN_TILESET` can point to a compatible 24x24 BMP atlas for local experiments.
+- No external art is bundled unless `ASSETS.md` records a verified commercial-permissive source.
 
 ## Recording Format
 

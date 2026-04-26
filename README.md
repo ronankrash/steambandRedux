@@ -72,9 +72,25 @@ view with `Ctrl+F12` or `L3 + R3`; in the SDL window use `W`/Up forward,
 `S`/Down back, `A`/`D` strafe, Left/Right arrows or right stick to turn, and
 `Escape` to return to the 2D UI.
 
+The SDL2 build also includes a no-asset top-down tile prototype for the custom
+2D tileset detour. Toggle it with `Ctrl+F11`; it mirrors the legacy cave state
+through a project-generated placeholder BMP or procedural pencil-like fallback
+glyphs. Compatible local tilesheet experiments can set `STEAMBAND_TOPDOWN_TILESET`
+to a 24x24 BMP atlas; bundled external art still requires documentation in
+`ASSETS.md`.
+
 The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
 current controls, and points to the SDL build logs. See
 `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.
+
+To assemble a lightweight LAN drop folder for the Asus ROG Ally after building:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\package_rog_ally_drop.ps1
+```
+
+Pass `-DestinationPath \\ALLY-SHARE\SteambandRedux` or another destination to
+copy the executable, SDL2 runtime DLL, and full `lib\` data tree directly there.
 
 ## Testing
 
@@ -127,6 +143,12 @@ SDL2 first-person prototype:
 - Left/Right arrows or right stick: turn camera while first-person mode is active.
 - `Escape` or `Ctrl+F12` in the SDL window exits first-person mode.
 - Other keyboard commands in the SDL window are forwarded to the legacy game input queue.
+
+SDL2 top-down tile prototype:
+
+- `Ctrl+F11`: show/hide the SDL2 tile window.
+- `Escape` while the SDL window is focused exits back to the legacy 2D UI.
+- Keyboard commands in the SDL tile window are forwarded to the legacy game input queue.
 
 ## Repository Process
 

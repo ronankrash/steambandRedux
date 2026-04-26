@@ -11,6 +11,7 @@ Aim for a mid-to-late 90s first-person dungeon crawler read: chunky 4:3 composit
 - Preserve the legacy 2D client as the fallback while the SDL2 first-person window remains a prototype.
 - Keep texture loading disabled until `ASSETS.md` records verified commercial-permissive sources.
 - Use deterministic procedural wall variation for now: masonry rows, plate seams, brass rivet highlights, distance fog, side shading, and a dark vignette.
+- Use the SDL2 top-down tile view as the first long-term 2D art pipeline slice: procedural tile fills, dark pencil-like outlines, simple hatching/glyph marks, and no external art until licenses are approved.
 - Keep the palette grounded in soot stone, aged brass, leather brown, dark brick, cool ceiling haze, and warm horizon gaslight.
 - Favor readable silhouette and orientation over realism; walls should communicate dungeon depth even without approved textures.
 
@@ -27,8 +28,22 @@ Aim for a mid-to-late 90s first-person dungeon crawler read: chunky 4:3 composit
 - Base wall set: stone brick, soot brick, brass/pipe wall, timber/metal plate wall, ore or machinery accent wall.
 - Floor and ceiling set: stone floor, metal grating, stained concrete, low-contrast ceiling haze or rafters.
 - Sprite set: monsters, objects, traps, projectiles, stairs/doors, and steampunk dungeon dressing.
+- Top-down tile set: 16x16 or 24x24 orthogonal floor, darkness, walls, doors, stairs, traps, objects, player, and broad creature-family tiles before decorative variants.
 - Font/UI set: readable bitmap-style UI at 720p, 1080p, and handheld scale.
 - All assets must have durable source, author, license, and commercial-use notes in `ASSETS.md` before being loaded.
+
+## Top-Down Tile Direction
+
+Ultima V tile sheets and Balor of the Evil Eye are style references only. The desired in-game result is a lightweight early-90s top-down read with muted fills, sketch-like outlines, sparse hatching, and strong icon silhouettes. Do not copy, trace, recolor, or bundle tiles from those games or screenshots.
+
+The current SDL2 top-down mode has a small project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` plus a procedural fallback if the BMP is missing. It classifies live cave cells into stable renderer categories before drawing, so a compatible custom sheet can be swapped without changing gameplay rules.
+
+Initial custom tilesheets should use this atlas contract:
+
+- BMP format loaded through SDL2 `SDL_LoadBMP`; no `SDL2_image` dependency yet.
+- 24x24 source tiles, 5 columns by 2 rows.
+- Row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, monster, player.
+- Runtime override for experiments: set `STEAMBAND_TOPDOWN_TILESET` to a compatible BMP path.
 
 ## Handheld UX Goals
 

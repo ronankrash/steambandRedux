@@ -71,6 +71,12 @@ void test_renderer_basic(void) {
     RendererColor rivet_detail;
     RendererColor marker_color;
     RendererMarkerProjection marker;
+    RendererTileInfo tile;
+    RendererTileViewport tile_view;
+    RendererTopDownTilesetSpec tile_spec;
+    SDL_Rect tile_src;
+    RendererColor player_tile;
+    RendererColor floor_tile;
     RendererHudSnapshot hud;
     char label[16];
     char status[32];
@@ -147,6 +153,66 @@ void test_renderer_basic(void) {
     marker_color = renderer_marker_color(RENDERER_MARKER_MONSTER);
     TEST_ASSERT_TRUE_MESSAGE(marker_color.r > marker_color.g,
                              "Monster markers should read as danger");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
+                                  renderer_tile_category_from_values(FEAT_FLOOR, TRUE, TRUE, TRUE, TRUE),
+                                  "Player tile should take top-down priority");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_DARKNESS,
+                                  renderer_tile_category_from_values(FEAT_FLOOR, FALSE, FALSE, TRUE, TRUE),
+                                  "Unremembered grids should stay hidden in top-down tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_MONSTER,
+                                  renderer_tile_category_from_values(FEAT_FLOOR, TRUE, FALSE, TRUE, TRUE),
+                                  "Monster tile should outrank object tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT,
+                                  renderer_tile_category_from_values(FEAT_FLOOR, TRUE, FALSE, FALSE, TRUE),
+                                  "Object tile should outrank terrain tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_WALL,
+                                  renderer_tile_category_from_values(FEAT_WALL_EXTRA, TRUE, FALSE, FALSE, FALSE),
+                                  "Known walls should classify as top-down wall tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_DOOR,
+                                  renderer_tile_category_from_values(FEAT_DOOR_HEAD, TRUE, FALSE, FALSE, FALSE),
+                                  "Known doors should classify as top-down door tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_STAIRS_UP,
+                                  renderer_tile_category_from_values(FEAT_LESS, TRUE, FALSE, FALSE, FALSE),
+                                  "Up stairs should classify separately for tile art");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_STAIRS_DN,
+                                  renderer_tile_category_from_values(FEAT_MORE, TRUE, FALSE, FALSE, FALSE),
+                                  "Down stairs should classify separately for tile art");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_TRAP,
+                                  renderer_tile_category_from_values(FEAT_TRAP_HEAD, TRUE, FALSE, FALSE, FALSE),
+                                  "Traps should classify as hazard tiles");
+    tile = renderer_classify_tile(-1, 0);
+    TEST_ASSERT_FALSE_MESSAGE(tile.in_bounds, "Out-of-bounds top-down classification should be safe");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_DARKNESS, tile.category,
+                                  "Out-of-bounds top-down classification should stay dark");
+    tile = renderer_classify_tile(2, 2);
+    TEST_ASSERT_TRUE_MESSAGE(tile.in_bounds, "Fallback test-map tile should classify in bounds");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_WALL, tile.category,
+                                  "Fallback test-map walls should become top-down wall tiles");
+    tile = renderer_classify_tile(5, 5);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
+                                  "Fallback test-map floors should become top-down floor tiles");
+    player_tile = renderer_tile_color(RENDERER_TILE_PLAYER);
+    floor_tile = renderer_tile_color(RENDERER_TILE_FLOOR);
+    TEST_ASSERT_TRUE_MESSAGE(player_tile.r > floor_tile.r && player_tile.g > floor_tile.g,
+                             "Player top-down tile should read brighter than floor fallback");
+    tile_spec = renderer_default_top_down_tileset_spec();
+    TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_width, "Default top-down tilesheet should use 24px source tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_height, "Default top-down tilesheet should use square source tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(5, tile_spec.columns, "Default top-down tilesheet should map ten tiles over five columns");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
+                                  renderer_top_down_tile_index(&tile_spec, RENDERER_TILE_PLAYER),
+                                  "Default tilesheet maps each category to its matching tile index");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_top_down_tile_index(&tile_spec, -1),
+                                  "Invalid low tile category should fall back to darkness tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_top_down_tile_index(&tile_spec, 999),
+                                  "Invalid high tile category should fall back to darkness tile");
+    tile_src = renderer_top_down_source_rect(&tile_spec, RENDERER_TILE_PLAYER);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(96, tile_src.x, "Player tile should be in the second row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.y, "Player tile should be in the second row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.w, "Source tile width should match the atlas contract");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.h, "Source tile height should match the atlas contract");
+    TEST_ASSERT_FALSE_MESSAGE(renderer_load_top_down_tilesheet(NULL),
+                              "Top-down tilesheet loader should reject a null renderer context safely");
 
     ctx = get_renderer();
     memset(ctx, 0, sizeof(*ctx));
@@ -201,6 +267,20 @@ void test_renderer_basic(void) {
     TEST_ASSERT_FALSE_MESSAGE(ctx->first_person_mode, "Renderer mode should return to 2D fallback");
     TEST_ASSERT_TRUE_MESSAGE(g_use_2d_fallback, "2D fallback should be restored");
     TEST_ASSERT_FALSE_MESSAGE(ctx->keyboard_focus, "2D fallback should stop SDL key forwarding");
+    renderer_toggle_top_down_mode(ctx);
+    TEST_ASSERT_TRUE_MESSAGE(ctx->top_down_mode, "Top-down SDL tile mode should activate independently");
+    TEST_ASSERT_FALSE_MESSAGE(ctx->first_person_mode, "Top-down mode should not leave first-person active");
+    TEST_ASSERT_FALSE_MESSAGE(g_use_2d_fallback, "SDL top-down mode should claim the renderer fallback indicator");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_should_forward_key_event(ctx), "Focused top-down mode should forward keyboard commands");
+    tile_view = renderer_tile_viewport(ctx, 0);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(15, tile_view.tile_size, "Default 640x480 top-down tiles should target handheld-readable scale");
+    TEST_ASSERT_TRUE_MESSAGE(tile_view.cols >= 9 && tile_view.rows >= 7,
+                             "Top-down viewport should keep a playable minimum visible area");
+    TEST_ASSERT_TRUE_MESSAGE(tile_view.origin_x >= 0 && tile_view.origin_y >= 0,
+                             "Top-down viewport should clamp origins safely");
+    renderer_toggle_top_down_mode(ctx);
+    TEST_ASSERT_FALSE_MESSAGE(ctx->top_down_mode, "Top-down SDL tile mode should close cleanly");
+    TEST_ASSERT_TRUE_MESSAGE(g_use_2d_fallback, "Closing top-down mode should restore legacy fallback");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_handle_events(NULL, 32), "Null event context should be safe");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_handle_events(ctx, 0), "Zero event budget should be safe");
 

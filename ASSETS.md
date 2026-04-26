@@ -1,10 +1,10 @@
 # Asset Inventory
 
-Last updated: 2026-04-25
+Last updated: 2026-04-26
 
-No new first-person art, audio, fonts, or texture packs are approved for use yet.
+No external first-person art, top-down tile art, audio, fonts, or texture packs are approved for use yet.
 
-The SDL first-person renderer keeps texture slots empty by default. Texture
+The SDL renderers keep texture/tile slots empty by default. Texture or tilesheet
 loading must remain disabled until an asset is listed here with a verified
 commercial-permissive license and durable source/license reference.
 
@@ -28,6 +28,26 @@ Before adding an asset:
 
 ## Visual Direction
 
-Target a Victorian steampunk dungeon-crawler look: brass, gears, leather, wood, gaslight, dark brick, and readable 16/32-bit inspired pixel art. Celtic Tales and later Wizardry games are style references only; do not copy or trace their assets.
+Target a Victorian steampunk dungeon-crawler look: brass, gears, leather, wood, gaslight, dark brick, and readable 16/32-bit inspired pixel art. Celtic Tales, Ultima V tile sheets, Balor of the Evil Eye, and later Wizardry games are style references only; do not copy, trace, recolor, rip, or bundle their assets.
+
+For the new SDL2 top-down tile view, the preferred art direction is a lightweight pencil-sketch tile read: muted fills, hand-drawn dark outlines, sparse hatching, and instantly readable silhouettes at handheld scale. The current implementation uses only procedural SDL rectangles/lines and ships no external tile art.
+
+Future approved tilesheets should be easy to audit and replace:
+
+- Prefer 16x16 or 24x24 orthogonal tiles with clean integer scaling.
+- Include coverage for floor, darkness, walls, doors, up/down stairs, traps, objects, player, and broad monster families before adding decorative variants.
+- Keep source art, license text, author, source URL, and commercial-use notes recorded in this file before any loader path is enabled.
 
 See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline checklist, and handheld UI goals. No external art candidates are approved or integrated yet.
+
+## Approved Project-Generated Assets
+
+### SDL2 Top-Down Pencil Placeholder Tiles
+
+- File: `lib/xtra/graf/sdl2_topdown_24.bmp`
+- Source: generated in this repository from original procedural shapes and colors.
+- Author/owner: SteambandRedux project.
+- License: same project distribution terms as newly authored repository content; no third-party art source.
+- Commercial-use notes: not copied, traced, recolored, or derived from Ultima, Balor, Wizardry, or other reference games. Intended as a temporary permissive placeholder so the SDL2 tile pipeline can be tested before sourcing final art.
+- Renderer use: SDL2 top-down mode loads this BMP through `SDL_LoadBMP` when present. A custom compatible BMP can be tested by setting `STEAMBAND_TOPDOWN_TILESET` to another path.
+- Tile contract: 24x24 tiles, 5 columns x 2 rows, row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, monster, player.

@@ -36,6 +36,7 @@ if not exist "%SDL_DLL%" (
 echo Quick controls:
 echo   N = new game, O = open save, Enter/A = confirm, Esc/B = cancel
 echo   Ctrl+F12 or L3+R3 = toggle first-person prototype
+echo   Ctrl+F11 = toggle SDL2 top-down tile prototype
 echo   FP keyboard: W/Up forward, S/Down back, A/D strafe, Left/Right turn
 echo   FP controller: D-pad/left stick move, right stick turns
 echo   Back: single map, double command menu, triple config menu

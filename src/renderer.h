@@ -34,6 +34,18 @@
 #define RENDERER_MARKER_DOOR    4
 #define RENDERER_MARKER_TRAP    5
 
+#define RENDERER_TILE_DARKNESS  0
+#define RENDERER_TILE_FLOOR     1
+#define RENDERER_TILE_WALL      2
+#define RENDERER_TILE_DOOR      3
+#define RENDERER_TILE_STAIRS_UP 4
+#define RENDERER_TILE_STAIRS_DN 5
+#define RENDERER_TILE_TRAP      6
+#define RENDERER_TILE_OBJECT    7
+#define RENDERER_TILE_MONSTER   8
+#define RENDERER_TILE_PLAYER    9
+#define RENDERER_TILE_CATEGORY_COUNT 10
+
 typedef struct {
     bool hit;
     int map_x;
@@ -89,6 +101,34 @@ typedef struct {
     double depth;
 } RendererMarkerProjection;
 
+typedef struct {
+    int category;
+    byte feat;
+    bool in_bounds;
+    bool remembered;
+    bool has_player;
+    bool has_monster;
+    bool has_object;
+} RendererTileInfo;
+
+typedef struct {
+    int tile_size;
+    int origin_x;
+    int origin_y;
+    int cols;
+    int rows;
+    int pixel_width;
+    int pixel_height;
+} RendererTileViewport;
+
+typedef struct {
+    int tile_width;
+    int tile_height;
+    int columns;
+    int rows;
+    int category_to_tile[RENDERER_TILE_CATEGORY_COUNT];
+} RendererTopDownTilesetSpec;
+
 /* Renderer context - extensible for approved textures */
 typedef struct {
     SDL_Window* window;
@@ -97,6 +137,7 @@ typedef struct {
     int width;
     int height;
     bool first_person_mode;
+    bool top_down_mode;
     bool keyboard_focus;
     bool show_debug_minimap;
 
@@ -110,8 +151,11 @@ typedef struct {
 
     /* Texture slots remain empty until assets are documented in ASSETS.md. */
     SDL_Texture* wall_textures[8];
+    SDL_Texture* top_down_tilesheet;
+    RendererTopDownTilesetSpec top_down_tileset;
     bool textures_approved;
     bool textures_loaded;
+    bool top_down_tiles_loaded;
 } RendererContext;
 
 /* Public API */
@@ -120,6 +164,7 @@ void renderer_shutdown(RendererContext* ctx);
 int renderer_handle_events(RendererContext* ctx, int max_events);
 void renderer_render(RendererContext* ctx);
 void renderer_toggle_mode(RendererContext* ctx);
+void renderer_toggle_top_down_mode(RendererContext* ctx);
 void renderer_sync_from_player(RendererContext* ctx);  /* Syncs from p_ptr if available */
 void renderer_rotate(RendererContext* ctx, double radians);  /* Rotate camera direction and plane */
 
@@ -145,6 +190,16 @@ int renderer_marker_kind(byte feat, int has_monster, int has_object);
 RendererColor renderer_marker_color(int marker_kind);
 RendererMarkerProjection renderer_project_marker(const RendererContext* ctx,
                                                  double world_x, double world_y);
+int renderer_tile_category_from_values(byte feat, bool remembered,
+                                       bool has_player, bool has_monster,
+                                       bool has_object);
+RendererTileInfo renderer_classify_tile(int y, int x);
+RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile_size);
+RendererColor renderer_tile_color(int category);
+RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void);
+int renderer_top_down_tile_index(const RendererTopDownTilesetSpec* spec, int category);
+SDL_Rect renderer_top_down_source_rect(const RendererTopDownTilesetSpec* spec, int category);
+bool renderer_load_top_down_tilesheet(RendererContext* ctx);
 int renderer_hud_bar_width(int current, int maximum, int max_width);
 void renderer_hud_depth_label(int depth, bool use_feet, char* out, size_t out_size);
 void renderer_hud_status_label(bool blind, bool confused, bool poisoned, bool afraid,
