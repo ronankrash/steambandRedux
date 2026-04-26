@@ -75,6 +75,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Current atlas contract: 24x24 tiles, 7 columns x 2 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
   - Monster family tiles are renderer-only and derived from visible live monsters using bounded `cave_m_idx -> m_list -> r_info` lookups; unknown, unseen, or unavailable race data falls back to terrain or the generic monster tile.
   - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
+  - SDL window title and bottom hint glyphs now distinguish top-down mode from first-person mode (`Ctrl+F11`/Escape exits, keyboard commands forward).
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
 
 ## Controller State

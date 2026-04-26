@@ -86,6 +86,7 @@ void test_renderer_basic(void) {
     char label[16];
     char status[32];
     char title[160];
+    char top_down_title[160];
 
     /* Test wall detection security and logic */
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(0, 0), "Edge walls should return true");
@@ -391,6 +392,18 @@ void test_renderer_basic(void) {
     renderer_set_overlay_message(NULL);
     renderer_hud_title(NULL, title, sizeof(title));
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(title, "no game state"), "Null HUD title should be safe");
+    renderer_top_down_title(NULL, top_down_title, sizeof(top_down_title));
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "2D Tiles"),
+                                 "Null top-down title should identify the renderer mode");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "Ctrl+F11"),
+                                 "Null top-down title should advertise the correct toggle");
+    renderer_top_down_title(&hud, top_down_title, sizeof(top_down_title));
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "2D Tiles"),
+                                 "Top-down title should identify the renderer mode");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "keys forward"),
+                                 "Top-down title should explain keyboard command forwarding");
+    TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "HP"),
+                                 "Top-down title should preserve readable HP fallback");
 
     ctx->dirX = -1.0;
     ctx->dirY = 0.0;

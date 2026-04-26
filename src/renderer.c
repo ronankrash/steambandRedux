@@ -174,6 +174,20 @@ void renderer_hud_title(const RendererHudSnapshot* hud, char* out, size_t out_si
     out[out_size - 1] = '\0';
 }
 
+void renderer_top_down_title(const RendererHudSnapshot* hud, char* out, size_t out_size) {
+    if (!out || out_size == 0) return;
+    if (!hud) {
+        renderer_copy_text(out, out_size, "SteambandRedux 2D Tiles - no game state - Ctrl+F11 exits");
+        return;
+    }
+
+    snprintf(out, out_size,
+             "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s - Ctrl+F11/Esc exits, keys forward",
+             hud->current_hp, hud->max_hp, hud->current_sp, hud->max_sp,
+             hud->depth_label, hud->status_label);
+    out[out_size - 1] = '\0';
+}
+
 RendererHudSnapshot renderer_hud_snapshot_from_values(int current_hp, int max_hp,
                                                        int current_sp, int max_sp,
                                                        int depth, bool use_feet,
@@ -373,7 +387,32 @@ static void renderer_draw_hud_hint(RendererContext* ctx) {
                            255);
     SDL_RenderFillRect(ctx->renderer, &focus_bar);
 
-    /* Compact control glyphs: move/strafe cluster and turn bars. */
+    if (ctx->top_down_mode) {
+        /* Top-down hint: compact movement diamond plus wide keyboard-forward bar. */
+        SDL_SetRenderDrawColor(ctx->renderer, 160, 134, 92, 255);
+        move_block.w = 8;
+        move_block.h = 8;
+        move_block.x = panel.x + 214;
+        move_block.y = panel.y + 4;
+        SDL_RenderFillRect(ctx->renderer, &move_block);
+        move_block.x = panel.x + 204;
+        move_block.y = panel.y + 12;
+        SDL_RenderFillRect(ctx->renderer, &move_block);
+        move_block.x = panel.x + 214;
+        SDL_RenderFillRect(ctx->renderer, &move_block);
+        move_block.x = panel.x + 224;
+        SDL_RenderFillRect(ctx->renderer, &move_block);
+
+        SDL_SetRenderDrawColor(ctx->renderer, 84, 132, 144, 255);
+        turn_block.x = panel.x + 242;
+        turn_block.y = panel.y + 8;
+        turn_block.w = 38;
+        turn_block.h = 8;
+        SDL_RenderFillRect(ctx->renderer, &turn_block);
+        return;
+    }
+
+    /* Compact first-person glyphs: move/strafe cluster and turn bars. */
     SDL_SetRenderDrawColor(ctx->renderer, 190, 154, 92, 255);
     move_block.w = 8;
     move_block.h = 8;
@@ -1488,11 +1527,7 @@ static void renderer_render_top_down(RendererContext* ctx) {
     hud = renderer_collect_hud_snapshot(ctx);
     if (ctx->window) {
         char top_down_title[160];
-        snprintf(top_down_title, sizeof(top_down_title),
-                 "SteambandRedux 2D Tiles - HP %d/%d SP %d/%d %s %s",
-                 hud.current_hp, hud.max_hp, hud.current_sp, hud.max_sp,
-                 hud.depth_label, hud.status_label);
-        top_down_title[sizeof(top_down_title) - 1] = '\0';
+        renderer_top_down_title(&hud, top_down_title, sizeof(top_down_title));
         SDL_SetWindowTitle(ctx->window, top_down_title);
     }
     renderer_draw_hud_status(ctx, &hud);

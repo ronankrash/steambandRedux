@@ -210,6 +210,7 @@ void renderer_hud_depth_label(int depth, bool use_feet, char* out, size_t out_si
 void renderer_hud_status_label(bool blind, bool confused, bool poisoned, bool afraid,
                                bool cut, bool stunned, char* out, size_t out_size);
 void renderer_hud_title(const RendererHudSnapshot* hud, char* out, size_t out_size);
+void renderer_top_down_title(const RendererHudSnapshot* hud, char* out, size_t out_size);
 RendererHudSnapshot renderer_hud_snapshot_from_values(int current_hp, int max_hp,
                                                        int current_sp, int max_sp,
                                                        int depth, bool use_feet,
