@@ -541,6 +541,22 @@ void test_renderer_basic(void) {
                                   "SDL shifted period should map to stairs down");
     TEST_ASSERT_EQUAL_INT_MESSAGE(27, renderer_key_to_command(SDLK_ESCAPE, KMOD_NONE),
                                   "SDL Escape should be forwardable as legacy cancel");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(':', renderer_key_to_command(SDLK_SEMICOLON, KMOD_SHIFT),
+                                  "SDL shifted semicolon should map to legacy colon commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('\'', renderer_key_to_command(SDLK_QUOTE, KMOD_NONE),
+                                  "SDL quote should map to legacy apostrophe commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('{', renderer_key_to_command(SDLK_LEFTBRACKET, KMOD_SHIFT),
+                                  "SDL shifted left bracket should map to brace commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('}', renderer_key_to_command(SDLK_RIGHTBRACKET, KMOD_SHIFT),
+                                  "SDL shifted right bracket should map to brace commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('|', renderer_key_to_command(SDLK_BACKSLASH, KMOD_SHIFT),
+                                  "SDL shifted backslash should map to pipe commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('+', renderer_key_to_command(SDLK_EQUALS, KMOD_SHIFT),
+                                  "SDL shifted equals should map to plus commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('~', renderer_key_to_command(SDLK_BACKQUOTE, KMOD_SHIFT),
+                                  "SDL shifted backquote should map to tilde commands");
+    TEST_ASSERT_EQUAL_INT_MESSAGE('*', renderer_key_to_command(SDLK_KP_MULTIPLY, KMOD_NONE),
+                                  "SDL keypad multiply should map to star commands");
     ctx->first_person_mode = TRUE;
     ctx->top_down_mode = FALSE;
     TEST_ASSERT_TRUE_MESSAGE(renderer_key_exits_mode(ctx, SDLK_ESCAPE, KMOD_NONE),

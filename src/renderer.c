@@ -675,6 +675,18 @@ int renderer_key_to_command(SDL_Keycode key, SDL_Keymod mod) {
         case SDLK_PERIOD: return shifted ? '>' : '.';
         case SDLK_SLASH: return shifted ? '?' : '/';
         case SDLK_MINUS: return shifted ? '_' : '-';
+        case SDLK_SEMICOLON: return shifted ? ':' : ';';
+        case SDLK_QUOTE: return shifted ? '"' : '\'';
+        case SDLK_LEFTBRACKET: return shifted ? '{' : '[';
+        case SDLK_RIGHTBRACKET: return shifted ? '}' : ']';
+        case SDLK_BACKSLASH: return shifted ? '|' : '\\';
+        case SDLK_EQUALS: return shifted ? '+' : '=';
+        case SDLK_BACKQUOTE: return shifted ? '~' : '`';
+        case SDLK_KP_MULTIPLY: return '*';
+        case SDLK_KP_PLUS: return '+';
+        case SDLK_KP_MINUS: return '-';
+        case SDLK_KP_DIVIDE: return '/';
+        case SDLK_KP_PERIOD: return '.';
         default:
             break;
     }
