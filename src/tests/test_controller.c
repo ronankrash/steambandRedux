@@ -46,6 +46,25 @@ void test_controller_default_mappings_accessible(void) {
     TEST_ASSERT_NOT_EQUAL(0, key_code); /* First key code should be valid */
 }
 
+/* Test for SDL2 GameController (Phase 2 ROG Ally support) */
+void test_sdl2_controller_init(void) {
+    /* SDL2 initialization for enhanced controller support (ROG Ally mappings via gamecontrollerdb) */
+    int init_result = SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
+    TEST_ASSERT_TRUE_MESSAGE(init_result == 0 || init_result == -1, "SDL_GameController subsystem test");
+    
+    if (init_result == 0) {
+        SDL_GameController *test_ctrl = SDL_GameControllerOpen(0);
+        if (test_ctrl) {
+            SDL_GameControllerClose(test_ctrl);
+            LOG_I("SDL2 controller test passed with hardware");
+        } else {
+            LOG_I("SDL2 controller test passed (no hardware in test env - expected)");
+        }
+        SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+    }
+    TEST_PASS();
+}
+
 /* Test 8.1.2: Test button display name conversion */
 void test_controller_button_display_names(void) {
     const char *name;

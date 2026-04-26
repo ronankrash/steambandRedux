@@ -2476,3 +2476,245 @@
 [2025-12-14 16:45:05] [DEBUG] Term_fresh() returned successfully
 [2025-12-14 16:45:05] [DEBUG] init_angband() returned successfully
 [2025-12-14 16:45:05] [INFO] Angband game engine initialized successfully
+[2026-04-25 16:43:55] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2026-04-25 16:43:55] [INFO] Controller initialized: No controller detected (port 0)
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2026-04-25 16:43:55] [INFO] Controller config: Config file not found, using default mappings
+[2026-04-25 16:43:55] [INFO] Initializing windows...
+[2026-04-25 16:43:55] [INFO] Loading preferences...
+[2026-04-25 16:43:55] [INFO] Preferences loaded successfully
+[2026-04-25 16:43:55] [INFO] Initializing 8 windows...
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 16:43:55] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 16:43:55] [INFO] Window initialization complete
+[2026-04-25 16:43:55] [INFO] Creating sub-windows...
+[2026-04-25 16:43:55] [INFO] Creating main window...
+[2026-04-25 16:43:55] [INFO] Main window params: style=0x11CF0000, exStyle=0x00000000, pos=(125,16), size=(1380,639)
+[2026-04-25 16:43:55] [INFO] Calling CreateWindowEx for main window...
+[2026-04-25 16:43:55] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x11CF0000, exStyle=0x00000000
+[2026-04-25 16:43:55] [DEBUG] CreateWindowEx position: (125,16), size: (1380,639)
+[2026-04-25 16:43:55] [DEBUG] Flushing logs before CreateWindowEx
+[2026-04-25 16:43:55] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2026-04-25 16:43:55] [DEBUG] Entering __try block for CreateWindowEx
+[2026-04-25 16:43:55] [DEBUG] Inside __try block, calling CreateWindowEx
+[2026-04-25 16:43:55] [DEBUG] CreateWindowEx returned: 0000000000040478
+[2026-04-25 16:43:55] [DEBUG] Exited __try/__except block
+[2026-04-25 16:43:55] [DEBUG] Processing queued messages after CreateWindowEx
+[2026-04-25 16:43:55] [DEBUG] Processing message 1: 0x031F (hWnd=0000000000040478)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 1
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 1
+[2026-04-25 16:43:55] [DEBUG] Processing message 2: 0xC0E5 (hWnd=0000000000040478)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 2
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 2
+[2026-04-25 16:43:55] [DEBUG] Processing message 3: 0x0060 (hWnd=000000000003042A)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 3
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 3
+[2026-04-25 16:43:55] [DEBUG] Processing message 4: 0x0200 (hWnd=0000000000040478)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 4
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 4
+[2026-04-25 16:43:55] [DEBUG] Processing message 5: 0x0060 (hWnd=000000000003042A)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 5
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 5
+[2026-04-25 16:43:55] [DEBUG] Processing message 6: 0x000F (hWnd=0000000000040478)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 6
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 6
+[2026-04-25 16:43:55] [DEBUG] Processing message 7: 0x0060 (hWnd=000000000003042A)
+[2026-04-25 16:43:55] [DEBUG] Dispatching message 7
+[2026-04-25 16:43:55] [DEBUG] Dispatched message 7
+[2026-04-25 16:43:55] [DEBUG] Finished processing queued messages (processed 7 messages)
+[2026-04-25 16:43:55] [INFO] CreateWindowEx returned: 0000000000040478
+[2026-04-25 16:43:55] [INFO] Main window created successfully
+[2026-04-25 16:43:55] [DEBUG] Showing main window
+[2026-04-25 16:43:55] [DEBUG] Main window shown
+[2026-04-25 16:43:55] [DEBUG] Linking term data
+[2026-04-25 16:43:55] [DEBUG] Term data linked
+[2026-04-25 16:43:55] [DEBUG] Term screen set
+[2026-04-25 16:43:55] [DEBUG] Activating main terminal
+[2026-04-25 16:43:55] [DEBUG] Main terminal activated, Term=00007FF6E2EA1440
+[2026-04-25 16:43:55] [INFO] All windows created and initialized
+[2026-04-25 16:43:55] [INFO] Windows initialized successfully
+[2026-04-25 16:43:55] [INFO] Initializing Angband game engine...
+[2026-04-25 16:43:55] [DEBUG] About to call init_angband()
+[2026-04-25 16:43:55] [DEBUG] ANGBAND_DIR_FILE = C:\Users\bkars\git\steambandRedux\lib\file
+[2026-04-25 16:43:55] [DEBUG] Inside __try block for init_angband()
+[2026-04-25 16:43:55] [DEBUG] init_angband() started
+[2026-04-25 16:43:55] [DEBUG] Building news.txt path
+[2026-04-25 16:43:55] [DEBUG] Path built: C:\Users\bkars\git\steambandRedux\lib\file\news.txt
+[2026-04-25 16:43:55] [DEBUG] Opening news.txt file
+[2026-04-25 16:43:55] [DEBUG] fd_open returned: 4
+[2026-04-25 16:43:55] [DEBUG] Closing news.txt file (fd=4)
+[2026-04-25 16:43:55] [DEBUG] fd_close returned successfully
+[2026-04-25 16:43:55] [DEBUG] About to call Term_clear()
+[2026-04-25 16:43:55] [DEBUG] Term is valid (Term=00007FF6E2EA1440), calling Term_clear()
+[2026-04-25 16:43:55] [DEBUG] Term_clear() returned successfully
+[2026-04-25 16:43:55] [DEBUG] About to build news.txt path again
+[2026-04-25 16:43:55] [DEBUG] Path built: C:\Users\bkars\git\steambandRedux\lib\file\news.txt
+[2026-04-25 16:43:55] [DEBUG] About to open news.txt file
+[2026-04-25 16:43:55] [DEBUG] my_fopen returned: 00000276D208C840
+[2026-04-25 16:43:55] [DEBUG] About to check if fp is valid
+[2026-04-25 16:43:55] [DEBUG] Reading news.txt file
+[2026-04-25 16:43:55] [DEBUG] Read line 0 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 1 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 2 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 3 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 4 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 5 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 6 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 7 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 8 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 9 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 10 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 11 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 12 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 13 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 14 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 15 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 16 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 17 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 18 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 19 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 20 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 21 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Read line 22 from news.txt
+[2026-04-25 16:43:55] [DEBUG] Finished reading news.txt file
+[2026-04-25 16:43:55] [DEBUG] Closing news.txt file
+[2026-04-25 16:43:55] [DEBUG] my_fclose returned successfully
+[2026-04-25 16:43:55] [DEBUG] About to call Term_fresh()
+[2026-04-25 16:43:55] [DEBUG] Term_fresh() returned successfully
+[2026-04-25 16:43:55] [DEBUG] init_angband() returned successfully
+[2026-04-25 16:43:55] [INFO] Angband game engine initialized successfully
+[2026-04-25 17:03:31] [INFO] Logging initialized: C:\Users\bkars\git\steambandRedux\build\Debug\lib\logs\steamband.log
+[2026-04-25 17:03:31] [INFO] Controller initialized: No controller detected (port 0)
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON (game will attempt to use system fonts)
+[2026-04-25 17:03:31] [INFO] Controller config: Config file not found, using default mappings
+[2026-04-25 17:03:31] [INFO] Initializing windows...
+[2026-04-25 17:03:31] [INFO] Loading preferences...
+[2026-04-25 17:03:31] [INFO] Preferences loaded successfully
+[2026-04-25 17:03:31] [INFO] Initializing 8 windows...
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [WARN] Font file not found: C:\Users\bkars\git\steambandRedux\lib\xtra\font\8X13.FON, using larger system fixed-pitch font as fallback
+[2026-04-25 17:03:31] [DEBUG] Fallback font metrics: wid=17, hgt=24
+[2026-04-25 17:03:31] [INFO] Window initialization complete
+[2026-04-25 17:03:31] [INFO] Creating sub-windows...
+[2026-04-25 17:03:31] [INFO] Creating main window...
+[2026-04-25 17:03:31] [INFO] Main window params: style=0x10CF0000, exStyle=0x00000000, pos=(125,16), size=(1380,639)
+[2026-04-25 17:03:31] [INFO] Calling CreateWindowEx for main window...
+[2026-04-25 17:03:31] [DEBUG] CreateWindowEx parameters: AppName=Steamband, style=0x10CF0000, exStyle=0x00000000
+[2026-04-25 17:03:31] [DEBUG] CreateWindowEx position: (125,16), size: (1380,639)
+[2026-04-25 17:03:31] [DEBUG] Flushing logs before CreateWindowEx
+[2026-04-25 17:03:31] [DEBUG] Logs flushed successfully, about to call CreateWindowEx
+[2026-04-25 17:03:31] [DEBUG] Entering __try block for CreateWindowEx
+[2026-04-25 17:03:31] [DEBUG] Inside __try block, calling CreateWindowEx
+[2026-04-25 17:03:31] [DEBUG] CreateWindowEx returned: 000000000015082C
+[2026-04-25 17:03:31] [DEBUG] Exited __try/__except block
+[2026-04-25 17:03:31] [DEBUG] Processing queued messages after CreateWindowEx
+[2026-04-25 17:03:31] [DEBUG] Processing message 1: 0x031F (hWnd=000000000015082C)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 1
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 1
+[2026-04-25 17:03:31] [DEBUG] Processing message 2: 0xC0E5 (hWnd=000000000015082C)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 2
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 2
+[2026-04-25 17:03:31] [DEBUG] Processing message 3: 0x0060 (hWnd=0000000000380844)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 3
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 3
+[2026-04-25 17:03:31] [DEBUG] Processing message 4: 0x0200 (hWnd=000000000015082C)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 4
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 4
+[2026-04-25 17:03:31] [DEBUG] Processing message 5: 0x0060 (hWnd=0000000000380844)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 5
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 5
+[2026-04-25 17:03:31] [DEBUG] Processing message 6: 0x000F (hWnd=000000000015082C)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 6
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 6
+[2026-04-25 17:03:31] [DEBUG] Processing message 7: 0x0060 (hWnd=0000000000380844)
+[2026-04-25 17:03:31] [DEBUG] Dispatching message 7
+[2026-04-25 17:03:31] [DEBUG] Dispatched message 7
+[2026-04-25 17:03:31] [DEBUG] Finished processing queued messages (processed 7 messages)
+[2026-04-25 17:03:31] [INFO] CreateWindowEx returned: 000000000015082C
+[2026-04-25 17:03:31] [INFO] Main window created successfully
+[2026-04-25 17:03:31] [DEBUG] Showing main window
+[2026-04-25 17:03:31] [DEBUG] Main window shown
+[2026-04-25 17:03:31] [DEBUG] Linking term data
+[2026-04-25 17:03:31] [DEBUG] Term data linked
+[2026-04-25 17:03:31] [DEBUG] Term screen set
+[2026-04-25 17:03:31] [DEBUG] Activating main terminal
+[2026-04-25 17:03:31] [DEBUG] Main terminal activated, Term=00007FF6E2EA1440
+[2026-04-25 17:03:31] [INFO] All windows created and initialized
+[2026-04-25 17:03:31] [INFO] Windows initialized successfully
+[2026-04-25 17:03:31] [INFO] Initializing Angband game engine...
+[2026-04-25 17:03:31] [DEBUG] About to call init_angband()
+[2026-04-25 17:03:31] [DEBUG] ANGBAND_DIR_FILE = C:\Users\bkars\git\steambandRedux\lib\file
+[2026-04-25 17:03:31] [DEBUG] Inside __try block for init_angband()
+[2026-04-25 17:03:31] [DEBUG] init_angband() started
+[2026-04-25 17:03:31] [DEBUG] Building news.txt path
+[2026-04-25 17:03:31] [DEBUG] Path built: C:\Users\bkars\git\steambandRedux\lib\file\news.txt
+[2026-04-25 17:03:31] [DEBUG] Opening news.txt file
+[2026-04-25 17:03:31] [DEBUG] fd_open returned: 4
+[2026-04-25 17:03:31] [DEBUG] Closing news.txt file (fd=4)
+[2026-04-25 17:03:31] [DEBUG] fd_close returned successfully
+[2026-04-25 17:03:31] [DEBUG] About to call Term_clear()
+[2026-04-25 17:03:31] [DEBUG] Term is valid (Term=00007FF6E2EA1440), calling Term_clear()
+[2026-04-25 17:03:31] [DEBUG] Term_clear() returned successfully
+[2026-04-25 17:03:31] [DEBUG] About to build news.txt path again
+[2026-04-25 17:03:31] [DEBUG] Path built: C:\Users\bkars\git\steambandRedux\lib\file\news.txt
+[2026-04-25 17:03:31] [DEBUG] About to open news.txt file
+[2026-04-25 17:03:31] [DEBUG] my_fopen returned: 0000017820DF32E0
+[2026-04-25 17:03:31] [DEBUG] About to check if fp is valid
+[2026-04-25 17:03:31] [DEBUG] Reading news.txt file
+[2026-04-25 17:03:31] [DEBUG] Read line 0 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 1 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 2 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 3 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 4 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 5 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 6 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 7 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 8 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 9 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 10 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 11 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 12 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 13 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 14 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 15 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 16 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 17 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 18 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 19 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 20 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 21 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Read line 22 from news.txt
+[2026-04-25 17:03:31] [DEBUG] Finished reading news.txt file
+[2026-04-25 17:03:31] [DEBUG] Closing news.txt file
+[2026-04-25 17:03:31] [DEBUG] my_fclose returned successfully
+[2026-04-25 17:03:31] [DEBUG] About to call Term_fresh()
+[2026-04-25 17:03:31] [DEBUG] Term_fresh() returned successfully
+[2026-04-25 17:03:31] [DEBUG] init_angband() returned successfully
+[2026-04-25 17:03:31] [INFO] Angband game engine initialized successfully

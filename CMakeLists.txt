@@ -3,11 +3,17 @@ project(SteambandRedux C)
 
 set(CMAKE_C_STANDARD 99)
 
+# SDL2 for Phase 2: first-person renderer, improved controller input (ROG Ally defaults), Steam integration
+# Install via vcpkg (vcpkg install sdl2) or download dev libs and set SDL2_DIR.
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
 # Define macros for Windows build
 if(WIN32)
     add_definitions(-DWINDOWS -DWIN32 -D_WIN32_WINNT=0x0501)
     # Suppress MSVC C4996 warnings for unsafe string functions (legacy code)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-DSDL_MAIN_HANDLED)  # For SDL2main with Win32
 endif()
 
 # Include directories
@@ -25,6 +31,7 @@ set(SOURCES
     src/controller.c
     src/controller_menu.c
     src/controller_config_menu.c
+    src/renderer.c
     src/cmd-item.c
     src/cmd-know.c
     src/cmd-misc.c
@@ -72,18 +79,20 @@ if(WIN32)
     list(APPEND SOURCES src/main-win.c)
     # Resource file would go here if we had it: src/angband.rc
     
-    # Libraries needed for Windows
-    set(LIBS kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32 winmm xinput)
+    # Libraries needed for Windows (SDL2 replaces some legacy GDI/XInput for Phase 2+)
+    # SDL2 provides excellent ROG Ally / modern controller support via GameController API
+    set(LIBS kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32 winmm xinput ${SDL2_LIBRARIES})
 else()
     # Logic for other platforms (e.g. ncurses)
     list(APPEND SOURCES src/main-gcu.c src/main.c)
     find_package(Curses REQUIRED)
     include_directories(${CURSES_INCLUDE_DIR})
-    set(LIBS ${CURSES_LIBRARIES})
+    set(LIBS ${CURSES_LIBRARIES} ${SDL2_LIBRARIES})
 endif()
 
 add_executable(SteambandRedux WIN32 ${SOURCES})
-target_link_libraries(SteambandRedux ${LIBS})
+# SDL2main must be linked first for proper SDL initialization on Windows
+target_link_libraries(SteambandRedux PRIVATE SDL2::SDL2main SDL2::SDL2 ${LIBS})
 
 # Unity Testing Framework
 set(UNITY_SOURCES
@@ -99,7 +108,7 @@ add_executable(UnitTests
     src/logging.c
     ${UNITY_SOURCES}
 )
-target_link_libraries(UnitTests ${LIBS})
+target_link_libraries(UnitTests PRIVATE SDL2::SDL2 ${LIBS})
 
 # Unity Test Runner (for Unity framework tests)
 # Note: test_util.c is excluded for now due to complex dependencies on game state
@@ -117,9 +126,10 @@ add_executable(UnityTestRunner
     src/controller.c
     src/controller_menu.c
     src/controller_config_menu.c
+    src/renderer.c
     ${UNITY_SOURCES}
 )
-target_link_libraries(UnityTestRunner ${LIBS})
+target_link_libraries(UnityTestRunner PRIVATE SDL2::SDL2 ${LIBS})
 
 # Enable CTest
 enable_testing()

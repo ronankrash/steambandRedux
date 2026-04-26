@@ -13,6 +13,7 @@ extern void test_unity_runner(void);
 extern void test_unity_suite_organization(void);
 extern void test_test_helpers_temp_file(void);
 extern void test_unity_fixtures_available(void);
+extern void test_renderer_basic(void);
 
 /* Forward declarations for logging tests */
 extern void test_log_level_enum(void);
@@ -62,6 +63,7 @@ int main(void) {
     RUN_TEST(test_unity_suite_organization);
     RUN_TEST(test_test_helpers_temp_file);
     RUN_TEST(test_unity_fixtures_available);
+    RUN_TEST(test_renderer_basic);
     
     /* Run logging system tests */
     RUN_TEST(test_log_level_enum);

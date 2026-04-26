@@ -7,7 +7,7 @@ events:
       - "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeDetermineSystem.cmake:212 (message)"
       - "CMakeLists.txt:2 (project)"
     message: |
-      The system is: Windows - 10.0.26100 - AMD64
+      The system is: Windows - 10.0.26200 - AMD64
   -
     kind: "find-v1"
     backtrace:
@@ -35,9 +35,15 @@ events:
     found: "C:/Program Files/CMake/share/cmake-4.2/Modules/CMakeCCompilerId.c.in"
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -51,12 +57,14 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
   -
     kind: "message-v1"
     backtrace:
@@ -73,7 +81,7 @@ events:
       The output was:
       0
       MSBuild version 17.12.12+1cce77968 for .NET Framework
-      Build started 12/11/2025 7:01:52 PM.
+      Build started 4/25/2026 4:59:54 PM.
       
       Project "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\4.2.1\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
       PrepareForBuild:
@@ -102,7 +110,7 @@ events:
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:01.10
+      Time Elapsed 00:00:01.39
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -135,9 +143,11 @@ events:
       - "link"
     candidate_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/"
-      - "C:/Program Files/Git/mingw64/bin/"
-      - "C:/Program Files/Git/usr/bin/"
       - "C:/Users/bkars/bin/"
+      - "C:/Program Files/Git/mingw64/bin/"
+      - "C:/Program Files/Git/usr/local/bin/"
+      - "C:/Program Files/Git/usr/bin/"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/"
       - "C:/Python313/"
       - "C:/Python313/Scripts/"
@@ -155,14 +165,22 @@ events:
       - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/bin/"
       - "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/"
+      - "C:/Program Files/Git/usr/bin/core_perl/"
     searched_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/link.com"
     found: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/link.exe"
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -176,12 +194,14 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
   -
     kind: "find-v1"
     backtrace:
@@ -205,9 +225,11 @@ events:
       - "lld-link"
     candidate_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/"
-      - "C:/Program Files/Git/mingw64/bin/"
-      - "C:/Program Files/Git/usr/bin/"
       - "C:/Users/bkars/bin/"
+      - "C:/Program Files/Git/mingw64/bin/"
+      - "C:/Program Files/Git/usr/local/bin/"
+      - "C:/Program Files/Git/usr/bin/"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/"
       - "C:/Python313/"
       - "C:/Python313/Scripts/"
@@ -225,19 +247,27 @@ events:
       - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/bin/"
       - "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/"
+      - "C:/Program Files/Git/usr/bin/core_perl/"
     searched_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/lld-link.com"
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/lld-link.exe"
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/lld-link"
-      - "C:/Program Files/Git/mingw64/bin/lld-link.com"
-      - "C:/Program Files/Git/mingw64/bin/lld-link.exe"
-      - "C:/Program Files/Git/mingw64/bin/lld-link"
-      - "C:/Program Files/Git/usr/bin/lld-link.com"
-      - "C:/Program Files/Git/usr/bin/lld-link.exe"
-      - "C:/Program Files/Git/usr/bin/lld-link"
       - "C:/Users/bkars/bin/lld-link.com"
       - "C:/Users/bkars/bin/lld-link.exe"
       - "C:/Users/bkars/bin/lld-link"
+      - "C:/Program Files/Git/mingw64/bin/lld-link.com"
+      - "C:/Program Files/Git/mingw64/bin/lld-link.exe"
+      - "C:/Program Files/Git/mingw64/bin/lld-link"
+      - "C:/Program Files/Git/usr/local/bin/lld-link.com"
+      - "C:/Program Files/Git/usr/local/bin/lld-link.exe"
+      - "C:/Program Files/Git/usr/local/bin/lld-link"
+      - "C:/Program Files/Git/usr/bin/lld-link.com"
+      - "C:/Program Files/Git/usr/bin/lld-link.exe"
+      - "C:/Program Files/Git/usr/bin/lld-link"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/lld-link.com"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/lld-link.exe"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/lld-link"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/lld-link.com"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/lld-link.exe"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/lld-link"
@@ -289,12 +319,24 @@ events:
       - "C:/Program Files/CMake/bin/lld-link.com"
       - "C:/Program Files/CMake/bin/lld-link.exe"
       - "C:/Program Files/CMake/bin/lld-link"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/lld-link.com"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/lld-link.exe"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/lld-link"
+      - "C:/Program Files/Git/usr/bin/core_perl/lld-link.com"
+      - "C:/Program Files/Git/usr/bin/core_perl/lld-link.exe"
+      - "C:/Program Files/Git/usr/bin/core_perl/lld-link"
     found: false
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -308,12 +350,14 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
   -
     kind: "find-v1"
     backtrace:
@@ -335,9 +379,11 @@ events:
       - "link"
     candidate_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/"
-      - "C:/Program Files/Git/mingw64/bin/"
-      - "C:/Program Files/Git/usr/bin/"
       - "C:/Users/bkars/bin/"
+      - "C:/Program Files/Git/mingw64/bin/"
+      - "C:/Program Files/Git/usr/local/bin/"
+      - "C:/Program Files/Git/usr/bin/"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/"
       - "C:/Python313/"
       - "C:/Python313/Scripts/"
@@ -355,14 +401,22 @@ events:
       - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/bin/"
       - "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/"
+      - "C:/Program Files/Git/usr/bin/core_perl/"
     searched_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/link.com"
     found: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/link.exe"
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -376,12 +430,14 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
   -
     kind: "find-v1"
     backtrace:
@@ -403,9 +459,11 @@ events:
       - "mt"
     candidate_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/"
-      - "C:/Program Files/Git/mingw64/bin/"
-      - "C:/Program Files/Git/usr/bin/"
       - "C:/Users/bkars/bin/"
+      - "C:/Program Files/Git/mingw64/bin/"
+      - "C:/Program Files/Git/usr/local/bin/"
+      - "C:/Program Files/Git/usr/bin/"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/"
       - "C:/Python313/"
       - "C:/Python313/Scripts/"
@@ -423,19 +481,27 @@ events:
       - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/bin/"
       - "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/"
+      - "C:/Program Files/Git/usr/bin/core_perl/"
     searched_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/mt.com"
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/mt.exe"
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/mt"
-      - "C:/Program Files/Git/mingw64/bin/mt.com"
-      - "C:/Program Files/Git/mingw64/bin/mt.exe"
-      - "C:/Program Files/Git/mingw64/bin/mt"
-      - "C:/Program Files/Git/usr/bin/mt.com"
-      - "C:/Program Files/Git/usr/bin/mt.exe"
-      - "C:/Program Files/Git/usr/bin/mt"
       - "C:/Users/bkars/bin/mt.com"
       - "C:/Users/bkars/bin/mt.exe"
       - "C:/Users/bkars/bin/mt"
+      - "C:/Program Files/Git/mingw64/bin/mt.com"
+      - "C:/Program Files/Git/mingw64/bin/mt.exe"
+      - "C:/Program Files/Git/mingw64/bin/mt"
+      - "C:/Program Files/Git/usr/local/bin/mt.com"
+      - "C:/Program Files/Git/usr/local/bin/mt.exe"
+      - "C:/Program Files/Git/usr/local/bin/mt"
+      - "C:/Program Files/Git/usr/bin/mt.com"
+      - "C:/Program Files/Git/usr/bin/mt.exe"
+      - "C:/Program Files/Git/usr/bin/mt"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/mt.com"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/mt.exe"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/mt"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/mt.com"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/mt.exe"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/mt"
@@ -487,12 +553,24 @@ events:
       - "C:/Program Files/CMake/bin/mt.com"
       - "C:/Program Files/CMake/bin/mt.exe"
       - "C:/Program Files/CMake/bin/mt"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/mt.com"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/mt.exe"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/mt"
+      - "C:/Program Files/Git/usr/bin/core_perl/mt.com"
+      - "C:/Program Files/Git/usr/bin/core_perl/mt.exe"
+      - "C:/Program Files/Git/usr/bin/core_perl/mt"
     found: false
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -506,12 +584,14 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
   -
     kind: "find-v1"
     backtrace:
@@ -533,9 +613,11 @@ events:
       - "lib"
     candidate_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/"
-      - "C:/Program Files/Git/mingw64/bin/"
-      - "C:/Program Files/Git/usr/bin/"
       - "C:/Users/bkars/bin/"
+      - "C:/Program Files/Git/mingw64/bin/"
+      - "C:/Program Files/Git/usr/local/bin/"
+      - "C:/Program Files/Git/usr/bin/"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/"
       - "C:/Python313/"
       - "C:/Python313/Scripts/"
@@ -553,14 +635,22 @@ events:
       - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/bin/"
       - "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/"
+      - "C:/Program Files/Git/usr/bin/core_perl/"
     searched_directories:
       - "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/lib.com"
     found: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/lib.exe"
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -574,12 +664,14 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
   -
     kind: "find-v1"
     backtrace:
@@ -603,9 +695,11 @@ events:
     names:
       - "rc"
     candidate_directories:
-      - "C:/Program Files/Git/mingw64/bin/"
-      - "C:/Program Files/Git/usr/bin/"
       - "C:/Users/bkars/bin/"
+      - "C:/Program Files/Git/mingw64/bin/"
+      - "C:/Program Files/Git/usr/local/bin/"
+      - "C:/Program Files/Git/usr/bin/"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/"
       - "C:/Python313/"
       - "C:/Python313/Scripts/"
@@ -623,6 +717,8 @@ events:
       - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/bin/"
       - "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/"
       - "C:/Program Files/CMake/bin/"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/"
+      - "C:/Program Files/Git/usr/bin/core_perl/"
       - "C:/Program Files/bin/"
       - "C:/Program Files/sbin/"
       - "C:/Program Files/"
@@ -632,19 +728,25 @@ events:
       - "C:/Program Files/CMake/bin/"
       - "C:/Program Files/CMake/sbin/"
       - "C:/Program Files/CMake/"
-      - "C:/Program Files/SteambandRedux/bin/"
-      - "C:/Program Files/SteambandRedux/sbin/"
-      - "C:/Program Files/SteambandRedux/"
+      - "C:/Program Files (x86)/SteambandRedux/bin/"
+      - "C:/Program Files (x86)/SteambandRedux/sbin/"
+      - "C:/Program Files (x86)/SteambandRedux/"
     searched_directories:
-      - "C:/Program Files/Git/mingw64/bin/rc.com"
-      - "C:/Program Files/Git/mingw64/bin/rc.exe"
-      - "C:/Program Files/Git/mingw64/bin/rc"
-      - "C:/Program Files/Git/usr/bin/rc.com"
-      - "C:/Program Files/Git/usr/bin/rc.exe"
-      - "C:/Program Files/Git/usr/bin/rc"
       - "C:/Users/bkars/bin/rc.com"
       - "C:/Users/bkars/bin/rc.exe"
       - "C:/Users/bkars/bin/rc"
+      - "C:/Program Files/Git/mingw64/bin/rc.com"
+      - "C:/Program Files/Git/mingw64/bin/rc.exe"
+      - "C:/Program Files/Git/mingw64/bin/rc"
+      - "C:/Program Files/Git/usr/local/bin/rc.com"
+      - "C:/Program Files/Git/usr/local/bin/rc.exe"
+      - "C:/Program Files/Git/usr/local/bin/rc"
+      - "C:/Program Files/Git/usr/bin/rc.com"
+      - "C:/Program Files/Git/usr/bin/rc.exe"
+      - "C:/Program Files/Git/usr/bin/rc"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/rc.com"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/rc.exe"
+      - "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/rc"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/rc.com"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/rc.exe"
       - "C:/Users/bkars/interview-prep/myenv/Scripts/rc"
@@ -696,6 +798,12 @@ events:
       - "C:/Program Files/CMake/bin/rc.com"
       - "C:/Program Files/CMake/bin/rc.exe"
       - "C:/Program Files/CMake/bin/rc"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/rc.com"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/rc.exe"
+      - "C:/Program Files/Git/usr/bin/vendor_perl/rc"
+      - "C:/Program Files/Git/usr/bin/core_perl/rc.com"
+      - "C:/Program Files/Git/usr/bin/core_perl/rc.exe"
+      - "C:/Program Files/Git/usr/bin/core_perl/rc"
       - "C:/Program Files/bin/rc.com"
       - "C:/Program Files/bin/rc.exe"
       - "C:/Program Files/bin/rc"
@@ -723,21 +831,27 @@ events:
       - "C:/Program Files/CMake/rc.com"
       - "C:/Program Files/CMake/rc.exe"
       - "C:/Program Files/CMake/rc"
-      - "C:/Program Files/SteambandRedux/bin/rc.com"
-      - "C:/Program Files/SteambandRedux/bin/rc.exe"
-      - "C:/Program Files/SteambandRedux/bin/rc"
-      - "C:/Program Files/SteambandRedux/sbin/rc.com"
-      - "C:/Program Files/SteambandRedux/sbin/rc.exe"
-      - "C:/Program Files/SteambandRedux/sbin/rc"
-      - "C:/Program Files/SteambandRedux/rc.com"
-      - "C:/Program Files/SteambandRedux/rc.exe"
-      - "C:/Program Files/SteambandRedux/rc"
+      - "C:/Program Files (x86)/SteambandRedux/bin/rc.com"
+      - "C:/Program Files (x86)/SteambandRedux/bin/rc.exe"
+      - "C:/Program Files (x86)/SteambandRedux/bin/rc"
+      - "C:/Program Files (x86)/SteambandRedux/sbin/rc.com"
+      - "C:/Program Files (x86)/SteambandRedux/sbin/rc.exe"
+      - "C:/Program Files (x86)/SteambandRedux/sbin/rc"
+      - "C:/Program Files (x86)/SteambandRedux/rc.com"
+      - "C:/Program Files (x86)/SteambandRedux/rc.exe"
+      - "C:/Program Files (x86)/SteambandRedux/rc"
     found: false
     search_context:
       ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Program Files\\Git\\mingw64\\bin"
         - "C:\\Program Files\\Git\\usr\\bin"
         - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
         - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
         - "C:\\Python313"
         - "C:\\Python313\\Scripts"
@@ -751,18 +865,20 @@ events:
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\ProgramData\\chocolatey\\bin"
         - "C:\\Program Files (x86)\\Prince\\engine\\bin"
-        - "C:\\Program Files\\dotnet\\"
-        - "c:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
         - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
         - "C:\\Program Files\\CMake\\bin"
         - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
-      CMAKE_INSTALL_PREFIX: "C:/Program Files/SteambandRedux"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/SteambandRedux"
       CMAKE_SYSTEM_PREFIX_PATH:
         - "C:/Program Files"
         - "C:/Program Files (x86)"
         - "C:/Program Files/CMake"
-        - "C:/Program Files/SteambandRedux"
+        - "C:/Program Files (x86)/SteambandRedux"
   -
     kind: "try_compile-v1"
     backtrace:
@@ -772,8 +888,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-2n73u3"
-      binary: "C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-2n73u3"
+      source: "C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-qo00h8"
+      binary: "C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-qo00h8"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_C_FLAGS_DEBUG: "/MDd /Zi /Ob0 /Od /RTC1"
@@ -782,39 +898,39 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-2n73u3'
+        Change Dir: 'C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-qo00h8'
         
-        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_01261.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_722bd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         MSBuild version 17.12.12+1cce77968 for .NET Framework
-        Build started 12/11/2025 7:01:53 PM.
+        Build started 4/25/2026 4:59:56 PM.
         
-        Project "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2n73u3\\cmTC_01261.vcxproj" on node 1 (default targets).
+        Project "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qo00h8\\cmTC_722bd.vcxproj" on node 1 (default targets).
         PrepareForBuild:
           Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
-          Creating directory "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2n73u3\\Debug\\".
-          Creating directory "cmTC_01261.dir\\Debug\\cmTC_01261.tlog\\".
+          Creating directory "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qo00h8\\Debug\\".
+          Creating directory "cmTC_722bd.dir\\Debug\\cmTC_722bd.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_01261.dir\\Debug\\cmTC_01261.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
-          Touching "cmTC_01261.dir\\Debug\\cmTC_01261.tlog\\unsuccessfulbuild".
+          Creating "cmTC_722bd.dir\\Debug\\cmTC_722bd.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_722bd.dir\\Debug\\cmTC_722bd.tlog\\unsuccessfulbuild".
         ClCompile:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_01261.dir\\Debug\\\\" /Fd"cmTC_01261.dir\\Debug\\vc143.pdb" /external:W3 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_722bd.dir\\Debug\\\\" /Fd"cmTC_722bd.dir\\Debug\\vc143.pdb" /external:W3 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_01261.dir\\Debug\\\\" /Fd"cmTC_01261.dir\\Debug\\vc143.pdb" /external:W3 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D _MBCS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /Fo"cmTC_722bd.dir\\Debug\\\\" /Fd"cmTC_722bd.dir\\Debug\\vc143.pdb" /external:W3 /TC /errorReport:queue "C:\\Program Files\\CMake\\share\\cmake-4.2\\Modules\\CMakeCCompilerABI.c"
           CMakeCCompilerABI.c
         Link:
-          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2n73u3\\Debug\\cmTC_01261.exe" /INCREMENTAL /ILK:"cmTC_01261.dir\\Debug\\cmTC_01261.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-2n73u3/Debug/cmTC_01261.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-2n73u3/Debug/cmTC_01261.lib" /MACHINE:X64  /machine:x64 cmTC_01261.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_01261.vcxproj -> C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2n73u3\\Debug\\cmTC_01261.exe
+          C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /OUT:"C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qo00h8\\Debug\\cmTC_722bd.exe" /INCREMENTAL /ILK:"cmTC_722bd.dir\\Debug\\cmTC_722bd.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-qo00h8/Debug/cmTC_722bd.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /IMPLIB:"C:/Users/bkars/git/steambandRedux/build/CMakeFiles/CMakeScratch/TryCompile-qo00h8/Debug/cmTC_722bd.lib" /MACHINE:X64  /machine:x64 cmTC_722bd.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_722bd.vcxproj -> C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qo00h8\\Debug\\cmTC_722bd.exe
         FinalizeBuildStatus:
-          Deleting file "cmTC_01261.dir\\Debug\\cmTC_01261.tlog\\unsuccessfulbuild".
-          Touching "cmTC_01261.dir\\Debug\\cmTC_01261.tlog\\cmTC_01261.lastbuildstate".
-        Done Building Project "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-2n73u3\\cmTC_01261.vcxproj" (default targets).
+          Deleting file "cmTC_722bd.dir\\Debug\\cmTC_722bd.tlog\\unsuccessfulbuild".
+          Touching "cmTC_722bd.dir\\Debug\\cmTC_722bd.tlog\\cmTC_722bd.lastbuildstate".
+        Done Building Project "C:\\Users\\bkars\\git\\steambandRedux\\build\\CMakeFiles\\CMakeScratch\\TryCompile-qo00h8\\cmTC_722bd.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:00.70
+        Time Elapsed 00:00:00.81
         
       exitCode: 0
   -
@@ -845,4 +961,286 @@ events:
       Running the C compiler's linker: "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.42.34433/bin/HostX64/x64/link.exe" "-v"
       Microsoft (R) Incremental Linker Version 14.42.34435.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "CMakeLists.txt:8 (find_package)"
+    name: "SDL2"
+    configs:
+      -
+        filename: "SDL2Config.cmake"
+        kind: "cmake"
+      -
+        filename: "sdl2-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "required_explicit"
+      quiet: false
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "SDL2"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "C:/Users/bkars/git/steambandRedux/build/CMakeFiles/pkgRedirects/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/git/steambandRedux/build/CMakeFiles/pkgRedirects/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/mingw64/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/mingw64/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/usr/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/usr/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/resources/helpers/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Python313/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Python313/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Python313/Scripts/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Python313/Scripts/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/wbem/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/wbem/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/WindowsPowerShell/v1.0/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/WindowsPowerShell/v1.0/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/OpenSSH/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Windows/System32/OpenSSH/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Microsoft VS Code/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Microsoft VS Code/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/cmd/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/cmd/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/AppData/Local/Microsoft/WindowsApps/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/AppData/Local/Microsoft/WindowsApps/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/ProgramData/chocolatey/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/ProgramData/chocolatey/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/Prince/engine/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/Prince/engine/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/dotnet/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/dotnet/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Users/bkars/AppData/Local/Programs/cursor/resources/app/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/CMake/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/CMake/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/usr/bin/vendor_perl/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/usr/bin/vendor_perl/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/usr/bin/core_perl/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/Git/usr/bin/core_perl/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/CMake/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files/CMake/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/SDL2Config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "C:/Program Files (x86)/sdl2-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found: null
+    search_context:
+      ENV{PATH}:
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\local\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Program Files\\Git\\mingw64\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin"
+        - "C:\\Users\\bkars\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\resources\\helpers"
+        - "C:\\Users\\bkars\\interview-prep\\myenv\\Scripts"
+        - "C:\\Python313"
+        - "C:\\Python313\\Scripts"
+        - "C:\\Windows\\System32"
+        - "C:\\Windows"
+        - "C:\\Windows\\System32\\Wbem"
+        - "C:\\Windows\\System32\\WindowsPowerShell\\v1.0"
+        - "C:\\Windows\\System32\\OpenSSH"
+        - "C:\\Program Files\\Microsoft VS Code\\bin"
+        - "C:\\Program Files\\Git\\cmd"
+        - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\ProgramData\\chocolatey\\bin"
+        - "C:\\Program Files (x86)\\Prince\\engine\\bin"
+        - "C:\\Program Files\\dotnet"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR"
+        - "C:\\Program Files\\CMake\\bin"
+        - "C:\\Users\\bkars\\AppData\\Local\\Microsoft\\WindowsApps"
+        - "C:\\Users\\bkars\\AppData\\Local\\Programs\\cursor\\resources\\app\\bin"
+        - "C:\\Program Files\\Git\\usr\\bin\\vendor_perl"
+        - "C:\\Program Files\\Git\\usr\\bin\\core_perl"
+      CMAKE_INSTALL_PREFIX: "C:/Program Files (x86)/SteambandRedux"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "C:/Program Files"
+        - "C:/Program Files (x86)"
+        - "C:/Program Files/CMake"
+        - "C:/Program Files (x86)/SteambandRedux"
 ...

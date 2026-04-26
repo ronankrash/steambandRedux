@@ -75,6 +75,7 @@
 #include "controller.h"
 #include "steam_integration.h"
 #include "logging.h"
+#include "renderer.h"
 
 
 #ifdef WINDOWS
@@ -791,8 +792,8 @@ static bool check_file(cptr s)
 
 #endif /* WIN32 */
 
-	/* Copy it */
-	strcpy(path, s);
+	/* Copy it - use safe my_strcpy to prevent potential buffer overflow (per security-legacy-c.mdc and steamband-security skill) */
+	my_strcpy(path, s, sizeof(path));
 
 #ifdef WIN32
 
@@ -842,8 +843,8 @@ static bool check_dir(cptr s)
 
 #endif /* WIN32 */
 
-	/* Copy it */
-	strcpy(path, s);
+	/* Copy it - use safe my_strcpy to prevent potential buffer overflow (per security-legacy-c.mdc and steamband-security skill) */
+	my_strcpy(path, s, sizeof(path));
 
 	/* Check length */
 	i = strlen(path);
@@ -3334,8 +3335,8 @@ static void check_for_save_file(LPSTR cmd_line)
 	/* Tokenize, advance */
 	if (p) *p++ = '\0';
 
-	/* Extract filename */
-	strcat(savefile, s);
+	/* Extract filename - use safe my_strcpy instead of strcat to prevent buffer overflow (security audit fix per steamband-security skill) */
+	my_strcpy(savefile, s, sizeof(savefile));
 
 	/* Validate the file */
 	validate_file(savefile);
@@ -5618,6 +5619,11 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 
 	/* Initialize controller support */
 	controller_init();
+
+	/* Initialize first-person renderer (minimal integration for raycasting prototype) */
+	if (!renderer_init(get_renderer())) {
+		LOG_W("Renderer init failed - falling back to 2D only. Check SDL2 setup.");
+	}
 
 	/* Prepare the filepaths */
 	init_stuff();

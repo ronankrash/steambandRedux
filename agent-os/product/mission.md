@@ -45,7 +45,16 @@ The codebase uses ancient build tools (Borland C++ 4.5) that are incompatible wi
 
 **Our Solution:** Migrate to CMake build system, enabling compatibility with modern compilers and easy integration of Steamworks SDK and XInput libraries.
 
-## Differentiators
+## Differentiators (Updated for First-Person Steampunk Vision)
+
+**First-Person Steampunk Dungeon Crawler with Controller & Mod Support**
+- Converts 2D roguelike to immersive first-person dungeon crawler using SDL2 renderer and CC0 permissive steampunk/Victorian pixel art assets (early 90s aesthetic).
+- Complete keyboard + controller support with ROG Ally defaults, intuitive controller-optimized menus, and playtester validation.
+- Easily extendible with JSON configuration files for monsters, items, levels, and future NPC AI/memorypalace systems.
+- Rigorous TDD with comprehensive Unity tests, security audits/fixes for legacy C code, open source compliance.
+- Agent team infrastructure (rules in .cursor/rules/, skills in .cursor/skills/, HANDOFF.md) enables independent iteration toward polished Steam release.
+
+Original differentiators updated below for context:
 
 ### Full Controller Support
 

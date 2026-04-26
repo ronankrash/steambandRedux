@@ -1,411 +1,134 @@
 # SteambandRedux
 
-A modernized roguelike game based on Steamband (an Angband variant), featuring Xbox 360 controller support and Steam platform integration.
+SteambandRedux is a rescue and modernization project for Steamband 0.2.2, an Angband-derived steampunk roguelike.
 
-## Overview
+The product goal is a controller-first, first-person steampunk dungeon crawler for modern Windows handheld PCs, especially the Asus ROG Ally. The engineering goal is to preserve the original game rules, items, map generation, saves, and keyboard controls while adding modern rendering, input, testing, and release practices.
 
-SteambandRedux is a modernization project that brings classic roguelike gameplay to modern gaming platforms. The project modernizes the legacy Steamband codebase (originally built with Borland C++ 4.5) by:
+## Current Status
 
-- **Adding Xbox 360 controller support** via XInput API
-- **Integrating Steamworks SDK** for achievements, overlay, and cloud saves
-- **Modernizing the build system** from Borland C++ to CMake
-- **Adding comprehensive logging** for debugging and troubleshooting
-- **Setting up unit testing infrastructure** for reliability
+This repository is in rescue-baseline mode.
 
-## Project Status
+Verified from source inspection:
 
-### ✅ Completed
-- **CMake Build System Migration** - Successfully migrated from Borland C++ 4.5 to CMake, building on Windows with Visual Studio
-- **Comprehensive Logging System** - Full logging infrastructure with DEBUG/INFO/WARNING/ERROR/FATAL levels, file output with rotation, and Windows debug console support
-- **Unit Testing Framework** - Unity testing framework integrated with CMake, comprehensive test infrastructure, and 38 tests covering logging, core utilities, and controller functionality
-- **XInput API Integration** - Xbox 360 controller support via XInput API with proper initialization, detection, polling, and logging
-- **Controller Input Mapping** - Complete controller input system with default button mappings, 8-way diagonal movement, key repeat, grid command menu, and in-game button remapping
-- **Keyboard Input Support** - Full keyboard support alongside controller, with keyboard shortcuts ('N' for New Game, 'O' for Open Game) and proper message loop processing
-- **UI Improvements** - Larger, more readable fonts with automatic scaling, proper window resizing support for multiple screen sizes, and improved text rendering
+- The legacy C codebase remains the gameplay source of truth.
+- CMake, logging, Unity tests, XInput controller code, controller menus, and a basic SDL2 renderer prototype exist.
+- `src/renderer.c` contains a DDA-style SDL2 raycaster prototype.
+- The first-person renderer is not yet a live playable feature because the game initializes it but does not call `renderer_render()` from the main loop.
+- SDL2 is required by `CMakeLists.txt`; the current readable build cache shows `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`.
+- Licensing needs review before Steam distribution or any paid release because legacy source headers include not-for-profit language.
 
-### 📋 Planned
-- Steamworks SDK integration
-- Steam achievements and cloud saves
-- Steam release preparation
+See:
 
-See the [Product Roadmap](agent-os/product/roadmap.md) for detailed progress.
+- `HANDOFF.md`
+- `docs/BASELINE-AUDIT.md`
+- `docs/BASELINE-VERIFICATION.md`
+- `docs/ROADMAP.md`
+- `docs/TECHNICAL.md`
+- `docs/ARCHITECTURE-DECISION.md`
 
-## Quick Start
+## Build Requirements
 
-### Prerequisites
-- **Windows 10/11** (64-bit)
-- **CMake** 3.10 or higher
-- **Visual Studio 2022** (or compatible MSVC compiler)
-- **Git**
+- Windows 10/11
+- Visual Studio 2022 or compatible MSVC toolchain
+- CMake 3.10 or newer
+- SDL2 development package discoverable by CMake
+- Git
 
-### Building
+Example configure/build:
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd steambandRedux
-
-# Configure CMake
-cmake -S . -B build
-
-# Build (Debug configuration)
+cmake -S . -B build -DSDL2_DIR=<path-to-sdl2-cmake-config>
 cmake --build build --config Debug
-
-# Build (Release configuration)
-cmake --build build --config Release
 ```
 
-### Running
+If SDL2 is installed through vcpkg, use the appropriate vcpkg toolchain file or set `SDL2_DIR` to the SDL2 CMake config directory.
+
+## Running
+
+After a successful Debug build:
 
 ```bash
-# Run the game
-# Note: The game automatically locates the 'lib' directory by searching:
-# 1. Next to the executable (build/Debug/lib/)
-# 2. One level up (build/lib/)
-# 3. Two levels up (root lib/)
 cd build/Debug
 ./SteambandRedux.exe
-
-# Run unit tests (method 1: direct execution)
-cd build/Debug
-./UnityTestRunner.exe
-
-# Run unit tests (method 2: via CMake ctest)
-cd build
-ctest -C Debug --output-on-failure
 ```
 
-**Keyboard Shortcuts:**
-- **'N'** - Start a new game
-- **'O'** - Open a saved game
-- **Arrow Keys** - Movement (in-game)
-- **Space** - Confirm/Select (in-game)
-- **Escape** - Cancel/Back (in-game)
-
-**Window Features:**
-- **Resizable Window** - Drag window edges to resize; terminal adjusts automatically
-- **Larger Text** - Font automatically scales for better readability
-- **Multi-Monitor Support** - Works on various screen sizes and resolutions
-
-### Logging
-
-Logs are written to `lib/logs/steamband.log` (relative to the executable). You can control the log level via environment variable:
-
-```bash
-# Set log level (DEBUG, INFO, WARN, ERROR, FATAL)
-set STEAMBAND_LOG_LEVEL=DEBUG
-./SteambandRedux.exe
-```
-
-### Input Support
-
-The game supports both **keyboard** and **Xbox 360 controller** input simultaneously.
-
-#### Keyboard Support
-
-- **Full keyboard support** - All standard keys work in-game
-- **Menu shortcuts** - 'N' for New Game, 'O' for Open Game
-- **Arrow keys** - Movement and navigation
-- **Standard game controls** - All original keyboard commands work as expected
-
-#### Controller Support
-
-Xbox 360 controller support is fully integrated with comprehensive input mapping:
-
-**Default Button Mappings:**
-- **A Button** → Enter (Confirm/Select in menus)
-- **B Button** → Escape (Cancel/Back in menus)
-- **X Button** → Inventory list (`i`)
-- **Y Button** → Equipment list (`e`)
-- **D-Pad** → Movement (Numpad 8/2/4/6) with key repeat
-- **Left Thumbstick** → 8-way diagonal movement (Numpad 1-9)
-- **Start** → Escape (Main menu)
-- **Back** → Full dungeon map (`M`)
-- **LB** → Rest (`R`)
-- **RB** → Search (`s`)
-
-**Controller Menus:**
-- **Command Menu** (BACK button double-press): Grid menu with 30+ game commands organized by category
-- **Configuration Menu** (BACK button triple-press): Remap any button to any key code
-
-**Configuration:**
-- Button mappings are saved to `lib/user/controller.prf`
-- Custom mappings persist across game sessions
-- Environment variable to control logging:
-
-```bash
-# Silence controller logging (0 = silent, 1 = enabled, default = enabled)
-set STEAMBAND_CONTROLLER_LOG=0
-./SteambandRedux.exe
-```
-
-## Project Structure
-
-```
-steambandRedux/
-├── src/                    # Source code
-│   ├── main-win.c         # Windows entry point and message loop
-│   ├── logging.c          # Logging system implementation
-│   ├── logging.h          # Logging system header
-│   ├── controller.c       # XInput controller support implementation
-│   ├── controller.h       # XInput controller support header
-│   ├── controller_menu.c  # Controller command grid menu system
-│   ├── controller_menu.h  # Controller command menu header
-│   ├── controller_config_menu.c  # Button remapping configuration menu
-│   ├── controller_config_menu.h  # Button remapping menu header
-│   └── tests/             # Unit tests
-│       ├── unity_test_runner.c      # Unity test runner
-│       ├── test_logging_unity.c     # Logging system tests (Unity)
-│       ├── test_z_util.c            # z-util.c tests
-│       ├── test_controller.c        # Controller input mapping tests
-│       ├── test_controller_stubs.c  # Test stubs for controller tests
-│       └── test_unity_infrastructure.c  # Unity framework tests
-├── lib/                   # Game data directory
-│   ├── logs/             # Log files (auto-created)
-│   ├── data/             # Binary game data
-│   ├── help/             # Help files
-│   └── save/             # Save files
-├── agent-os/             # Development process documentation
-│   ├── product/          # Product planning documents
-│   │   ├── mission.md           # Product mission and vision
-│   │   ├── roadmap.md            # Development roadmap
-│   │   └── tech-stack.md         # Technical stack documentation
-│   ├── specs/            # Feature specifications
-│   │   ├── 2025-12-11-complete-cmake-build-system-migration/
-│   │   ├── 2025-12-12-implement-comprehensive-logging-system/
-│   │   ├── 2025-12-12-set-up-unit-testing-framework/
-│   │   ├── 2025-12-13-integrate-xinput-api/
-│   │   └── 2025-12-13-implement-controller-input-mapping/
-│   └── commands/         # Development workflow commands
-├── CMakeLists.txt        # CMake build configuration
-└── README.md             # This file
-```
-
-## Development Process: Agent-OS
-
-This project uses a structured development process called **Agent-OS** that organizes work into specifications, tasks, and verifications. This ensures systematic, well-documented development.
-
-### Workflow Overview
-
-1. **Product Planning** (`agent-os/commands/plan-product/`)
-   - Define product concept, mission, roadmap, and tech stack
-   - Documents: `agent-os/product/`
-
-2. **Specification Creation** (`agent-os/commands/shape-spec/` and `write-spec/`)
-   - Create detailed specifications for each feature
-   - Each spec includes requirements, planning, and acceptance criteria
-   - Specs are stored in `agent-os/specs/[date]-[feature-name]/`
-
-3. **Task Breakdown** (`agent-os/commands/create-tasks/`)
-   - Break specs into actionable tasks with dependencies
-   - Tasks are documented in `agent-os/specs/[spec]/tasks.md`
-
-4. **Implementation** (`agent-os/commands/implement-tasks/`)
-   - Implement tasks systematically
-   - Write tests alongside implementation
-   - Update task checkboxes as work progresses
-
-5. **Verification** (`agent-os/commands/implement-tasks/3-verify-implementation.md`)
-   - Run full test suite
-   - Verify all tasks are complete
-   - Update roadmap
-   - Create verification report
-
-### Current Specifications
-
-#### ✅ Complete CMake Build System Migration
-**Spec:** `2025-12-11-complete-cmake-build-system-migration`  
-**Status:** Complete  
-**Summary:** Migrated from Borland C++ 4.5 to CMake, enabling modern compiler support and library integration.
-
-**Key Achievements:**
-- Created `CMakeLists.txt` with Windows/MSVC configuration
-- Fixed compilation errors and warnings
-- Verified Debug and Release builds
-- Excluded problematic legacy files
-- Created placeholders for future features
-
-**Verification:** [Final Verification Report](agent-os/specs/2025-12-11-complete-cmake-build-system-migration/verifications/final-verification.md)
-
-#### ✅ Implement Comprehensive Logging System
-**Spec:** `2025-12-12-implement-comprehensive-logging-system`  
-**Status:** Complete  
-**Summary:** Implemented production-ready logging system with file output, rotation, thread safety, and error hook integration.
-
-**Key Features:**
-- Five log levels: DEBUG, INFO, WARN, ERROR, FATAL
-- File-based logging with automatic directory creation
-- Log rotation at 10MB (keeps 5 rotated files)
-- Thread-safe operation using Windows mutexes
-- Windows debug console output
-- Integration with error handling hooks (`plog_hook`, `quit_hook`, `core_hook`)
-- Environment variable configuration (`STEAMBAND_LOG_LEVEL`)
-- 11 unit tests, all passing
-
-**Verification:** [Final Verification Report](agent-os/specs/2025-12-12-implement-comprehensive-logging-system/verifications/final-verification.md)
-
-#### ✅ Set Up Unit Testing Framework
-**Spec:** `2025-12-12-set-up-unit-testing-framework`  
-**Status:** Complete  
-**Summary:** Integrated Unity testing framework, created comprehensive test infrastructure, and migrated existing tests with enhanced coverage.
-
-**Key Features:**
-- Unity testing framework integrated with CMake and ctest
-- Test infrastructure with fixtures, helpers, and organization
-- 28 tests total: 5 infrastructure + 13 logging + 10 z-util.c utilities
-- Comprehensive testing guide documentation
-- All tests passing via ctest integration
-
-**Verification:** [Final Verification Report](agent-os/specs/2025-12-12-set-up-unit-testing-framework/verifications/final-verification.md)
-
-#### ✅ Integrate XInput API
-**Spec:** `2025-12-13-integrate-xinput-api`  
-**Status:** Complete  
-**Summary:** Properly integrated XInput API for Xbox 360 controller support with initialization, detection, polling, and logging.
-
-**Key Features:**
-- XInput library linking verified and working via CMake
-- Controller initialization in WinMain (early startup)
-- Controller detection with connection status logging
-- Connection/disconnection event logging (state changes only)
-- Environment variable support (`STEAMBAND_CONTROLLER_LOG`) to silence logging
-- Robust error handling for disconnected controller state
-- Single controller support (controller 0)
-
-**Verification:** [Final Verification Report](agent-os/specs/2025-12-13-integrate-xinput-api/verifications/final-verification.md)
-
-#### ✅ Implement Controller Input Mapping
-**Spec:** `2025-12-13-implement-controller-input-mapping`  
-**Status:** Complete  
-**Summary:** Complete controller input system with default button mappings, 8-way diagonal movement, key repeat functionality, grid command menu, and in-game button remapping.
-
-**Key Features:**
-- Comprehensive default button mapping covering all essential game commands
-- 8-way diagonal thumbstick movement using angle calculation (Numpad 1-9)
-- Key repeat functionality for D-Pad movement (200ms delay, 50ms rate)
-- Grid command menu system (BACK double-press) with 30+ commands organized by category
-- D-Pad navigation with visual highlighting
-- In-game button remapping menu (BACK triple-press)
-- Configuration file support (`lib/user/controller.prf`) with persistent mappings
-- Menu navigation support (A=Enter, B=Escape) for all game menus
-- 10 unit tests covering button mapping, menu state management, and configuration parsing
-
-**Verification:** Complete - All unit tests passing (10 controller tests), ready for in-game integration testing
-
-### Upcoming Specifications
-
-- **Integrate Steamworks SDK** - Add Steam platform integration
-
-See [Product Roadmap](agent-os/product/roadmap.md) for the complete list.
-
-## Technical Details
-
-### Technology Stack
-
-- **Language:** C (C99 standard, maintaining legacy compatibility)
-- **Build System:** CMake 3.10+
-- **Compiler:** Microsoft Visual C++ (MSVC) via Visual Studio 2022
-- **Platform:** Windows 10/11 (64-bit)
-- **APIs:** Windows API, XInput (Xbox 360 controllers), Steamworks SDK
-
-### Key Components
-
-- **Logging System** (`src/logging.c`): Thread-safe logging with file output and rotation
-- **Windows Entry Point** (`src/main-win.c`): Windows message loop and initialization
-- **Controller Support** (`src/controller.c`): XInput API integration with button mapping, 8-way movement, and key repeat
-- **Controller Command Menu** (`src/controller_menu.c`): Grid-based menu system for accessing game commands via controller
-- **Controller Config Menu** (`src/controller_config_menu.c`): In-game button remapping interface
-- **Build System** (`CMakeLists.txt`): CMake configuration for modern compilation
-
-For detailed technical information, see [Tech Stack Documentation](agent-os/product/tech-stack.md).
-
-## Game Information
-
-### About Steamband
-
-Steamband is a variant of Angband, a classic roguelike dungeon-crawling game. The original Steamband 0.2.2 was created by Courtney C. Campbell and is based on:
-
-- **Moria** (1985) by Robert Alan Koeneke
-- **Umoria** (1989) by James E. Wilson
-- **Angband** (various versions) by multiple contributors
-
-### Original Credits
-
-```
-Steamband 0.2.2 by Courtney C. Campbell
-Based on Moria, Umoria, and Angband
-Send comments, bug reports, and patches to: campbell@oook.cz
-Visit the Angband Home Page at: http://www.thangorodrim.net/
-```
-
-## Contributing
-
-This project is currently in active development. The codebase is being modernized systematically using the Agent-OS process. If you're interested in contributing:
-
-1. Review the [Product Roadmap](agent-os/product/roadmap.md) to see what's planned
-2. Check existing [Specifications](agent-os/specs/) to understand the development process
-3. Review the [Tech Stack](agent-os/product/tech-stack.md) for technical requirements
-
-## License
-
-This project maintains the original Angband/Steamband license. See the original `readme.txt` file for license details.
-
-## Resources
-
-- **Product Mission:** [agent-os/product/mission.md](agent-os/product/mission.md)
-- **Product Roadmap:** [agent-os/product/roadmap.md](agent-os/product/roadmap.md)
-- **Tech Stack:** [agent-os/product/tech-stack.md](agent-os/product/tech-stack.md)
-- **Original README:** [readme.txt](readme.txt)
+The current player-facing display is still the legacy Windows terminal/GDI UI.
 
 ## Testing
 
-The project uses the **Unity** testing framework for unit tests. Tests are located in `src/tests/` and can be run via:
+After a successful build:
 
-- **Direct execution**: `build/Debug/UnityTestRunner.exe`
-- **CMake ctest**: `cd build && ctest -C Debug --output-on-failure`
+```bash
+ctest --test-dir build -C Debug --output-on-failure
+```
 
-### Test Structure
+Primary Unity runner:
 
-- **Unity Infrastructure Tests** (`test_unity_infrastructure.c`) - Verify Unity framework integration
-- **Logging System Tests** (`test_logging_unity.c`) - 13 tests covering all logging functionality
-- **Core Utilities Tests** (`test_z_util.c`) - 10 tests for string utilities and buffer overflow protection
-- **Controller Tests** (`test_controller.c`) - 10 tests for controller input mapping functionality
+```bash
+build/Debug/UnityTestRunner.exe
+```
 
-### Current Test Coverage
+Current known test drift:
 
-- ✅ Unity framework integration (5 tests)
-- ✅ Logging system (13 tests: levels, filtering, formatting, rotation, thread safety)
-- ✅ z-util.c utilities (10 tests: streq, prefix, suffix, my_strcpy)
-- ✅ Controller input mapping (10 tests: button mappings, menu state, config parsing)
-- ⏳ util.c utilities (tests written but deferred due to game state dependencies)
-- ⏳ files.c utilities (deferred due to game state dependencies)
+- `UnitTests` is an older logging-focused runner.
+- `UnityTestRunner` is the primary Unity runner.
+- `test_sdl2_controller_init()` exists but is not registered.
+- `test_util.c` is present but not built.
+- Renderer tests do not cover live rendering or game-loop integration.
 
-**Total: 38 tests, all passing**
+## Controls
 
-For detailed information on writing and running tests, see the [Testing Guide](agent-os/specs/2025-12-12-set-up-unit-testing-framework/documentation/testing-guide.md).
+Keyboard support must remain compatible with original Steamband/Angband commands.
 
-## Recent Updates
+Current controller implementation is primarily XInput:
 
-### Latest Fixes (December 2024)
+- A: Enter/confirm
+- B: Escape/cancel
+- X: inventory (`i`)
+- Y: equipment (`e`)
+- D-pad: cardinal movement
+- Left stick: 8-way numpad-style movement
+- Start: Escape
+- Back: map/menu gestures
+- LB: rest (`R`)
+- RB: search (`s`)
 
-- ✅ **Keyboard Input** - Fixed keyboard input processing; keyboard shortcuts ('N', 'O') now work at menu screen
-- ✅ **Font Size** - Increased default font size for better readability; automatic scaling for small fonts
-- ✅ **Window Resizing** - Proper window resizing support; terminal adjusts automatically to window size
-- ✅ **Game Launch** - Game now launches successfully and displays properly; all initialization issues resolved
-- ✅ **Multi-Input Support** - Keyboard and controller work simultaneously; seamless switching between input methods
+Right stick look/turn is planned for first-person mode but is not implemented.
 
-## Status Badges
+## Repository Process
 
-- ✅ **CMake Build System** - Complete
-- ✅ **Logging System** - Complete
-- ✅ **Unit Testing Framework** - Complete
-- ✅ **XInput Integration** - Complete
-- ✅ **Controller Input Mapping** - Complete
-- ✅ **Keyboard Input** - Complete
-- ✅ **UI Improvements** - Complete
-- 📋 **Steam Integration** - Planned
+This project uses Cursor rules and skills plus a handoff document for agent-assisted work:
 
----
+- `.cursor/rules/steamband-core.mdc`
+- `.cursor/rules/git-workflow.mdc`
+- `.cursor/rules/security-legacy-c.mdc`
+- `.cursor/rules/asset-licensing.mdc`
+- `.cursor/rules/controller-rog-ally.mdc`
+- `.cursor/skills/`
+- `HANDOFF.md`
 
-**Note:** This is a modernization project. The game itself is based on the classic Steamband/Angband codebase, and we're adding modern features while preserving the authentic gameplay experience. The game is now fully playable with both keyboard and controller support!
+Development rules:
 
+- Use feature branches and small conventional commits.
+- Do not commit generated build outputs, logs, local saves, or dependency caches.
+- Add tests for meaningful behavior changes.
+- Update `HANDOFF.md` after significant work.
+- Keep docs factual and tied to source or command output.
+
+See `docs/REPO-HYGIENE.md`.
+
+## Licensing
+
+The original Steamband/Angband-derived code and data retain their original notices. See `readme.txt` and source file headers.
+
+Important: legacy source headers include educational/research/not-for-profit language. Steam distribution and any paid release require license clarification before proceeding.
+
+Third-party and project license tracking starts in `LICENSES.md`.
+
+Future art/audio assets must be documented in `ASSETS.md` before use. Only CC0, Public Domain, MIT, or clearly commercial-permissive assets are acceptable.
+
+## Original Credits
+
+Steamband 0.2.2 by Courtney C. Campbell, based on Moria, Umoria, and Angband.
+
+See `readme.txt` for the original project readme and credits.

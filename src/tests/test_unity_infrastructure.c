@@ -10,6 +10,7 @@
 
 #include "unity.h"
 #include "test_helpers.h"
+#include "renderer.h"
 
 /* Test Unity assertion macros work correctly */
 void test_unity_assertions(void) {
@@ -45,4 +46,20 @@ void test_unity_fixtures_available(void) {
     /* Verify setUp/tearDown functions exist and are callable */
     /* This test passes if Unity can call setUp/tearDown without errors */
     TEST_ASSERT_TRUE(1);
+}
+
+/* Basic renderer tests for raycaster prototype (TDD) - tests wall detection from cave data,
+ * DDA logic, security bounds checking. Uses test map fallback. */
+void test_renderer_basic(void) {
+    /* Test wall detection security and logic */
+    TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(0, 0), "Edge walls should return true");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(1, 1), "Test map walls detected");
+    TEST_ASSERT_FALSE_MESSAGE(renderer_is_wall(5, 5), "Interior floor should be false");
+    
+    /* Test out of bounds security (prevents OOB on legacy arrays) */
+    TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(-1, 0), "Out of bounds treated as wall (safe)");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(1000, 1000), "Large OOB treated as wall");
+    
+    renderer_test_dda();
+    TEST_PASS_MESSAGE("Renderer DDA and wall tests passed - ready for steampunk textures");
 }

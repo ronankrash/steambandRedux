@@ -1,0 +1,36 @@
+# Build outputs
+build/
+build-*/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.obj
+*.pdb
+*.ilk
+*.exe
+
+# Runtime output
+lib/logs/
+*.log
+window_debug.log
+
+# Local/player data
+lib/save/
+*.sav
+
+# Local dependency/cache artifacts
+.vs/
+.vscode/
+.cache/
+
+# OS/editor noise
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak

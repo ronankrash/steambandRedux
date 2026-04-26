@@ -6,6 +6,7 @@
 #include "logging.h"
 #include <windows.h>
 #include <xinput.h>
+#include <SDL.h>  /* SDL2 for improved controller support including ROG Ally mappings */
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>  /* For atan2() */
@@ -23,6 +24,9 @@ static DWORD g_last_packet = 0;
 static bool g_logging_enabled = TRUE; /* Controller logging enabled by default */
 static DWORD g_back_button_press_time = 0; /* Track BACK button for menu activation */
 static bool g_back_button_was_pressed = FALSE;
+
+/* SDL2 GameController for Phase 2 ROG Ally optimization and modern input (fallback to XInput) */
+static SDL_GameController *g_sdl_controller = NULL;
 
 /*
  * Button mappings
@@ -94,10 +98,26 @@ void controller_init(void) {
     g_connected = (dwResult == ERROR_SUCCESS);
     g_previous_connected = g_connected; /* Initialize previous state */
     
+    /* SDL2 GameController init for ROG Ally and improved mapping support (Phase 2) */
+    if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == 0) {
+        g_sdl_controller = SDL_GameControllerOpen(0);
+        if (g_sdl_controller) {
+            g_connected = TRUE;
+            if (g_logging_enabled) {
+                LOG_I("SDL_GameController opened successfully (ROG Ally / Xbox compatible controller)");
+                LOG_I("Using SDL2 for controller input with improved defaults and mappings");
+            }
+        } else if (g_logging_enabled) {
+            LOG_W("SDL_GameControllerOpen failed: %s (falling back to XInput)", SDL_GetError());
+        }
+    } else if (g_logging_enabled) {
+        LOG_W("SDL_InitSubSystem(GAMECONTROLLER) failed: %s", SDL_GetError());
+    }
+    
     /* Log initialization status */
     if (g_logging_enabled) {
         if (g_connected) {
-            LOG_I("Controller initialized: Xbox 360 controller (port 0) connected");
+            LOG_I("Controller initialized: Xbox 360 / ROG Ally compatible controller (port 0) connected");
         } else {
             LOG_I("Controller initialized: No controller detected (port 0)");
         }
