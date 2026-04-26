@@ -221,12 +221,17 @@ Use for SDL2 builds when validating the custom 2D tileset detour.
 Pass if:
 
 - `Ctrl+F11` opens the SDL2 top-down tile window without closing or breaking the legacy Win32/GDI UI.
-- `Escape` or `Ctrl+F11` returns to the legacy 2D fallback.
+- `tools\launch_topdown_tiles.cmd` or the packaged `launch_topdown_tiles.cmd` opens the SDL2 tile window automatically.
+- `Ctrl+F11` returns to the legacy 2D fallback; `Escape` forwards legacy cancel while the SDL tile window has focus.
 - The view centers on the player after movement, stairs, load, and new level when game state is available.
-- Floors, walls, doors, stairs, traps, objects, monsters, player, and darkness get distinct readable tiles from the project placeholder BMP or procedural fallback.
+- The player has a bright focus/crosshair overlay and remains easy to spot at 720p and 1080p.
+- Darkness, floors, walls, doors, stairs, traps, glyphs, shops, rubble, ore, object families, monster families, and player get distinct readable placeholder tiles.
 - Keyboard commands still forward while the SDL2 tile window has focus.
+- Common punctuation commands forward from the SDL tile window, including `<`, `>`, `?`, `:`, quotes, brackets/braces, pipe/backslash, plus/equals, tilde/backquote, and keypad operators.
+- The SDL title includes HP/SP/depth/status plus recent legacy/command feedback.
+- A centered focus warning appears if the SDL tile window loses keyboard focus.
 - The tile view remains readable at 720p and 1080p using integer-scaled 16/24-ish tile proportions.
-- `STEAMBAND_TOPDOWN_TILESET` can point to a compatible 24x24 BMP atlas for local experiments.
+- `STEAMBAND_TOPDOWN_TILESET` can point to a compatible `topdown-v1` 216x96 BMP atlas for local experiments; bad overrides fall back safely.
 - No external art is bundled unless `ASSETS.md` records a verified commercial-permissive source.
 
 ## Recording Format

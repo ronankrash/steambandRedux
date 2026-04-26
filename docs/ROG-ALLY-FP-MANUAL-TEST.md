@@ -64,14 +64,16 @@ The default probe launches the SDL2 Debug build, foregrounds the native Win32 wi
 
 Use this for the SDL2 custom 2D tile detour.
 
-1. At the legacy prompt, press `N` for a new game or `O` to open an existing save.
-2. Press `Ctrl+F11` to open the SDL2 top-down tile prototype.
-3. Confirm the legacy Win32/GDI window still exists as the fallback source of truth.
+1. Launch with `tools\launch_topdown_tiles.cmd` or run the packaged `launch_topdown_tiles.cmd` from the Ally drop folder.
+2. At the legacy prompt, press `N` for a new game or `O` to open an existing save.
+3. Confirm the SDL2 tile window is already open and the legacy Win32/GDI window still exists as the fallback source of truth.
 4. Move with keyboard or controller and confirm the SDL2 tile view recenters on the player.
-5. Confirm the loaded placeholder tiles or procedural fallback glyphs are distinct for walls, floors, doors, stairs, traps, objects, monsters, player, and darkness when those cells are present.
-6. Press `Escape` or `Ctrl+F11` to return to the legacy 2D fallback.
+5. Confirm the bright player focus/crosshair remains visible at handheld scale.
+6. Confirm the loaded placeholder tiles or procedural fallback glyphs are distinct for darkness, floor, walls, doors, stairs, traps, glyphs, shops, rubble, ore, object families, monster families, and player when those cells are present.
+7. Press `Escape` while the SDL tile window is focused and confirm it behaves as legacy cancel, not renderer exit.
+8. Press `Ctrl+F11` to return to the legacy 2D fallback.
 
-To test a compatible custom tilesheet without replacing the repo placeholder, set `STEAMBAND_TOPDOWN_TILESET` to a 24x24 BMP atlas path before launch. The category order is documented in `ASSETS.md`.
+To test a compatible custom tilesheet without replacing the repo placeholder, set `STEAMBAND_TOPDOWN_TILESET` to a `topdown-v1` 216x96 BMP atlas path before launch. The category order is documented in `ASSETS.md`.
 
 ## Controller Controls
 
