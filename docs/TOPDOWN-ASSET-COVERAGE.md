@@ -8,7 +8,7 @@ This report maps the current SDL2 top-down tile contract to legacy game data in
 ## Current Atlas
 
 The checked-in placeholder atlas is `lib/xtra/graf/sdl2_topdown_24.bmp`.
-It is project-generated and currently provides 24 broad tiles:
+It is project-generated and currently provides 28 broad tiles:
 
 - darkness
 - floor
@@ -17,6 +17,10 @@ It is project-generated and currently provides 24 broad tiles:
 - up stairs
 - down stairs
 - trap
+- glyph
+- shop
+- rubble
+- ore vein
 - object
 - food/anodyne object
 - scroll/book object
@@ -37,17 +41,20 @@ It is project-generated and currently provides 24 broad tiles:
 
 ## Terrain Coverage
 
-Terrain is mostly matched to current tiles. Shops currently use a wall/shop
-facade fallback rather than distinct store tiles.
+Terrain is matched to current broad tiles, including shops, glyphs, rubble, and
+ore veins. Store types and individual trap kinds still share broad family tiles.
 
 - `darkness`: 1 entries. Examples: 0: <darkness>
 - `door`: 18 entries. Examples: 4: open door; 5: broken door; 32: door; 33: locked door
 - `down stairs`: 1 entries. Examples: 7: down staircase
-- `floor`: 3 entries. Examples: 1: open floor; 2: invisible trap; 3: glyph of warding
+- `floor`: 2 entries. Examples: 1: open floor; 2: invisible trap
+- `glyph`: 1 entries. Examples: 3: glyph of warding
+- `ore`: 6 entries. Examples: 50: magma vein; 51: quartz vein; 52: magma vein; 53: quartz vein
+- `rubble`: 1 entries. Examples: 49: pile of rubble
+- `shop`: 8 entries. Examples: 8: General Store; 9: Clothing store; 10: Gun shop; 11: Machineist shop
 - `trap`: 16 entries. Examples: 16: trap door; 17: pit; 18: pit; 19: pit
 - `up stairs`: 1 entries. Examples: 6: up staircase
-- `wall`: 16 entries. Examples: 48: secret door; 49: pile of rubble; 50: magma vein; 51: quartz vein
-- `wall (shop facade fallback)`: 8 entries. Examples: 8: General Store; 9: Clothing store; 10: Gun shop; 11: Machineist shop
+- `wall`: 9 entries. Examples: 48: secret door; 56: granite wall; 57: granite wall; 58: granite wall
 
 ## Object Coverage
 
@@ -89,7 +96,7 @@ generic monster tile.
 
 ## Gaps To Close Before A Real Tileset Claim
 
-- Add distinct shop/town facade tiles for store features `0x08` through `0x0F`.
+- Split shop/town facades by store type after the base shop tile is visually proven.
 - Split object-family placeholders into higher-quality final art for food,
   scroll/books, potions, weapons/tools, armor, ray guns/launchers, ammo, money,
   devices/lights, rings, and amulets.

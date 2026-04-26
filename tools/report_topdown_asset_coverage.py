@@ -64,8 +64,10 @@ def terrain_tile(entry: Entry) -> str:
     idx = entry.idx
     if idx == 0:
         return "darkness"
-    if idx in (1, 2, 3):
+    if idx in (1, 2):
         return "floor"
+    if idx == 3:
+        return "glyph"
     if idx in (4, 5) or 0x20 <= idx <= 0x2F:
         return "door"
     if idx == 6:
@@ -74,10 +76,14 @@ def terrain_tile(entry: Entry) -> str:
         return "down stairs"
     if 0x10 <= idx <= 0x1F:
         return "trap"
+    if 0x08 <= idx <= 0x0F:
+        return "shop"
+    if idx == 0x31:
+        return "rubble"
+    if 0x32 <= idx <= 0x37:
+        return "ore"
     if idx >= 0x30:
         return "wall"
-    if 0x08 <= idx <= 0x0F:
-        return "wall (shop facade fallback)"
     return "floor"
 
 
@@ -157,7 +163,7 @@ This report maps the current SDL2 top-down tile contract to legacy game data in
 ## Current Atlas
 
 The checked-in placeholder atlas is `lib/xtra/graf/sdl2_topdown_24.bmp`.
-It is project-generated and currently provides 24 broad tiles:
+It is project-generated and currently provides 28 broad tiles:
 
 - darkness
 - floor
@@ -166,6 +172,10 @@ It is project-generated and currently provides 24 broad tiles:
 - up stairs
 - down stairs
 - trap
+- glyph
+- shop
+- rubble
+- ore vein
 - object
 - food/anodyne object
 - scroll/book object
@@ -186,8 +196,8 @@ It is project-generated and currently provides 24 broad tiles:
 
 ## Terrain Coverage
 
-Terrain is mostly matched to current tiles. Shops currently use a wall/shop
-facade fallback rather than distinct store tiles.
+Terrain is matched to current broad tiles, including shops, glyphs, rubble, and
+ore veins. Store types and individual trap kinds still share broad family tiles.
 
 {bullet_counts(terrain_counts, examples(terrain, terrain_tile))}
 
@@ -210,7 +220,7 @@ generic monster tile.
 
 ## Gaps To Close Before A Real Tileset Claim
 
-- Add distinct shop/town facade tiles for store features `0x08` through `0x0F`.
+- Split shop/town facades by store type after the base shop tile is visually proven.
 - Split object-family placeholders into higher-quality final art for food,
   scroll/books, potions, weapons/tools, armor, ray guns/launchers, ammo, money,
   devices/lights, rings, and amulets.

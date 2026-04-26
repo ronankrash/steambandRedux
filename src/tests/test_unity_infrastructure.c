@@ -188,6 +188,18 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_TRAP,
                                   renderer_tile_category_from_values(FEAT_TRAP_HEAD, TRUE, FALSE, FALSE, FALSE),
                                   "Traps should classify as hazard tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_GLYPH,
+                                  renderer_tile_category_from_values(FEAT_GLYPH, TRUE, FALSE, FALSE, FALSE),
+                                  "Glyphs should get a distinct protection tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_SHOP,
+                                  renderer_tile_category_from_values(FEAT_SHOP_HEAD, TRUE, FALSE, FALSE, FALSE),
+                                  "Shops should get a distinct town facade tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_RUBBLE,
+                                  renderer_tile_category_from_values(FEAT_RUBBLE, TRUE, FALSE, FALSE, FALSE),
+                                  "Rubble should get a distinct diggable obstruction tile");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_ORE,
+                                  renderer_tile_category_from_values(FEAT_MAGMA, TRUE, FALSE, FALSE, FALSE),
+                                  "Ore veins should get a distinct mining tile");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_OBJECT_FOOD,
                                   renderer_object_family_category_from_tval(TV_FOOD),
                                   "Food/anodynes should select the food object tile");
@@ -245,8 +257,8 @@ void test_renderer_basic(void) {
                                   "Out-of-bounds top-down classification should stay dark");
     tile = renderer_classify_tile(2, 2);
     TEST_ASSERT_TRUE_MESSAGE(tile.in_bounds, "Fallback test-map tile should classify in bounds");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_WALL, tile.category,
-                                  "Fallback test-map walls should become top-down wall tiles");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_ORE, tile.category,
+                                  "Fallback test-map quartz should become top-down ore tiles");
     tile = renderer_classify_tile(5, 5);
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_FLOOR, tile.category,
                                   "Fallback test-map floors should become top-down floor tiles");
@@ -321,7 +333,7 @@ void test_renderer_basic(void) {
     tile_spec = renderer_default_top_down_tileset_spec();
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_width, "Default top-down tilesheet should use 24px source tiles");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_spec.tile_height, "Default top-down tilesheet should use square source tiles");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(8, tile_spec.columns, "Default top-down tilesheet should map twenty-four tiles over eight columns");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(7, tile_spec.columns, "Default top-down tilesheet should map twenty-eight tiles over seven columns");
     TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER,
                                   renderer_top_down_tile_index(&tile_spec, RENDERER_TILE_PLAYER),
                                   "Default tilesheet maps each category to its matching tile index");
@@ -330,8 +342,8 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_top_down_tile_index(&tile_spec, 999),
                                   "Invalid high tile category should fall back to darkness tile");
     tile_src = renderer_top_down_source_rect(&tile_spec, RENDERER_TILE_PLAYER);
-    TEST_ASSERT_EQUAL_INT_MESSAGE(168, tile_src.x, "Player tile should be in the third row source atlas");
-    TEST_ASSERT_EQUAL_INT_MESSAGE(48, tile_src.y, "Player tile should be in the third row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(144, tile_src.x, "Player tile should be in the fourth row source atlas");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(72, tile_src.y, "Player tile should be in the fourth row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.w, "Source tile width should match the atlas contract");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.h, "Source tile height should match the atlas contract");
     TEST_ASSERT_FALSE_MESSAGE(renderer_load_top_down_tilesheet(NULL),

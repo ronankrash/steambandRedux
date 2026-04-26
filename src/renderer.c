@@ -1114,11 +1114,15 @@ int renderer_tile_category_from_values(byte feat, bool remembered,
     if (has_object) return RENDERER_TILE_OBJECT;
     if (feat == FEAT_LESS) return RENDERER_TILE_STAIRS_UP;
     if (feat == FEAT_MORE) return RENDERER_TILE_STAIRS_DN;
+    if (feat == FEAT_GLYPH) return RENDERER_TILE_GLYPH;
+    if (feat >= FEAT_SHOP_HEAD && feat <= FEAT_SHOP_TAIL) return RENDERER_TILE_SHOP;
     if (feat >= FEAT_TRAP_HEAD && feat <= FEAT_TRAP_TAIL) return RENDERER_TILE_TRAP;
     if (feat == FEAT_OPEN || feat == FEAT_BROKEN ||
         (feat >= FEAT_DOOR_HEAD && feat <= FEAT_DOOR_TAIL)) {
         return RENDERER_TILE_DOOR;
     }
+    if (feat == FEAT_RUBBLE) return RENDERER_TILE_RUBBLE;
+    if (feat >= FEAT_MAGMA && feat <= FEAT_QUARTZ_K) return RENDERER_TILE_ORE;
     if (feat >= FEAT_SECRET && feat <= FEAT_PERM_SOLID) return RENDERER_TILE_WALL;
     if (feat == FEAT_NONE) return RENDERER_TILE_DARKNESS;
     return RENDERER_TILE_FLOOR;
@@ -1352,6 +1356,14 @@ RendererColor renderer_tile_color(int category) {
             color.r = 60; color.g = 102; color.b = 132; break;
         case RENDERER_TILE_TRAP:
             color.r = 138; color.g = 62; color.b = 116; break;
+        case RENDERER_TILE_GLYPH:
+            color.r = 156; color.g = 132; color.b = 68; break;
+        case RENDERER_TILE_SHOP:
+            color.r = 112; color.g = 92; color.b = 58; break;
+        case RENDERER_TILE_RUBBLE:
+            color.r = 86; color.g = 78; color.b = 68; break;
+        case RENDERER_TILE_ORE:
+            color.r = 124; color.g = 88; color.b = 58; break;
         case RENDERER_TILE_FLOOR:
             color.r = 50; color.g = 48; color.b = 42; break;
         case RENDERER_TILE_DARKNESS:
@@ -1369,8 +1381,8 @@ RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
     memset(&spec, 0, sizeof(spec));
     spec.tile_width = 24;
     spec.tile_height = 24;
-    spec.columns = 8;
-    spec.rows = 3;
+    spec.columns = 7;
+    spec.rows = 4;
     for (i = 0; i < RENDERER_TILE_CATEGORY_COUNT; i++) {
         spec.category_to_tile[i] = i;
     }
