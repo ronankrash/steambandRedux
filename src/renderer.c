@@ -1687,6 +1687,32 @@ static void renderer_draw_top_down_player_focus(RendererContext* ctx, const SDL_
     SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
 }
 
+static void renderer_draw_top_down_focus_overlay(RendererContext* ctx) {
+    SDL_Rect panel;
+    SDL_Rect click_bar;
+
+    if (!ctx || !ctx->renderer || ctx->keyboard_focus) return;
+
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_BLEND);
+    panel.x = ctx->width / 2 - 96;
+    panel.y = ctx->height / 2 - 18;
+    panel.w = 192;
+    panel.h = 36;
+    if (panel.x < 8) panel.x = 8;
+    if (panel.y < 8) panel.y = 8;
+    SDL_SetRenderDrawColor(ctx->renderer, 20, 12, 10, 214);
+    SDL_RenderFillRect(ctx->renderer, &panel);
+    SDL_SetRenderDrawColor(ctx->renderer, 176, 86, 64, 245);
+    SDL_RenderDrawRect(ctx->renderer, &panel);
+
+    click_bar.x = panel.x + 18;
+    click_bar.y = panel.y + 14;
+    click_bar.w = panel.w - 36;
+    click_bar.h = 8;
+    SDL_RenderFillRect(ctx->renderer, &click_bar);
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
+}
+
 static void renderer_render_top_down(RendererContext* ctx) {
     RendererHudSnapshot hud;
     RendererTileViewport view;
@@ -1741,6 +1767,7 @@ static void renderer_render_top_down(RendererContext* ctx) {
     }
     renderer_draw_hud_status(ctx, &hud);
     renderer_draw_hud_hint(ctx);
+    renderer_draw_top_down_focus_overlay(ctx);
     SDL_RenderPresent(ctx->renderer);
 }
 
