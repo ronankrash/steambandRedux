@@ -123,6 +123,8 @@ void renderer_clamp_viewport(RendererContext* ctx, int width, int height);
 RendererColor renderer_atmosphere_color(int y, int height);
 RendererColor renderer_wall_base_color(const RendererRayHit* hit);
 RendererColor renderer_depth_shade(RendererColor base, double distance, int side);
+RendererColor renderer_wall_detail_color(RendererColor shaded, const RendererRayHit* hit,
+                                         int screen_x, int screen_y);
 int renderer_hud_bar_width(int current, int maximum, int max_width);
 void renderer_hud_depth_label(int depth, bool use_feet, char* out, size_t out_size);
 void renderer_hud_status_label(bool blind, bool confused, bool poisoned, bool afraid,

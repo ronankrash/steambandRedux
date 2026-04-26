@@ -256,7 +256,14 @@ void test_renderer_basic(void) {
                                   "Shifted command letters should still reach legacy command handling");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_first_person_key_to_command(ctx, SDLK_LEFT, KMOD_NONE),
                                   "First-person left arrow should turn instead of moving absolutely");
-    TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->dirY) > 0.0001, "Keyboard turn should rotate the camera");
+    TEST_ASSERT_TRUE_MESSAGE(ctx->dirY < -0.0001, "Left arrow should turn the first-person camera left");
+    ctx->dirX = -1.0;
+    ctx->dirY = 0.0;
+    ctx->planeX = 0.0;
+    ctx->planeY = 0.66;
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_first_person_key_to_command(ctx, SDLK_RIGHT, KMOD_NONE),
+                                  "First-person right arrow should turn instead of moving absolutely");
+    TEST_ASSERT_TRUE_MESSAGE(ctx->dirY > 0.0001, "Right arrow should turn the first-person camera right");
 
     TEST_PASS_MESSAGE("Renderer DDA, strip, focus, camera movement, and texture-approval tests passed");
 #else

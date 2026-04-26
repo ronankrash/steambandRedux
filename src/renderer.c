@@ -683,10 +683,10 @@ int renderer_first_person_key_to_command(RendererContext* ctx, SDL_Keycode key, 
             if (mod & KMOD_SHIFT) return renderer_key_to_command(key, mod);
             return renderer_camera_move_command(ctx, RENDERER_MOVE_RIGHT);
         case SDLK_LEFT:
-            renderer_rotate(ctx, -0.18);
+            renderer_rotate(ctx, 0.18);
             return 0;
         case SDLK_RIGHT:
-            renderer_rotate(ctx, 0.18);
+            renderer_rotate(ctx, -0.18);
             return 0;
         default:
             return renderer_key_to_command(key, mod);
@@ -923,6 +923,56 @@ RendererColor renderer_depth_shade(RendererColor base, double distance, int side
     return out;
 }
 
+static RendererColor renderer_scale_color(RendererColor base, double scale) {
+    RendererColor out;
+
+    out.r = renderer_clamp_channel((double)base.r * scale);
+    out.g = renderer_clamp_channel((double)base.g * scale);
+    out.b = renderer_clamp_channel((double)base.b * scale);
+    out.a = base.a;
+    return out;
+}
+
+static RendererColor renderer_brass_highlight(RendererColor base) {
+    RendererColor out;
+
+    out.r = renderer_clamp_channel((double)base.r * 0.70 + 78.0);
+    out.g = renderer_clamp_channel((double)base.g * 0.70 + 58.0);
+    out.b = renderer_clamp_channel((double)base.b * 0.70 + 28.0);
+    out.a = base.a;
+    return out;
+}
+
+RendererColor renderer_wall_detail_color(RendererColor shaded, const RendererRayHit* hit,
+                                         int screen_x, int screen_y) {
+    int seed = 0;
+    int mortar;
+    int seam;
+
+    if (hit) {
+        seed = abs(hit->map_x * 29 + hit->map_y * 43 + hit->side * 7);
+    }
+
+    if (screen_x < 0) screen_x = 0;
+    if (screen_y < 0) screen_y = 0;
+
+    mortar = (screen_y + seed) % 18;
+    if (mortar == 0 || mortar == 1) {
+        return renderer_scale_color(shaded, 0.62);
+    }
+
+    seam = (screen_x + seed) % 23;
+    if (seam == 0) {
+        return renderer_scale_color(shaded, 0.78);
+    }
+
+    if (((screen_x + seed * 3) % 47) == 0 && ((screen_y + seed) % 36) < 3) {
+        return renderer_brass_highlight(shaded);
+    }
+
+    return shaded;
+}
+
 bool renderer_should_forward_key_event(const RendererContext* ctx) {
     return (ctx && ctx->first_person_mode && ctx->keyboard_focus) ? TRUE : FALSE;
 }
@@ -986,6 +1036,15 @@ void renderer_render(RendererContext* ctx) {
         /* Draw the vertical wall strip with perspective */
         SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
         SDL_RenderDrawLine(ctx->renderer, x, strip.draw_start, x, strip.draw_end);
+
+        /* Sparse procedural platework gives a 90s texture read without shipping art assets. */
+        for (int y = strip.draw_start; y <= strip.draw_end; y++) {
+            RendererColor detail = renderer_wall_detail_color(color, &hit, x, y);
+            if (detail.r != color.r || detail.g != color.g || detail.b != color.b || detail.a != color.a) {
+                SDL_SetRenderDrawColor(ctx->renderer, detail.r, detail.g, detail.b, detail.a);
+                SDL_RenderDrawPoint(ctx->renderer, x, y);
+            }
+        }
 
         /* Future: texture mapping would sample from wall_textures[texNum] at (texX, texY)
          * where texX = (int)(wallX * TEX_WIDTH), wallX from hit position fractional.
