@@ -1945,6 +1945,9 @@ static void win_renderer_pulse(void)
 
 	if (!renderer || !renderer->first_person_mode) return;
 
+	renderer_handle_events(renderer, 32);
+	if (!renderer->first_person_mode) return;
+
 	renderer_sync_from_player(renderer);
 	look_x = controller_get_look_x();
 	if (look_x != 0.0) renderer_rotate(renderer, look_x * 0.08);

@@ -46,6 +46,7 @@ typedef struct {
 /* Public API */
 bool renderer_init(RendererContext* ctx);
 void renderer_shutdown(RendererContext* ctx);
+int renderer_handle_events(RendererContext* ctx, int max_events);
 void renderer_render(RendererContext* ctx);
 void renderer_toggle_mode(RendererContext* ctx);
 void renderer_sync_from_player(RendererContext* ctx);  /* Syncs from p_ptr if available */

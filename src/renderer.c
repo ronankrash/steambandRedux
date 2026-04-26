@@ -179,6 +179,26 @@ void renderer_shutdown(RendererContext* ctx) {
     LOG_I("Renderer shutdown complete. 2D fallback restored.");
 }
 
+int renderer_handle_events(RendererContext* ctx, int max_events) {
+    SDL_Event e;
+    int handled = 0;
+
+    if (!ctx || max_events <= 0) return 0;
+
+    while (handled < max_events && SDL_PollEvent(&e)) {
+        handled++;
+
+        if (e.type == SDL_QUIT ||
+            (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
+            ctx->first_person_mode = FALSE;
+            g_use_2d_fallback = TRUE;
+            LOG_I("Exited first-person mode, restored 2D fallback.");
+        }
+    }
+
+    return handled;
+}
+
 /* Simple sync from player if game state available. Uses p_ptr from variable.c */
 void renderer_sync_from_player(RendererContext* ctx) {
     if (!ctx || !p_ptr) return;
@@ -379,16 +399,6 @@ void renderer_render(RendererContext* ctx) {
     
     SDL_RenderPresent(ctx->renderer);
     
-    /* Handle basic events for prototype window (ESC to quit FP mode) */
-    SDL_Event e;
-    while (SDL_PollEvent(&e)) {
-        if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
-            ctx->first_person_mode = FALSE;
-            g_use_2d_fallback = TRUE;
-            LOG_I("Exited first-person mode, restored 2D fallback.");
-        }
-        /* Future: WASD or controller for movement, synced to game */
-    }
 }
 
 void renderer_toggle_mode(RendererContext* ctx) {
