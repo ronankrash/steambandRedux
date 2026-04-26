@@ -22,6 +22,8 @@
 #define TEX_WIDTH     64
 #define TEX_HEIGHT    64
 
+#define RENDERER_TOPDOWN_ATLAS_VERSION "topdown-v1"
+
 #define RENDERER_MOVE_FORWARD  1
 #define RENDERER_MOVE_BACKWARD 2
 #define RENDERER_MOVE_LEFT     3

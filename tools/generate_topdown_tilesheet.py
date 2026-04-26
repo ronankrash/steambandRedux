@@ -16,6 +16,7 @@ from typing import Iterable
 TILE_SIZE = 24
 COLUMNS = 9
 ROWS = 4
+ATLAS_VERSION = "topdown-v1"
 WIDTH = TILE_SIZE * COLUMNS
 HEIGHT = TILE_SIZE * ROWS
 
@@ -316,7 +317,7 @@ def main() -> int:
     args = parser.parse_args()
 
     if args.print_contract:
-        print(f"{TILE_SIZE}x{TILE_SIZE} BMP, {COLUMNS} columns x {ROWS} rows")
+        print(f"{ATLAS_VERSION}: {TILE_SIZE}x{TILE_SIZE} BMP, {COLUMNS} columns x {ROWS} rows")
         for line_text in category_lines():
             print(line_text)
         return 0

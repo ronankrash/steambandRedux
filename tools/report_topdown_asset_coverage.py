@@ -163,7 +163,8 @@ This report maps the current SDL2 top-down tile contract to legacy game data in
 ## Current Atlas
 
 The checked-in placeholder atlas is `lib/xtra/graf/sdl2_topdown_24.bmp`.
-It is project-generated and currently provides 36 broad tiles:
+It is project-generated and currently provides the `topdown-v1` contract with
+36 broad tiles:
 
 - darkness
 - floor

@@ -1542,7 +1542,8 @@ bool renderer_load_top_down_tilesheet(RendererContext* ctx) {
 
     SDL_SetTextureBlendMode(ctx->top_down_tilesheet, SDL_BLENDMODE_BLEND);
     ctx->top_down_tiles_loaded = TRUE;
-    LOG_I("SDL2 top-down atlas ready: %dx%d pixels, %dx%d tiles, %d categories.",
+    LOG_I("SDL2 top-down atlas ready: %s, %dx%d pixels, %dx%d tiles, %d categories.",
+          RENDERER_TOPDOWN_ATLAS_VERSION,
           renderer_top_down_expected_width(&ctx->top_down_tileset),
           renderer_top_down_expected_height(&ctx->top_down_tileset),
           ctx->top_down_tileset.columns,

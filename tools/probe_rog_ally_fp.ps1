@@ -210,7 +210,7 @@ if ($TryNewGame) {
             $Checks["Fallback top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
         } else {
             $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
-            $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: 216x96 pixels, 9x4 tiles, 36 categories")
+            $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: topdown-v1, 216x96 pixels, 9x4 tiles, 36 categories")
         }
     } else {
         $Checks["First-person activated after New attempt"] = $NewLog.Contains("First-person mode activated")
@@ -227,7 +227,7 @@ if ($TryNewGame) {
             $Checks["Fallback top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
         } else {
             $Checks["Top-down tilesheet loaded"] = $NewLog.Contains("Loaded SDL2 top-down tilesheet")
-            $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: 216x96 pixels, 9x4 tiles, 36 categories")
+            $Checks["Top-down atlas dimensions verified"] = $NewLog.Contains("SDL2 top-down atlas ready: topdown-v1, 216x96 pixels, 9x4 tiles, 36 categories")
         }
     } else {
         $Checks["First-person activated"] = $NewLog.Contains("First-person mode activated")
