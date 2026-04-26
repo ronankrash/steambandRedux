@@ -189,7 +189,9 @@ int renderer_handle_events(RendererContext* ctx, int max_events) {
         handled++;
 
         if (e.type == SDL_QUIT ||
-            (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
+            (e.type == SDL_KEYDOWN &&
+             (e.key.keysym.sym == SDLK_ESCAPE ||
+              (e.key.keysym.sym == SDLK_F12 && (e.key.keysym.mod & KMOD_CTRL))))) {
             ctx->first_person_mode = FALSE;
             g_use_2d_fallback = TRUE;
             if (ctx->window) SDL_HideWindow(ctx->window);

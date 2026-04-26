@@ -134,7 +134,7 @@ Pass if:
 - Keyboard movement still matches original command behavior.
 - Controller left stick/D-pad movement works without breaking roguelike turns.
 - Right stick turns the first-person camera while the SDL window is active.
-- `Escape`/`B` exits menus or mode predictably.
+- `Escape` and `Ctrl+F12` exit first-person mode predictably when the SDL window has focus.
 - Window resize preserves readable UI.
 - SDL window close does not crash the main game.
 - Shutdown/relaunch does not leave orphan windows or locked input.
