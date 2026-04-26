@@ -24,6 +24,10 @@ window_debug.log
 lib/save/
 *.sav
 
+# Local-only proprietary asset experiments (do not commit)
+local_assets/
+lib/user/topdown_tileset.bmp
+
 # Local dependency/cache artifacts
 .vs/
 .vscode/

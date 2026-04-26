@@ -89,6 +89,9 @@ Validate a custom sheet before launching with:
 python tools/validate_topdown_tileset.py path/to/topdown_tileset.bmp
 ```
 
+For private local Ultima V PC tile experiments, see
+`docs/LOCAL-ULTIMA5-TILE-TEST.md`. Do not commit converted Ultima assets.
+
 Regenerate the checked-in placeholder atlas with:
 
 ```bash
