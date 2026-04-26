@@ -17,7 +17,7 @@ Do not trust older claims unless they are backed by source code or repeatable co
 - Controller work exists in `src/controller.c`, `src/controller_menu.c`, and `src/controller_config_menu.c`.
 - Practical controller polling is XInput-based. SDL2 controller initialization is compiled only when SDL2 is available, and SDL controller events are not yet used by `controller_check()`.
 - `src/renderer.c` contains a standalone SDL2 DDA raycaster prototype and is compiled only when SDL2 is available.
-- `src/main-win.c` initializes, pulses, and shuts down the SDL renderer in SDL2 builds. The renderer mirrors player/cave state into the SDL prototype window during the Win32 event loop.
+- `src/main-win.c` initializes, pulses, and shuts down the SDL renderer in SDL2 builds. Press `Ctrl+F12` to show/hide the SDL first-person prototype window.
 - The first-person renderer is now loop-integrated as a prototype, but not yet a finished playable feature.
 - `agent-os/` still exists and is historical only unless a future PR explicitly migrates or removes it.
 - `.gitignore`, `ASSETS.md`, and `LICENSES.md` now exist to support safer repo hygiene and asset/license tracking.

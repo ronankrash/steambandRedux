@@ -104,7 +104,11 @@ Current controller implementation is primarily XInput:
 - LB: rest (`R`)
 - RB: search (`s`)
 
-Right stick look/turn is planned for first-person mode but is not implemented.
+SDL2 first-person prototype:
+
+- `Ctrl+F12`: show/hide the SDL first-person prototype window.
+- Right stick: turn camera while first-person mode is active.
+- Escape in the SDL window exits first-person mode.
 
 ## Repository Process
 

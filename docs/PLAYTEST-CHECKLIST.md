@@ -129,11 +129,11 @@ Use for SDL2 builds.
 Pass if:
 
 - Legacy 2D UI still launches and remains available.
-- SDL renderer window appears only in SDL2 builds.
+- `Ctrl+F12` shows/hides the SDL renderer window in SDL2 builds.
 - Renderer syncs to real player position after movement, stairs, load, and new level.
 - Keyboard movement still matches original command behavior.
 - Controller left stick/D-pad movement works without breaking roguelike turns.
-- Right stick look/turn works after implementation.
+- Right stick turns the first-person camera while the SDL window is active.
 - `Escape`/`B` exits menus or mode predictably.
 - Window resize preserves readable UI.
 - SDL window close does not crash the main game.

@@ -123,7 +123,7 @@ bool renderer_init(RendererContext* ctx) {
     
     ctx->window = SDL_CreateWindow("SteambandRedux - First Person Raycaster Prototype",
                                   SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                  ctx->width, ctx->height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                                  ctx->width, ctx->height, SDL_WINDOW_HIDDEN | SDL_WINDOW_RESIZABLE);
     if (!ctx->window) {
         LOG_E("Renderer: SDL window creation failed: %s", SDL_GetError());
         return FALSE;
@@ -153,10 +153,10 @@ bool renderer_init(RendererContext* ctx) {
     }
     ctx->textures_loaded = FALSE;
     
-    ctx->first_person_mode = TRUE;  /* Default to FP for prototype */
-    g_use_2d_fallback = FALSE;
+    ctx->first_person_mode = FALSE;  /* Explicitly toggled with Ctrl+F12 */
+    g_use_2d_fallback = TRUE;
     
-    LOG_I("Renderer initialized: %dx%d DDA raycaster ready. Wall textures stubbed for steampunk (brass/gears/brick).", 
+    LOG_I("Renderer initialized hidden: %dx%d DDA raycaster ready. Press Ctrl+F12 to toggle first-person prototype.", 
           ctx->width, ctx->height);
     renderer_test_dda();
     
@@ -192,6 +192,7 @@ int renderer_handle_events(RendererContext* ctx, int max_events) {
             (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
             ctx->first_person_mode = FALSE;
             g_use_2d_fallback = TRUE;
+            if (ctx->window) SDL_HideWindow(ctx->window);
             LOG_I("Exited first-person mode, restored 2D fallback.");
         }
     }
@@ -407,8 +408,13 @@ void renderer_toggle_mode(RendererContext* ctx) {
     g_use_2d_fallback = !ctx->first_person_mode;
     if (ctx->first_person_mode) {
         renderer_sync_from_player(ctx);
+        if (ctx->window) {
+            SDL_ShowWindow(ctx->window);
+            SDL_RaiseWindow(ctx->window);
+        }
         LOG_I("First-person raycasting mode activated (DDA prototype with steampunk prep).");
     } else {
+        if (ctx->window) SDL_HideWindow(ctx->window);
         LOG_I("Switched to 2D fallback mode.");
     }
 }

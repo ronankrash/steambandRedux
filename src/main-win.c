@@ -1953,6 +1953,12 @@ static void win_renderer_pulse(void)
 	if (look_x != 0.0) renderer_rotate(renderer, look_x * 0.08);
 	renderer_render(renderer);
 }
+
+static void win_renderer_toggle(void)
+{
+	renderer_toggle_mode(get_renderer());
+	win_renderer_pulse();
+}
 #endif
 
 
@@ -4449,6 +4455,14 @@ static LRESULT FAR PASCAL AngbandWndProc(HWND hWnd, UINT uMsg,
 			if (GetKeyState(VK_SHIFT)   & 0x8000) ms = TRUE;
 			if (GetKeyState(VK_MENU)    & 0x8000) ma = TRUE;
 
+#ifdef STEAMBAND_HAS_SDL2
+			if (mc && !ms && !ma && wParam == VK_F12)
+			{
+				win_renderer_toggle();
+				return 0;
+			}
+#endif
+
 			/* Handle "special" keys */
 			if (special_key[(byte)(wParam)])
 			{
@@ -4887,6 +4901,14 @@ static LRESULT FAR PASCAL AngbandListProc(HWND hWnd, UINT uMsg,
 			if (GetKeyState(VK_CONTROL) & 0x8000) mc = TRUE;
 			if (GetKeyState(VK_SHIFT)   & 0x8000) ms = TRUE;
 			if (GetKeyState(VK_MENU)    & 0x8000) ma = TRUE;
+
+#ifdef STEAMBAND_HAS_SDL2
+			if (mc && !ms && !ma && wParam == VK_F12)
+			{
+				win_renderer_toggle();
+				return 0;
+			}
+#endif
 
 			/* Handle "special" keys */
 			if (special_key[(byte)(wParam)])
