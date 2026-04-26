@@ -85,6 +85,12 @@ Regenerate the checked-in placeholder atlas with:
 python tools/generate_topdown_tilesheet.py
 ```
 
+Review current coverage against legacy terrain, object, and monster data with:
+
+```bash
+python tools/report_topdown_asset_coverage.py
+```
+
 The launcher targets `build-rescue-sdl2\Debug\SteambandRedux.exe`, prints the
 current controls, and points to the SDL build logs. See
 `docs\ROG-ALLY-FP-MANUAL-TEST.md` for the focused manual test guide.

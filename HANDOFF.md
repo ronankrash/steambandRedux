@@ -77,6 +77,8 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Keyboard commands forward to the legacy input queue while the SDL2 tile window has focus.
   - SDL window title and bottom hint glyphs now distinguish top-down mode from first-person mode (`Ctrl+F11`/Escape exits, keyboard commands forward).
   - It does not load external art; Ultima V and Balor of the Evil Eye are documented as style references only, not asset sources.
+  - Asset matching is tracked by `docs/TOPDOWN-ASSET-COVERAGE.md`, generated with `python tools/report_topdown_asset_coverage.py`.
+  - Current coverage is category-level: terrain is mostly covered, monsters use broad family tiles, and objects still use one generic object tile pending item-family tiles.
 
 ## Controller State
 

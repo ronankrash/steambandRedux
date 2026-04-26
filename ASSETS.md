@@ -52,3 +52,4 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Renderer use: SDL2 top-down mode loads this BMP through `SDL_LoadBMP` when present. A custom compatible BMP can be tested by setting `STEAMBAND_TOPDOWN_TILESET` to another path.
 - Tile contract: 24x24 tiles, 7 columns x 2 rows, row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, object, generic monster, automata, undead/demon, beast, humanoid, player.
 - Regeneration: run `python tools/generate_topdown_tilesheet.py` from the repository root.
+- Coverage report: run `python tools/report_topdown_asset_coverage.py` to compare current tiles against legacy terrain, object, and monster data.
