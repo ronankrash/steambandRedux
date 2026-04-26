@@ -49,7 +49,7 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Author/owner: SteambandRedux project.
 - License: same project distribution terms as newly authored repository content; no third-party art source.
 - Commercial-use notes: not copied, traced, recolored, or derived from Ultima, Balor, Wizardry, or other reference games. Intended as a temporary permissive placeholder so the SDL2 tile pipeline can be tested before sourcing final art.
-- Renderer use: SDL2 top-down mode loads this BMP through `SDL_LoadBMP` when present. A custom compatible BMP can be tested by setting `STEAMBAND_TOPDOWN_TILESET` to another path.
+- Renderer use: SDL2 top-down mode loads this BMP through `SDL_LoadBMP` when present. A custom compatible BMP can be tested by setting `STEAMBAND_TOPDOWN_TILESET` to another path or by placing `topdown_tileset.bmp` under `lib/user/`.
 - Tile contract: `topdown-v1`; 24x24 tiles, 9 columns x 4 rows, row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, glyph, shop, General Store shop, Clothing store shop, Gun shop, Machinist shop, Alchemy shop, Magic shop, Black Market shop, Home, rubble, ore vein, object, food/anodyne object, scroll/book object, potion/flask object, weapon/tool object, armor object, ray gun/launcher object, ammo object, money object, jewelry object, device/chest object, generic monster, automata, undead/demon, beast, humanoid, player.
 - Dimension guard: compatible BMPs must be exactly 216x96 pixels for the current contract; invalid dimensions fall back to procedural tiles.
 - Regeneration: run `python tools/generate_topdown_tilesheet.py` from the repository root.

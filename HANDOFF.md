@@ -73,7 +73,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - It mirrors cave/player state through a tested tile-classification layer with safe out-of-bounds handling.
   - It loads the project-generated placeholder BMP at `lib/xtra/graf/sdl2_topdown_24.bmp` when available, or uses procedural pencil-like tile glyphs as fallback.
   - The placeholder atlas is reproducible via `python tools/generate_topdown_tilesheet.py`.
-  - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` without changing code.
+  - Compatible custom BMP experiments can set `STEAMBAND_TOPDOWN_TILESET` or drop `topdown_tileset.bmp` under `lib/user/` without changing code.
   - Current atlas contract: `topdown-v1`; 24x24 tiles, 9 columns x 4 rows, row-major categories: darkness, floor, wall, door, up stairs, down stairs, trap, glyph, shop, General Store shop, Clothing store shop, Gun shop, Machinist shop, Alchemy shop, Magic shop, Black Market shop, Home, rubble, ore vein, object, food/anodyne object, scroll/book object, potion/flask object, weapon/tool object, armor object, ray gun/launcher object, ammo object, money object, jewelry object, device/chest object, generic monster, automata, undead/demon, beast, humanoid, player.
   - Custom top-down BMPs are validated against the active atlas dimensions before texture creation; wrong-size sheets fall back to procedural tiles.
   - Successful tile loads log atlas dimensions and category count so probes/manual logs verify the expected sheet is active.

@@ -75,9 +75,13 @@ view with `Ctrl+F12` or `L3 + R3`; in the SDL window use `W`/Up forward,
 The SDL2 build also includes a no-asset top-down tile prototype for the custom
 2D tileset detour. Toggle it with `Ctrl+F11`; it mirrors the legacy cave state
 through a project-generated placeholder BMP or procedural pencil-like fallback
-glyphs. Compatible local tilesheet experiments can set `STEAMBAND_TOPDOWN_TILESET`
-to a 24x24 BMP atlas; bundled external art still requires documentation in
-`ASSETS.md`.
+glyphs. Compatible local tilesheet experiments can either set
+`STEAMBAND_TOPDOWN_TILESET` or place a `topdown_tileset.bmp` file under
+`lib/user/`. Bundled external art still requires documentation in `ASSETS.md`.
+
+Custom top-down sheets must target `topdown-v1`: a 216x96 BMP with 24x24 cells,
+9 columns, and 4 rows. Wrong-size sheets are rejected and the renderer falls
+back safely to the project placeholder or procedural tiles.
 
 Regenerate the checked-in placeholder atlas with:
 

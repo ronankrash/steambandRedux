@@ -73,7 +73,7 @@ Use this for the SDL2 custom 2D tile detour.
 7. Press `Escape` while the SDL tile window is focused and confirm it behaves as legacy cancel, not renderer exit.
 8. Press `Ctrl+F11` to return to the legacy 2D fallback.
 
-To test a compatible custom tilesheet without replacing the repo placeholder, set `STEAMBAND_TOPDOWN_TILESET` to a `topdown-v1` 216x96 BMP atlas path before launch. The category order is documented in `ASSETS.md`.
+To test a compatible custom tilesheet without replacing the repo placeholder, set `STEAMBAND_TOPDOWN_TILESET` to a `topdown-v1` 216x96 BMP atlas path before launch, or copy a compatible sheet to `lib\user\topdown_tileset.bmp`. The category order is documented in `ASSETS.md`.
 
 ## Controller Controls
 

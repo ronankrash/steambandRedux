@@ -30,6 +30,9 @@ bool g_use_2d_fallback = TRUE;
 static char g_overlay_message[80];
 
 static const char* g_top_down_tilesheet_candidates[] = {
+    "lib/user/topdown_tileset.bmp",
+    "../lib/user/topdown_tileset.bmp",
+    "../../lib/user/topdown_tileset.bmp",
     "lib/xtra/graf/sdl2_topdown_24.bmp",
     "../lib/xtra/graf/sdl2_topdown_24.bmp",
     "../../lib/xtra/graf/sdl2_topdown_24.bmp",
