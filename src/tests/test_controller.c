@@ -14,6 +14,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#ifdef STEAMBAND_HAS_SDL2
+#include <SDL.h>
+#endif
 
 /* Test helper: Create a test config file */
 static test_file_t create_test_config_file(const char *content) {
@@ -48,6 +51,7 @@ void test_controller_default_mappings_accessible(void) {
 
 /* Test for SDL2 GameController (Phase 2 ROG Ally support) */
 void test_sdl2_controller_init(void) {
+#ifdef STEAMBAND_HAS_SDL2
     /* SDL2 initialization for enhanced controller support (ROG Ally mappings via gamecontrollerdb) */
     int init_result = SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);
     TEST_ASSERT_TRUE_MESSAGE(init_result == 0 || init_result == -1, "SDL_GameController subsystem test");
@@ -63,6 +67,9 @@ void test_sdl2_controller_init(void) {
         SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
     }
     TEST_PASS();
+#else
+    TEST_IGNORE_MESSAGE("SDL2 controller support disabled at build time");
+#endif
 }
 
 /* Test 8.1.2: Test button display name conversion */

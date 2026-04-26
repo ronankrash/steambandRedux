@@ -75,7 +75,9 @@
 #include "controller.h"
 #include "steam_integration.h"
 #include "logging.h"
+#ifdef STEAMBAND_HAS_SDL2
 #include "renderer.h"
+#endif
 
 
 #ifdef WINDOWS
@@ -5620,10 +5622,14 @@ int FAR PASCAL WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
 	/* Initialize controller support */
 	controller_init();
 
+#ifdef STEAMBAND_HAS_SDL2
 	/* Initialize first-person renderer (minimal integration for raycasting prototype) */
 	if (!renderer_init(get_renderer())) {
 		LOG_W("Renderer init failed - falling back to 2D only. Check SDL2 setup.");
 	}
+#else
+	LOG_I("SDL2 renderer disabled; running legacy 2D display only.");
+#endif
 
 	/* Prepare the filepaths */
 	init_stuff();

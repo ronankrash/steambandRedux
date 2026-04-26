@@ -3,17 +3,40 @@ project(SteambandRedux C)
 
 set(CMAKE_C_STANDARD 99)
 
-# SDL2 for Phase 2: first-person renderer, improved controller input (ROG Ally defaults), Steam integration
-# Install via vcpkg (vcpkg install sdl2) or download dev libs and set SDL2_DIR.
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
+# SDL2 enables the first-person renderer and future SDL controller work.
+# Keep it optional so the legacy 2D/XInput baseline can still configure and
+# build while SDL2 is being installed on a new developer machine.
+option(STEAMBAND_ENABLE_SDL2 "Enable SDL2 renderer/controller integration when SDL2 is available" ON)
+set(STEAMBAND_HAS_SDL2 OFF)
+set(SDL2_TARGET_LIBS)
+
+if(STEAMBAND_ENABLE_SDL2)
+    find_package(SDL2 QUIET)
+    if(SDL2_FOUND)
+        set(STEAMBAND_HAS_SDL2 ON)
+        add_definitions(-DSTEAMBAND_HAS_SDL2)
+        include_directories(${SDL2_INCLUDE_DIRS})
+        if(TARGET SDL2::SDL2)
+            list(APPEND SDL2_TARGET_LIBS SDL2::SDL2)
+        endif()
+        if(WIN32 AND TARGET SDL2::SDL2main)
+            list(APPEND SDL2_TARGET_LIBS SDL2::SDL2main)
+        endif()
+        list(APPEND SDL2_TARGET_LIBS ${SDL2_LIBRARIES})
+        list(REMOVE_DUPLICATES SDL2_TARGET_LIBS)
+    else()
+        message(WARNING "SDL2 not found; building legacy 2D/XInput baseline without src/renderer.c")
+    endif()
+endif()
 
 # Define macros for Windows build
 if(WIN32)
     add_definitions(-DWINDOWS -DWIN32 -D_WIN32_WINNT=0x0501)
     # Suppress MSVC C4996 warnings for unsafe string functions (legacy code)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_definitions(-DSDL_MAIN_HANDLED)  # For SDL2main with Win32
+    if(STEAMBAND_HAS_SDL2)
+        add_definitions(-DSDL_MAIN_HANDLED)  # For SDL2main with Win32
+    endif()
 endif()
 
 # Include directories
@@ -31,7 +54,6 @@ set(SOURCES
     src/controller.c
     src/controller_menu.c
     src/controller_config_menu.c
-    src/renderer.c
     src/cmd-item.c
     src/cmd-know.c
     src/cmd-misc.c
@@ -75,24 +97,26 @@ set(SOURCES
     src/z-virt.c
 )
 
+if(STEAMBAND_HAS_SDL2)
+    list(APPEND SOURCES src/renderer.c)
+endif()
+
 if(WIN32)
     list(APPEND SOURCES src/main-win.c)
     # Resource file would go here if we had it: src/angband.rc
     
-    # Libraries needed for Windows (SDL2 replaces some legacy GDI/XInput for Phase 2+)
-    # SDL2 provides excellent ROG Ally / modern controller support via GameController API
-    set(LIBS kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32 winmm xinput ${SDL2_LIBRARIES})
+    # Libraries needed for Windows. SDL2 is linked separately when available.
+    set(LIBS kernel32 user32 gdi32 winspool comdlg32 advapi32 shell32 ole32 oleaut32 uuid odbc32 odbccp32 winmm xinput)
 else()
     # Logic for other platforms (e.g. ncurses)
     list(APPEND SOURCES src/main-gcu.c src/main.c)
     find_package(Curses REQUIRED)
     include_directories(${CURSES_INCLUDE_DIR})
-    set(LIBS ${CURSES_LIBRARIES} ${SDL2_LIBRARIES})
+    set(LIBS ${CURSES_LIBRARIES})
 endif()
 
 add_executable(SteambandRedux WIN32 ${SOURCES})
-# SDL2main must be linked first for proper SDL initialization on Windows
-target_link_libraries(SteambandRedux PRIVATE SDL2::SDL2main SDL2::SDL2 ${LIBS})
+target_link_libraries(SteambandRedux PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
 
 # Unity Testing Framework
 set(UNITY_SOURCES
@@ -108,7 +132,7 @@ add_executable(UnitTests
     src/logging.c
     ${UNITY_SOURCES}
 )
-target_link_libraries(UnitTests PRIVATE SDL2::SDL2 ${LIBS})
+target_link_libraries(UnitTests PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
 
 # Unity Test Runner (for Unity framework tests)
 # Note: test_util.c is excluded for now due to complex dependencies on game state
@@ -126,10 +150,12 @@ add_executable(UnityTestRunner
     src/controller.c
     src/controller_menu.c
     src/controller_config_menu.c
-    src/renderer.c
     ${UNITY_SOURCES}
 )
-target_link_libraries(UnityTestRunner PRIVATE SDL2::SDL2 ${LIBS})
+if(STEAMBAND_HAS_SDL2)
+    target_sources(UnityTestRunner PRIVATE src/renderer.c)
+endif()
+target_link_libraries(UnityTestRunner PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
 
 # Enable CTest
 enable_testing()

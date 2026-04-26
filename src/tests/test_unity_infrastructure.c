@@ -10,7 +10,9 @@
 
 #include "unity.h"
 #include "test_helpers.h"
+#ifdef STEAMBAND_HAS_SDL2
 #include "renderer.h"
+#endif
 
 /* Test Unity assertion macros work correctly */
 void test_unity_assertions(void) {
@@ -51,6 +53,7 @@ void test_unity_fixtures_available(void) {
 /* Basic renderer tests for raycaster prototype (TDD) - tests wall detection from cave data,
  * DDA logic, security bounds checking. Uses test map fallback. */
 void test_renderer_basic(void) {
+#ifdef STEAMBAND_HAS_SDL2
     /* Test wall detection security and logic */
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(0, 0), "Edge walls should return true");
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(1, 1), "Test map walls detected");
@@ -62,4 +65,7 @@ void test_renderer_basic(void) {
     
     renderer_test_dda();
     TEST_PASS_MESSAGE("Renderer DDA and wall tests passed - ready for steampunk textures");
+#else
+    TEST_IGNORE_MESSAGE("SDL2 renderer disabled at build time");
+#endif
 }

@@ -7,20 +7,26 @@ Last updated: 2026-04-25
 - Language: C, preserving the legacy Steamband/Angband engine.
 - Build: CMake with Visual Studio/MSVC on Windows.
 - Current UI: Win32 Term/GDI path in `src/main-win.c`.
-- Controller: XInput-driven input in `src/controller.c`; SDL controller open is present but not used for polling.
-- Renderer prototype: SDL2 DDA raycaster in `src/renderer.c`, not yet driven by the game loop.
+- Controller: XInput-driven input in `src/controller.c`; SDL controller open is compiled only when SDL2 is available and is not used for polling yet.
+- Renderer prototype: SDL2 DDA raycaster in `src/renderer.c`, compiled only when SDL2 is available and not yet driven by the game loop.
 - Tests: Unity framework in `third_party/unity/` and `src/tests/`.
 - Logging: `src/logging.c`.
 
 ## Dependency Notes
 
-`CMakeLists.txt` currently requires SDL2:
+`CMakeLists.txt` can configure without SDL2 for the legacy 2D/XInput baseline:
 
 ```bash
-cmake -S . -B build -DSDL2_DIR=<path-to-sdl2-cmake-config>
+cmake -S . -B build
 ```
 
-The existing build cache records `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`, so local SDL2 setup must be fixed before build claims are made.
+To build the SDL2 renderer path, install SDL2 and configure with:
+
+```bash
+cmake -S . -B build-sdl2 -DSDL2_DIR=<path-to-sdl2-cmake-config>
+```
+
+The existing build cache records `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`, so local SDL2 renderer setup is not verified.
 
 ## Test Targets
 
@@ -29,7 +35,7 @@ The existing build cache records `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`, so local SDL
 
 Known drift:
 
-- `test_sdl2_controller_init()` is not registered.
+- SDL2-specific tests are ignored when SDL2 is disabled.
 - `test_util.c` is not built.
 - Renderer coverage does not exercise `renderer_render()`.
 

@@ -14,19 +14,24 @@ Do not trust older claims unless they are backed by source code or repeatable co
 - The legacy Steamband/Angband-derived C code remains the canonical gameplay engine and data source.
 - The current Windows UI path is still the legacy Term/GDI style interface.
 - Controller work exists in `src/controller.c`, `src/controller_menu.c`, and `src/controller_config_menu.c`.
-- Practical controller polling is XInput-based. SDL2 `SDL_GameControllerOpen()` is attempted, but SDL controller events are not yet used by `controller_check()`.
-- `src/renderer.c` contains a standalone SDL2 DDA raycaster prototype.
-- `src/main-win.c` initializes the renderer but does not call `renderer_render()`, `renderer_toggle_mode()`, or `renderer_shutdown()`.
+- Practical controller polling is XInput-based. SDL2 controller initialization is compiled only when SDL2 is available, and SDL controller events are not yet used by `controller_check()`.
+- `src/renderer.c` contains a standalone SDL2 DDA raycaster prototype and is compiled only when SDL2 is available.
+- `src/main-win.c` initializes the renderer only in SDL2 builds, but does not call `renderer_render()`, `renderer_toggle_mode()`, or `renderer_shutdown()`.
 - The first-person renderer is not yet a live playable game feature.
 - `agent-os/` still exists and is historical only unless a future PR explicitly migrates or removes it.
 - `.gitignore`, `ASSETS.md`, and `LICENSES.md` now exist to support safer repo hygiene and asset/license tracking.
 
 ## Verification Status
 
-- Clean CMake configure was attempted with `cmake -S . -B build-rescue-verify`.
-- Configure failed because SDL2 could not be found by CMake.
+- Clean CMake configure initially failed because SDL2 could not be found by CMake.
+- The build now treats SDL2 as optional so the legacy 2D/XInput baseline can configure without SDL2.
+- Non-SDL2 baseline verification passed:
+  - `cmake -S . -B build-rescue-nosdl`
+  - `cmake --build build-rescue-nosdl --config Debug`
+  - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
 - Existing `build/CMakeCache.txt` shows `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`.
-- SDL2 is required by `CMakeLists.txt`, so future agents must install/configure SDL2 before claiming build success.
+- Future agents must install/configure SDL2 before claiming renderer build success.
+- Manual launch and controller hardware smoke tests remain pending.
 - See `docs/BASELINE-VERIFICATION.md` for required commands and pass criteria.
 
 ## Test Status
@@ -36,7 +41,7 @@ Do not trust older claims unless they are backed by source code or repeatable co
 - `UnitTests` is an older logging-focused runner and does not execute the full Unity suite.
 - Known gaps:
   - `renderer_render()` has no automated coverage.
-  - `test_sdl2_controller_init()` is not registered in the Unity runner.
+  - SDL2-specific smoke tests are ignored when SDL2 is disabled.
   - `test_util.c` is not part of the current CMake targets.
   - Controller timing and hardware paths require more tests and physical playtesting.
 
@@ -62,13 +67,11 @@ Do not trust older claims unless they are backed by source code or repeatable co
 
 ## Next Actions
 
-1. Verify SDL2 setup and clean CMake configure/build from a fresh build directory.
-2. Run `ctest -C Debug --output-on-failure` after a successful build.
-3. Launch the game and record keyboard/controller smoke-test results.
-4. Fix runner drift: register or remove dead tests and make README test counts match actual runner output.
-5. Decide how to handle `agent-os/` in a focused cleanup PR.
-6. Resolve or document the base license constraints before any Steam/commercial commitment.
-7. Only then integrate the renderer into the real game loop with tests.
+1. Launch the non-SDL2 build and record keyboard/controller smoke-test results.
+2. Install/configure SDL2 and verify the renderer-enabled build.
+3. Decide how to handle `agent-os/` in a focused cleanup PR.
+4. Resolve or document the base license constraints before any Steam/commercial commitment.
+5. Only then integrate the renderer into the real game loop with tests.
 
 ## Handoff Rule
 

@@ -53,6 +53,7 @@ extern void test_controller_config_menu_show_hide(void);
 extern void test_controller_menu_mutual_exclusivity(void);
 extern void test_controller_mapping_count_consistency(void);
 extern void test_controller_invalid_mapping_index(void);
+extern void test_sdl2_controller_init(void);
 
 int main(void) {
     UNITY_BEGIN();
@@ -103,6 +104,7 @@ int main(void) {
     RUN_TEST(test_controller_menu_mutual_exclusivity);
     RUN_TEST(test_controller_mapping_count_consistency);
     RUN_TEST(test_controller_invalid_mapping_index);
+    RUN_TEST(test_sdl2_controller_init);
     
     return UNITY_END();
 }

@@ -31,14 +31,21 @@ See:
 - Windows 10/11
 - Visual Studio 2022 or compatible MSVC toolchain
 - CMake 3.10 or newer
-- SDL2 development package discoverable by CMake
+- SDL2 development package discoverable by CMake for first-person renderer builds
 - Git
 
-Example configure/build:
+Baseline configure/build without SDL2:
 
 ```bash
-cmake -S . -B build -DSDL2_DIR=<path-to-sdl2-cmake-config>
+cmake -S . -B build
 cmake --build build --config Debug
+```
+
+SDL2 renderer configure/build:
+
+```bash
+cmake -S . -B build-sdl2 -DSDL2_DIR=<path-to-sdl2-cmake-config>
+cmake --build build-sdl2 --config Debug
 ```
 
 If SDL2 is installed through vcpkg, use the appropriate vcpkg toolchain file or set `SDL2_DIR` to the SDL2 CMake config directory.
@@ -72,9 +79,11 @@ Current known test drift:
 
 - `UnitTests` is an older logging-focused runner.
 - `UnityTestRunner` is the primary Unity runner.
-- `test_sdl2_controller_init()` exists but is not registered.
+- SDL2-specific smoke tests are ignored when SDL2 is disabled.
 - `test_util.c` is present but not built.
 - Renderer tests do not cover live rendering or game-loop integration.
+
+Latest baseline check: the non-SDL2 Debug build and CTest pass from `build-rescue-nosdl`. SDL2 renderer builds still require SDL2 to be installed and discoverable by CMake.
 
 ## Controls
 

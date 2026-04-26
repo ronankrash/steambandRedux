@@ -6,7 +6,9 @@
 #include "logging.h"
 #include <windows.h>
 #include <xinput.h>
+#ifdef STEAMBAND_HAS_SDL2
 #include <SDL.h>  /* SDL2 for improved controller support including ROG Ally mappings */
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>  /* For atan2() */
@@ -26,7 +28,9 @@ static DWORD g_back_button_press_time = 0; /* Track BACK button for menu activat
 static bool g_back_button_was_pressed = FALSE;
 
 /* SDL2 GameController for Phase 2 ROG Ally optimization and modern input (fallback to XInput) */
+#ifdef STEAMBAND_HAS_SDL2
 static SDL_GameController *g_sdl_controller = NULL;
+#endif
 
 /*
  * Button mappings
@@ -99,6 +103,7 @@ void controller_init(void) {
     g_previous_connected = g_connected; /* Initialize previous state */
     
     /* SDL2 GameController init for ROG Ally and improved mapping support (Phase 2) */
+#ifdef STEAMBAND_HAS_SDL2
     if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == 0) {
         g_sdl_controller = SDL_GameControllerOpen(0);
         if (g_sdl_controller) {
@@ -113,6 +118,11 @@ void controller_init(void) {
     } else if (g_logging_enabled) {
         LOG_W("SDL_InitSubSystem(GAMECONTROLLER) failed: %s", SDL_GetError());
     }
+#else
+    if (g_logging_enabled) {
+        LOG_I("SDL2 not available at build time; using XInput controller path only");
+    }
+#endif
     
     /* Log initialization status */
     if (g_logging_enabled) {

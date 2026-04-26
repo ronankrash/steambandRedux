@@ -17,24 +17,25 @@ This audit records what is currently visible in the repository. It is intentiona
 
 ## Build And Dependencies
 
-- `CMakeLists.txt` requires SDL2 with `find_package(SDL2 REQUIRED)`.
-- The existing `build/CMakeCache.txt` records `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`, so SDL2 setup is not verified in the current cache.
+- `CMakeLists.txt` now treats SDL2 as optional for baseline builds. If SDL2 is not discoverable, the legacy 2D/XInput baseline configures without `src/renderer.c`.
+- The existing `build/CMakeCache.txt` records `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`, so SDL2 renderer setup is not verified in the current cache.
 - Visual Studio 2022 is referenced by the existing build cache.
-- A clean configure attempt with `cmake -S . -B build-rescue-verify` failed because CMake could not find `SDL2Config.cmake` or `sdl2-config.cmake`.
+- A clean configure attempt before the optional-SDL2 change failed because CMake could not find `SDL2Config.cmake` or `sdl2-config.cmake`.
+- After the optional-SDL2 change, `cmake -S . -B build-rescue-nosdl`, `cmake --build build-rescue-nosdl --config Debug`, and `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure` all pass for the non-SDL2 baseline.
 
 ## Tests
 
 - `CMakeLists.txt` defines two test executables: `UnitTests` and `UnityTestRunner`.
 - `UnitTests` runs the older custom logging runner and does not execute renderer, z-util, or controller Unity tests.
-- `UnityTestRunner` is the primary runner for Unity tests. It registers infrastructure, logging, z-util, and controller tests.
+- `UnityTestRunner` is the primary runner for Unity tests. It registers infrastructure, logging, z-util, controller, and SDL2 smoke tests.
 - `test_renderer_basic` is included through `test_unity_infrastructure.c` and exercises only basic wall/OOB behavior plus a weak DDA smoke call.
-- `test_sdl2_controller_init` exists in `test_controller.c` but is not registered in `unity_test_runner.c`.
+- `test_sdl2_controller_init` is registered in `unity_test_runner.c` and is ignored when SDL2 is disabled at build time.
 - `test_util.c` exists but is not part of the current CMake test targets.
 
 ## Renderer Status
 
 - `src/renderer.c` contains a real SDL2 DDA-style raycaster prototype with a standalone SDL window, ceiling/floor fills, wall strips, and a fallback test map.
-- `src/main-win.c` calls `renderer_init(get_renderer())`.
+- `src/main-win.c` calls `renderer_init(get_renderer())` only when built with `STEAMBAND_HAS_SDL2`.
 - No code outside `renderer.c` calls `renderer_render()`, `renderer_toggle_mode()`, or `renderer_shutdown()`.
 - `g_use_2d_fallback` is internal to the renderer module and is not consumed by the Win32 terminal display path.
 - The first-person renderer must not be described as a live game feature until it is driven by the game loop and controllable through keyboard/controller input.
@@ -62,7 +63,8 @@ This audit records what is currently visible in the repository. It is intentiona
 
 ## Open Risks
 
-- Build/test status is blocked in this environment until SDL2 is installed and discoverable by CMake.
+- SDL2 renderer build/test status remains blocked until SDL2 is installed and discoverable by CMake.
+- Manual gameplay launch and controller hardware checks are still pending.
 - The first-person prototype is disconnected from the actual game loop.
 - The license story is not ready for commercial release decisions.
 - Legacy C still contains many unsafe string formatting/copying patterns that require phased hardening with tests.
