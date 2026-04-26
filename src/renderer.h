@@ -27,6 +27,13 @@
 #define RENDERER_MOVE_LEFT     3
 #define RENDERER_MOVE_RIGHT    4
 
+#define RENDERER_MARKER_NONE    0
+#define RENDERER_MARKER_MONSTER 1
+#define RENDERER_MARKER_OBJECT  2
+#define RENDERER_MARKER_STAIRS  3
+#define RENDERER_MARKER_DOOR    4
+#define RENDERER_MARKER_TRAP    5
+
 typedef struct {
     bool hit;
     int map_x;
@@ -72,6 +79,15 @@ typedef struct {
     char last_message[80];
     char title[160];
 } RendererHudSnapshot;
+
+typedef struct {
+    bool visible;
+    int screen_x;
+    int top;
+    int bottom;
+    int size;
+    double depth;
+} RendererMarkerProjection;
 
 /* Renderer context - extensible for approved textures */
 typedef struct {
@@ -125,6 +141,10 @@ RendererColor renderer_wall_base_color(const RendererRayHit* hit);
 RendererColor renderer_depth_shade(RendererColor base, double distance, int side);
 RendererColor renderer_wall_detail_color(RendererColor shaded, const RendererRayHit* hit,
                                          int screen_x, int screen_y);
+int renderer_marker_kind(byte feat, int has_monster, int has_object);
+RendererColor renderer_marker_color(int marker_kind);
+RendererMarkerProjection renderer_project_marker(const RendererContext* ctx,
+                                                 double world_x, double world_y);
 int renderer_hud_bar_width(int current, int maximum, int max_width);
 void renderer_hud_depth_label(int depth, bool use_feet, char* out, size_t out_size);
 void renderer_hud_status_label(bool blind, bool confused, bool poisoned, bool afraid,

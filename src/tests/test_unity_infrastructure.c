@@ -69,6 +69,8 @@ void test_renderer_basic(void) {
     RendererColor mortar_detail;
     RendererColor seam_detail;
     RendererColor rivet_detail;
+    RendererColor marker_color;
+    RendererMarkerProjection marker;
     RendererHudSnapshot hud;
     char label[16];
     char status[32];
@@ -127,6 +129,24 @@ void test_renderer_basic(void) {
                              "Procedural wall seams should darken vertical plate breaks");
     TEST_ASSERT_TRUE_MESSAGE(rivet_detail.r > detail_base.r && rivet_detail.g > detail_base.g,
                              "Procedural brass rivets should add warm highlights");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_MARKER_MONSTER,
+                                  renderer_marker_kind(FEAT_FLOOR, TRUE, FALSE),
+                                  "Visible monsters should take marker priority");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_MARKER_OBJECT,
+                                  renderer_marker_kind(FEAT_FLOOR, FALSE, TRUE),
+                                  "Visible objects should get item markers");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_MARKER_STAIRS,
+                                  renderer_marker_kind(FEAT_MORE, FALSE, FALSE),
+                                  "Stairs should be marked for first-person navigation");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_MARKER_DOOR,
+                                  renderer_marker_kind(FEAT_DOOR_HEAD, FALSE, FALSE),
+                                  "Doors should be marked as interactable");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_MARKER_TRAP,
+                                  renderer_marker_kind(FEAT_TRAP_HEAD, FALSE, FALSE),
+                                  "Traps should be marked as hazards");
+    marker_color = renderer_marker_color(RENDERER_MARKER_MONSTER);
+    TEST_ASSERT_TRUE_MESSAGE(marker_color.r > marker_color.g,
+                             "Monster markers should read as danger");
 
     ctx = get_renderer();
     memset(ctx, 0, sizeof(*ctx));
@@ -230,6 +250,12 @@ void test_renderer_basic(void) {
     ctx->dirY = 0.0;
     ctx->planeX = 0.0;
     ctx->planeY = 0.66;
+    marker = renderer_project_marker(ctx, 1.5, 5.5);
+    TEST_ASSERT_TRUE_MESSAGE(marker.visible, "Marker directly ahead should project into view");
+    TEST_ASSERT_TRUE_MESSAGE(marker.screen_x > 0 && marker.screen_x < RENDER_WIDTH,
+                             "Forward marker should project inside the viewport");
+    marker = renderer_project_marker(ctx, 9.5, 5.5);
+    TEST_ASSERT_FALSE_MESSAGE(marker.visible, "Marker behind camera should not be visible");
     renderer_rotate(ctx, 3.14159265358979323846 / 2.0);
     TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->dirX) < 0.0001, "Rotation should turn dirX near zero");
     TEST_ASSERT_TRUE_MESSAGE(fabs(ctx->dirY + 1.0) < 0.0001, "Rotation should turn direction left");

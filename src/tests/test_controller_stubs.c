@@ -1,6 +1,6 @@
 /* File: src/tests/test_controller_stubs.c
  * Stubs for controller tests that require game state
- * 
+ *
  * These stubs provide minimal implementations of functions required
  * by controller.c and menu files, but don't require full game initialization.
  */
@@ -31,19 +31,19 @@ errr Term_erase(int x, int y, int n) {
 /* Stub for path_build - simple string concatenation */
 errr path_build(char *buf, int max, cptr path, cptr file) {
     if (!buf || !path || !file || max <= 0) return 1;
-    
+
     size_t path_len = strlen(path);
     size_t file_len = strlen(file);
-    
+
     if (path_len + file_len + 2 > max) {
         /* Truncate if needed */
         file_len = max - path_len - 2;
         if (file_len < 0) file_len = 0;
     }
-    
+
     strncpy(buf, path, max - 1);
     buf[max - 1] = '\0';
-    
+
     /* Add separator if path doesn't end with one */
     if (path_len > 0 && buf[path_len - 1] != '/' && buf[path_len - 1] != '\\') {
         if (path_len < max - 1) {
@@ -52,7 +52,7 @@ errr path_build(char *buf, int max, cptr path, cptr file) {
             path_len++;
         }
     }
-    
+
     /* Append filename */
     if (path_len < max - 1) {
         strncat(buf, file, max - path_len - 1);
@@ -86,6 +86,8 @@ cptr ANGBAND_DIR_USER = NULL; /* Will be NULL for tests, which is fine */
  * safely returns early.
  */
 byte (*cave_feat)[DUNGEON_WID] = NULL;
+s16b (*cave_o_idx)[DUNGEON_WID] = NULL;
+s16b (*cave_m_idx)[DUNGEON_WID] = NULL;
 player_type *p_ptr = NULL;
 player_other *op_ptr = NULL;
 

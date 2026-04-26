@@ -973,6 +973,121 @@ RendererColor renderer_wall_detail_color(RendererColor shaded, const RendererRay
     return shaded;
 }
 
+int renderer_marker_kind(byte feat, int has_monster, int has_object) {
+    if (has_monster) return RENDERER_MARKER_MONSTER;
+    if (has_object) return RENDERER_MARKER_OBJECT;
+    if (feat == FEAT_LESS || feat == FEAT_MORE) return RENDERER_MARKER_STAIRS;
+    if (feat >= FEAT_TRAP_HEAD && feat <= FEAT_TRAP_TAIL) return RENDERER_MARKER_TRAP;
+    if (feat == FEAT_OPEN || (feat >= FEAT_DOOR_HEAD && feat <= FEAT_DOOR_TAIL)) {
+        return RENDERER_MARKER_DOOR;
+    }
+    return RENDERER_MARKER_NONE;
+}
+
+RendererColor renderer_marker_color(int marker_kind) {
+    RendererColor color;
+
+    switch (marker_kind) {
+        case RENDERER_MARKER_MONSTER:
+            color.r = 194; color.g = 58; color.b = 44; break;
+        case RENDERER_MARKER_OBJECT:
+            color.r = 214; color.g = 165; color.b = 64; break;
+        case RENDERER_MARKER_STAIRS:
+            color.r = 80; color.g = 148; color.b = 184; break;
+        case RENDERER_MARKER_DOOR:
+            color.r = 156; color.g = 100; color.b = 48; break;
+        case RENDERER_MARKER_TRAP:
+            color.r = 176; color.g = 66; color.b = 148; break;
+        default:
+            color.r = 0; color.g = 0; color.b = 0; break;
+    }
+    color.a = 225;
+    return color;
+}
+
+RendererMarkerProjection renderer_project_marker(const RendererContext* ctx,
+                                                 double world_x, double world_y) {
+    RendererMarkerProjection out;
+    double rel_x, rel_y;
+    double inv_det;
+    double transform_x, transform_y;
+
+    memset(&out, 0, sizeof(out));
+    if (!ctx || ctx->width <= 0 || ctx->height <= 0) return out;
+
+    inv_det = (ctx->planeX * ctx->dirY) - (ctx->dirX * ctx->planeY);
+    if (fabs(inv_det) < 0.0001) return out;
+    inv_det = 1.0 / inv_det;
+
+    rel_x = world_x - ctx->posX;
+    rel_y = world_y - ctx->posY;
+    transform_x = inv_det * (ctx->dirY * rel_x - ctx->dirX * rel_y);
+    transform_y = inv_det * (-ctx->planeY * rel_x + ctx->planeX * rel_y);
+    if (transform_y <= 0.10) return out;
+
+    out.screen_x = (int)((ctx->width / 2.0) * (1.0 + transform_x / transform_y));
+    if (out.screen_x < -ctx->width / 4 || out.screen_x > ctx->width + ctx->width / 4) return out;
+
+    out.size = (int)(ctx->height / transform_y / 5.0);
+    if (out.size < 6) out.size = 6;
+    if (out.size > ctx->height / 3) out.size = ctx->height / 3;
+    out.top = (ctx->height / 2) - out.size;
+    out.bottom = (ctx->height / 2) + out.size;
+    if (out.top < 0) out.top = 0;
+    if (out.bottom >= ctx->height) out.bottom = ctx->height - 1;
+    out.depth = transform_y;
+    out.visible = TRUE;
+    return out;
+}
+
+static void renderer_draw_world_markers(RendererContext* ctx) {
+    int cy, cx;
+    int radius = 8;
+
+    if (!ctx || !ctx->renderer) return;
+
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_BLEND);
+    for (cy = (int)ctx->posY - radius; cy <= (int)ctx->posY + radius; cy++) {
+        for (cx = (int)ctx->posX - radius; cx <= (int)ctx->posX + radius; cx++) {
+            int has_monster = 0;
+            int has_object = 0;
+            int kind;
+            byte feat;
+            RendererMarkerProjection marker;
+            RendererColor color;
+            SDL_Rect rect;
+
+            if (cy < 0 || cx < 0 || cy >= DUNGEON_HGT || cx >= DUNGEON_WID) continue;
+
+            feat = renderer_feature_at(cy, cx);
+            if (cave_m_idx && cave_m_idx[cy][cx] > 0) has_monster = TRUE;
+            if (cave_o_idx && cave_o_idx[cy][cx] != 0) has_object = TRUE;
+            kind = renderer_marker_kind(feat, has_monster, has_object);
+            if (kind == RENDERER_MARKER_NONE) continue;
+
+            marker = renderer_project_marker(ctx, (double)cx + 0.5, (double)cy + 0.5);
+            if (!marker.visible) continue;
+
+            color = renderer_marker_color(kind);
+            rect.w = marker.size;
+            rect.h = marker.bottom - marker.top;
+            if (rect.h < 4) rect.h = 4;
+            rect.x = marker.screen_x - rect.w / 2;
+            rect.y = marker.top;
+            SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
+            SDL_RenderFillRect(ctx->renderer, &rect);
+
+            rect.x += rect.w / 4;
+            rect.w = rect.w / 2;
+            rect.y = marker.top + rect.h / 4;
+            rect.h = rect.h / 2;
+            SDL_SetRenderDrawColor(ctx->renderer, 20, 16, 12, 130);
+            SDL_RenderFillRect(ctx->renderer, &rect);
+        }
+    }
+    SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
+}
+
 bool renderer_should_forward_key_event(const RendererContext* ctx) {
     return (ctx && ctx->first_person_mode && ctx->keyboard_focus) ? TRUE : FALSE;
 }
@@ -1070,6 +1185,7 @@ void renderer_render(RendererContext* ctx) {
         SDL_RenderFillRect(ctx->renderer, &player_dot);
     }
 
+    renderer_draw_world_markers(ctx);
     hud = renderer_collect_hud_snapshot(ctx);
     if (ctx->window) SDL_SetWindowTitle(ctx->window, hud.title);
     renderer_draw_vignette(ctx);
