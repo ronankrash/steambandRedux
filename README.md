@@ -44,11 +44,11 @@ cmake --build build --config Debug
 SDL2 renderer configure/build:
 
 ```bash
-cmake -S . -B build-sdl2 -DSDL2_DIR=<path-to-sdl2-cmake-config>
+cmake -S . -B build-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON
 cmake --build build-sdl2 --config Debug
 ```
 
-If SDL2 is installed through vcpkg, use the appropriate vcpkg toolchain file or set `SDL2_DIR` to the SDL2 CMake config directory.
+SDL2 is currently installed locally via vcpkg at `C:/Users/bkars/vcpkg`.
 
 ## Running
 
@@ -83,7 +83,7 @@ Current known test drift:
 - `test_util.c` is present but not built.
 - Renderer tests do not cover live rendering or game-loop integration.
 
-Latest baseline check: the non-SDL2 Debug build and CTest pass from `build-rescue-nosdl`. SDL2 renderer builds still require SDL2 to be installed and discoverable by CMake.
+Latest baseline check: both the non-SDL2 Debug build/CTest (`build-rescue-nosdl`) and SDL2 Debug build/CTest (`build-rescue-sdl2`) pass locally. Manual gameplay/controller smoke testing is still pending.
 
 ## Controls
 

@@ -29,8 +29,11 @@ Do not trust older claims unless they are backed by source code or repeatable co
   - `cmake -S . -B build-rescue-nosdl`
   - `cmake --build build-rescue-nosdl --config Debug`
   - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`
-- Existing `build/CMakeCache.txt` shows `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`.
-- Future agents must install/configure SDL2 before claiming renderer build success.
+- SDL2 was installed locally with vcpkg at `C:/Users/bkars/vcpkg`.
+- SDL2 renderer build verification passed:
+  - `cmake -S . -B build-rescue-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON`
+  - `cmake --build build-rescue-sdl2 --config Debug`
+  - `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`
 - Manual launch and controller hardware smoke tests remain pending.
 - See `docs/BASELINE-VERIFICATION.md` for required commands and pass criteria.
 
@@ -67,11 +70,10 @@ Do not trust older claims unless they are backed by source code or repeatable co
 
 ## Next Actions
 
-1. Launch the non-SDL2 build and record keyboard/controller smoke-test results.
-2. Install/configure SDL2 and verify the renderer-enabled build.
-3. Decide how to handle `agent-os/` in a focused cleanup PR.
-4. Resolve or document the base license constraints before any Steam/commercial commitment.
-5. Only then integrate the renderer into the real game loop with tests.
+1. Launch the current build and record keyboard/controller smoke-test results.
+2. Resolve or document the base license constraints before any Steam/commercial commitment.
+3. Integrate the renderer into the real game loop with tests.
+4. Add real SDL controller polling or document XInput-only controller scope.
 
 ## Handoff Rule
 

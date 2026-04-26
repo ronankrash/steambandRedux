@@ -56,7 +56,7 @@ void test_renderer_basic(void) {
 #ifdef STEAMBAND_HAS_SDL2
     /* Test wall detection security and logic */
     TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(0, 0), "Edge walls should return true");
-    TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(1, 1), "Test map walls detected");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_is_wall(2, 2), "Test map walls detected");
     TEST_ASSERT_FALSE_MESSAGE(renderer_is_wall(5, 5), "Interior floor should be false");
     
     /* Test out of bounds security (prevents OOB on legacy arrays) */

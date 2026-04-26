@@ -25,8 +25,9 @@ This file is a working inventory, not legal advice.
 - License file: `third_party/unity/LICENSE.txt`
 
 - Component: SDL2
-- Path: External dependency, not currently vendored
-- License: zlib-style permissive license expected
+- Path: External dependency installed locally via vcpkg at `C:/Users/bkars/vcpkg`
+- Version observed: `sdl2:x64-windows@2.32.10`
+- License: Zlib (reported by vcpkg)
 - Requirement: Include SDL2 license text in packaged releases if SDL2 binaries are distributed
 
 - Component: Steamworks SDK

@@ -18,7 +18,7 @@ This audit records what is currently visible in the repository. It is intentiona
 ## Build And Dependencies
 
 - `CMakeLists.txt` now treats SDL2 as optional for baseline builds. If SDL2 is not discoverable, the legacy 2D/XInput baseline configures without `src/renderer.c`.
-- The existing `build/CMakeCache.txt` records `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`, so SDL2 renderer setup is not verified in the current cache.
+- SDL2 was installed locally through vcpkg at `C:/Users/bkars/vcpkg`, and the SDL2-enabled build/test path now passes from `build-rescue-sdl2`.
 - Visual Studio 2022 is referenced by the existing build cache.
 - A clean configure attempt before the optional-SDL2 change failed because CMake could not find `SDL2Config.cmake` or `sdl2-config.cmake`.
 - After the optional-SDL2 change, `cmake -S . -B build-rescue-nosdl`, `cmake --build build-rescue-nosdl --config Debug`, and `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure` all pass for the non-SDL2 baseline.
@@ -63,7 +63,6 @@ This audit records what is currently visible in the repository. It is intentiona
 
 ## Open Risks
 
-- SDL2 renderer build/test status remains blocked until SDL2 is installed and discoverable by CMake.
 - Manual gameplay launch and controller hardware checks are still pending.
 - The first-person prototype is disconnected from the actual game loop.
 - The license story is not ready for commercial release decisions.

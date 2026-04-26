@@ -15,7 +15,7 @@ ctest --test-dir build -C Debug --output-on-failure
 Renderer build with SDL2:
 
 ```bash
-cmake -S . -B build-sdl2 -DSDL2_DIR=<path-to-sdl2-cmake-config>
+cmake -S . -B build-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON
 cmake --build build-sdl2 --config Debug
 ctest --test-dir build-sdl2 -C Debug --output-on-failure
 ```
@@ -38,9 +38,11 @@ cd build/Debug
 - Clean non-SDL2 configure succeeds with `cmake -S . -B build-rescue-nosdl`.
 - Debug build succeeds with `cmake --build build-rescue-nosdl --config Debug`.
 - CTest succeeds with `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`.
-- The build emits legacy MSVC warnings, mostly narrowing/sign conversion warnings in older game code.
-- Existing readable evidence shows `build/CMakeCache.txt` has `SDL2_DIR:PATH=SDL2_DIR-NOTFOUND`.
-- SDL2 renderer build/test execution remains blocked until SDL2 is installed and discoverable.
+- SDL2 was installed locally with vcpkg at `C:/Users/bkars/vcpkg`.
+- SDL2 configure succeeds with `cmake -S . -B build-rescue-sdl2 -DCMAKE_TOOLCHAIN_FILE=C:/Users/bkars/vcpkg/scripts/buildsystems/vcpkg.cmake -DSTEAMBAND_ENABLE_SDL2=ON`.
+- SDL2 Debug build succeeds with `cmake --build build-rescue-sdl2 --config Debug`.
+- SDL2 CTest succeeds with `ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure`.
+- Both builds emit legacy MSVC warnings, mostly narrowing/sign conversion warnings in older game code.
 - Manual game launch was not run in this pass.
 
 Previous SDL2-required CMake failure, now addressed for baseline builds:
@@ -60,6 +62,7 @@ CMake Error at CMakeLists.txt:8 (find_package):
 - `SteambandRedux` builds in Debug. Status: passed for non-SDL2 baseline.
 - `UnityTestRunner` builds and passes. Status: passed through CTest.
 - `ctest -C Debug --output-on-failure` passes. Status: passed.
+- SDL2 renderer build configures/builds/tests with vcpkg. Status: passed.
 - The game launches to the current 2D Windows terminal UI.
 - Keyboard basics work: `N`, `O`, arrow/numpad movement when in game, Enter, Escape.
 - Controller status is recorded with hardware present or explicitly marked untested.

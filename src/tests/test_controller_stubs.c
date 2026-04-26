@@ -8,6 +8,7 @@
 #include "z-term.h"
 #include "z-util.h"
 #include "h-type.h"
+#include "angband.h"
 
 /* Stub for Term_keypress - just returns success */
 errr Term_keypress(int k) {
@@ -28,8 +29,8 @@ errr Term_erase(int x, int y, int n) {
 }
 
 /* Stub for path_build - simple string concatenation */
-void path_build(char *buf, size_t max, cptr path, cptr file) {
-    if (!buf || !path || !file || max == 0) return;
+errr path_build(char *buf, int max, cptr path, cptr file) {
+    if (!buf || !path || !file || max <= 0) return 1;
     
     size_t path_len = strlen(path);
     size_t file_len = strlen(file);
@@ -56,6 +57,8 @@ void path_build(char *buf, size_t max, cptr path, cptr file) {
     if (path_len < max - 1) {
         strncat(buf, file, max - path_len - 1);
     }
+
+    return 0;
 }
 
 /* Stub for my_fopen - wraps fopen */
@@ -64,17 +67,24 @@ FILE *my_fopen(cptr file, cptr mode) {
 }
 
 /* Stub for my_fclose - wraps fclose */
-int my_fclose(FILE *fff) {
+errr my_fclose(FILE *fff) {
     return fclose(fff);
 }
 
 /* Stub for my_fgets - wraps fgets */
-int my_fgets(FILE *fff, char *buf, int len) {
+errr my_fgets(FILE *fff, char *buf, huge len) {
     if (!fff || !buf || len <= 0) return 1;
-    if (fgets(buf, len, fff) == NULL) return 1;
+    if (fgets(buf, (int)len, fff) == NULL) return 1;
     return 0;
 }
 
 /* Stub for ANGBAND_DIR_USER - provide a default value */
 cptr ANGBAND_DIR_USER = NULL; /* Will be NULL for tests, which is fine */
+
+/* Renderer tests link renderer.c without full game state. Keep these NULL so
+ * renderer_is_wall() uses its test-map path and renderer_sync_from_player()
+ * safely returns early.
+ */
+byte (*cave_feat)[DUNGEON_WID] = NULL;
+player_type *p_ptr = NULL;
 

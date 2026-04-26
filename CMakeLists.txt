@@ -128,10 +128,14 @@ add_executable(UnitTests
     src/tests/main_test.c
     src/tests/test_logging.c
     src/tests/test_unity_infrastructure.c
+    src/tests/test_controller_stubs.c
     src/tests/unity_integration.c
     src/logging.c
     ${UNITY_SOURCES}
 )
+if(STEAMBAND_HAS_SDL2)
+    target_sources(UnitTests PRIVATE src/renderer.c)
+endif()
 target_link_libraries(UnitTests PRIVATE ${SDL2_TARGET_LIBS} ${LIBS})
 
 # Unity Test Runner (for Unity framework tests)

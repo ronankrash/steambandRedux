@@ -10,6 +10,7 @@
 #include "controller.h"
 #include "controller_menu.h"
 #include "controller_config_menu.h"
+#include "logging.h"
 #include "test_helpers.h"
 #include <stdio.h>
 #include <string.h>

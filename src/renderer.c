@@ -23,7 +23,7 @@
 #include "logging.h"  /* For secure logging */
 
 /* Global for 2D fallback coordination */
-bool g_use_2d_fallback = true;
+bool g_use_2d_fallback = TRUE;
 
 /* Test map for when cave not initialized (TDD/unit test support) */
 static int test_map[16][16] = {
@@ -52,7 +52,7 @@ static int test_map[16][16] = {
 bool renderer_is_wall(int y, int x) {
     /* Security: Always validate bounds first - critical for legacy C globals */
     if (y < 0 || x < 0 || y >= DUNGEON_HGT || x >= DUNGEON_WID) {
-        return true;  /* Treat out of bounds as wall (safe default) */
+        return TRUE;  /* Treat out of bounds as wall (safe default) */
     }
     
     /* If cave data initialized (from cave.c/generate.c), use it */
@@ -61,12 +61,12 @@ bool renderer_is_wall(int y, int x) {
         byte feat = cave_feat[y][x];
         /* Wall features per defines.h: WALL_*, PERM_*, SECRET, RUBBLE, MAGMA etc. */
         if (feat >= FEAT_WALL_EXTRA && feat <= FEAT_PERM_SOLID) {
-            return true;
+            return TRUE;
         }
         if (feat == FEAT_SECRET || feat == FEAT_RUBBLE || feat == FEAT_MAGMA || feat == FEAT_QUARTZ) {
-            return true;
+            return TRUE;
         }
-        return false;  /* Floor, open, door, etc. */
+        return FALSE;  /* Floor, open, door, etc. */
     }
     
     /* Fallback to test map for tests/prototype before full dungeon gen */
@@ -100,25 +100,25 @@ void renderer_test_dda(void) {
  * Prepares texture array for steampunk assets (not loaded yet - stub for CC0 loading).
  */
 bool renderer_init(RendererContext* ctx) {
-    if (!ctx) return false;
+    if (!ctx) return FALSE;
     
     memset(ctx, 0, sizeof(RendererContext));  /* Secure zeroing */
     
     ctx->width = RENDER_WIDTH;
     ctx->height = RENDER_HEIGHT;
-    ctx->first_person_mode = false;
+    ctx->first_person_mode = FALSE;
     ctx->posX = 5.5;  /* Starting position in test map */
     ctx->posY = 5.5;
     ctx->dirX = -1.0;  /* Initial direction (facing north-ish) */
     ctx->dirY = 0.0;
     ctx->planeX = 0.0;
     ctx->planeY = 0.66;  /* FOV ~66 degrees */
-    ctx->textures_loaded = false;
+    ctx->textures_loaded = FALSE;
     
     /* SDL init - already partially done in controller.c, but ensure video */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         LOG_E("Renderer: SDL video init failed: %s", SDL_GetError());
-        return false;
+        return FALSE;
     }
     
     ctx->window = SDL_CreateWindow("SteambandRedux - First Person Raycaster Prototype",
@@ -126,7 +126,7 @@ bool renderer_init(RendererContext* ctx) {
                                   ctx->width, ctx->height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!ctx->window) {
         LOG_E("Renderer: SDL window creation failed: %s", SDL_GetError());
-        return false;
+        return FALSE;
     }
     
     ctx->renderer = SDL_CreateRenderer(ctx->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -134,7 +134,7 @@ bool renderer_init(RendererContext* ctx) {
         LOG_E("Renderer: SDL renderer creation failed: %s", SDL_GetError());
         SDL_DestroyWindow(ctx->window);
         ctx->window = NULL;
-        return false;
+        return FALSE;
     }
     
     /* Create texture for potential pixel-level drawing (future texture mapping) */
@@ -151,16 +151,16 @@ bool renderer_init(RendererContext* ctx) {
     for (int i = 0; i < 8; i++) {
         ctx->wall_textures[i] = NULL;
     }
-    ctx->textures_loaded = false;
+    ctx->textures_loaded = FALSE;
     
-    ctx->first_person_mode = true;  /* Default to FP for prototype */
-    g_use_2d_fallback = false;
+    ctx->first_person_mode = TRUE;  /* Default to FP for prototype */
+    g_use_2d_fallback = FALSE;
     
     LOG_I("Renderer initialized: %dx%d DDA raycaster ready. Wall textures stubbed for steampunk (brass/gears/brick).", 
           ctx->width, ctx->height);
     renderer_test_dda();
     
-    return true;
+    return TRUE;
 }
 
 void renderer_shutdown(RendererContext* ctx) {
@@ -175,7 +175,7 @@ void renderer_shutdown(RendererContext* ctx) {
     }
     
     memset(ctx, 0, sizeof(RendererContext));  /* Secure cleanup */
-    g_use_2d_fallback = true;
+    g_use_2d_fallback = TRUE;
     LOG_I("Renderer shutdown complete. 2D fallback restored.");
 }
 
@@ -316,7 +316,7 @@ void renderer_render(RendererContext* ctx) {
     }
     
     /* Optional minimap for debugging (2D fallback visual aid) - small top-left */
-    if (true) {  /* Can be toggled */
+    if (TRUE) {  /* Can be toggled */
         SDL_SetRenderDrawColor(ctx->renderer, 255, 255, 255, 100);
         for (int y = 0; y < 16; y++) {
             for (int x = 0; x < 16; x++) {
@@ -338,8 +338,8 @@ void renderer_render(RendererContext* ctx) {
     SDL_Event e;
     while (SDL_PollEvent(&e)) {
         if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)) {
-            ctx->first_person_mode = false;
-            g_use_2d_fallback = true;
+            ctx->first_person_mode = FALSE;
+            g_use_2d_fallback = TRUE;
             LOG_I("Exited first-person mode, restored 2D fallback.");
         }
         /* Future: WASD or controller for movement, synced to game */
