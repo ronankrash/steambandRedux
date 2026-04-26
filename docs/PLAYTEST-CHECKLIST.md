@@ -177,7 +177,7 @@ Pass if:
 - SDL window title includes exact HP/SP/depth/status text for readable fallback feedback.
 - Double `Back` command-menu selection is visible through the first-person HUD/title as a short command overlay message.
 - Visible monsters, objects, stairs, doors, and traps get color-coded first-person markers without requiring the 2D map.
-- `Escape` and `Ctrl+F12` exit first-person mode predictably when the SDL window has focus.
+- `Escape`, controller `B`, and `Ctrl+F12` exit first-person mode predictably when no controller menu is active.
 - Window resize preserves readable UI.
 - Window resize is clamped to a playable viewport and does not distort or crash the raycaster.
 - Atmospheric ceiling/floor gradients, distance fog, side shading, and wall color variation are visible without unapproved art assets.

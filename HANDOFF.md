@@ -44,7 +44,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Hidden by default.
   - Toggle with `Ctrl+F12`.
   - Controller toggle: `L3 + R3`.
-  - Escape or `Ctrl+F12` in SDL window exits first-person mode.
+  - Escape, controller `B`, or `Ctrl+F12` exits first-person mode when no controller menu is active.
   - Right stick turns the first-person camera.
   - SDL keyboard focus forwards commands into the legacy Angband input queue.
   - In the SDL window, `W`/Up move forward relative to the camera, `S`/Down move backward, `A`/`D` strafe, and Left/Right arrows turn the camera.

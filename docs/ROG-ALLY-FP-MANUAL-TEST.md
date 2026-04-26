@@ -51,7 +51,7 @@ The default probe launches the SDL2 Debug build, foregrounds the native Win32 wi
 6. Confirm the first-person HUD updates HP/SP/depth/focus/status gauges and the SDL title bar shows exact HP/SP/depth/status text.
 7. Double-press `Back` to open the command menu. Confirm the three-column menu stays inside the legacy window, every command has a short category prefix, and the selected command appears as a category/name first-person HUD/title overlay.
 8. Walk near visible dungeon features and confirm color-coded first-person markers appear for monsters, objects, stairs, doors, and traps when present.
-9. Press `Escape` or `Ctrl+F12` while the SDL window is focused to return to the 2D fallback.
+9. Press controller `B`, `Escape`, or `Ctrl+F12` to return to the 2D fallback when no controller menu is active.
 10. Exit the game and review the logs.
 
 ## Controller Controls
