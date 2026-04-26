@@ -93,6 +93,14 @@ void test_controller_button_display_names(void) {
     name = controller_get_button_display_name(XINPUT_GAMEPAD_LEFT_SHOULDER);
     TEST_ASSERT_NOT_NULL(name);
     TEST_ASSERT_EQUAL_STRING("Left Bumper", name);
+
+    name = controller_get_button_display_name(XINPUT_GAMEPAD_LEFT_THUMB);
+    TEST_ASSERT_NOT_NULL(name);
+    TEST_ASSERT_EQUAL_STRING("Left Stick Button", name);
+
+    name = controller_get_button_display_name(XINPUT_GAMEPAD_RIGHT_THUMB);
+    TEST_ASSERT_NOT_NULL(name);
+    TEST_ASSERT_EQUAL_STRING("Right Stick Button", name);
 }
 
 /* Test 8.1.3: Test button mapping key code get/set */

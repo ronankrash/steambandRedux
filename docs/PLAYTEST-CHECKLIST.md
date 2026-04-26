@@ -129,7 +129,7 @@ Use for SDL2 builds.
 Pass if:
 
 - Legacy 2D UI still launches and remains available.
-- `Ctrl+F12` shows/hides the SDL renderer window in SDL2 builds.
+- `Ctrl+F12` and `L3 + R3` show/hide the SDL renderer window in SDL2 builds.
 - Renderer syncs to real player position after movement, stairs, load, and new level.
 - Keyboard movement still matches original command behavior.
 - Controller left stick/D-pad movement works without breaking roguelike turns.

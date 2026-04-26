@@ -26,6 +26,7 @@ static DWORD g_last_packet = 0;
 static bool g_logging_enabled = TRUE; /* Controller logging enabled by default */
 static DWORD g_back_button_press_time = 0; /* Track BACK button for menu activation */
 static bool g_back_button_was_pressed = FALSE;
+static bool g_fp_toggle_chord_was_pressed = FALSE;
 
 /* SDL2 GameController for Phase 2 ROG Ally optimization and modern input (fallback to XInput) */
 #ifdef STEAMBAND_HAS_SDL2
@@ -219,6 +220,27 @@ double controller_get_look_x(void) {
     }
 
     return 0.0;
+}
+
+int controller_consume_first_person_toggle(void) {
+    bool chord_pressed;
+
+    if (!g_connected) return FALSE;
+    if (controller_menu_is_active() || controller_config_menu_is_active()) return FALSE;
+
+    chord_pressed = ((g_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0) &&
+                    ((g_state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0);
+
+    if (chord_pressed && !g_fp_toggle_chord_was_pressed) {
+        g_fp_toggle_chord_was_pressed = TRUE;
+        return TRUE;
+    }
+
+    if (!chord_pressed) {
+        g_fp_toggle_chord_was_pressed = FALSE;
+    }
+
+    return FALSE;
 }
 
 /*
@@ -699,6 +721,8 @@ const char* controller_get_button_display_name(WORD button) {
         case XINPUT_GAMEPAD_BACK: return "Back";
         case XINPUT_GAMEPAD_LEFT_SHOULDER: return "Left Bumper";
         case XINPUT_GAMEPAD_RIGHT_SHOULDER: return "Right Bumper";
+        case XINPUT_GAMEPAD_LEFT_THUMB: return "Left Stick Button";
+        case XINPUT_GAMEPAD_RIGHT_THUMB: return "Right Stick Button";
         default: return "Unknown";
     }
 }

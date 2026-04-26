@@ -62,5 +62,11 @@ const char* controller_get_button_display_name(WORD button);
  */
 double controller_get_look_x(void);
 
+/*
+ * Consume a simultaneous left-stick + right-stick click chord for toggling
+ * the SDL first-person prototype. Returns TRUE exactly once per chord press.
+ */
+int controller_consume_first_person_toggle(void);
+
 #endif /* INCLUDED_CONTROLLER_H */
 

@@ -107,6 +107,7 @@ Current controller implementation is primarily XInput:
 SDL2 first-person prototype:
 
 - `Ctrl+F12`: show/hide the SDL first-person prototype window.
+- `L3 + R3`: controller shortcut to show/hide the SDL first-person prototype window.
 - Right stick: turn camera while first-person mode is active.
 - `Escape` or `Ctrl+F12` in the SDL window exits first-person mode.
 

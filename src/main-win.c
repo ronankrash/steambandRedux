@@ -1933,6 +1933,8 @@ static errr Term_xtra_win_react(void)
 }
 
 #ifdef STEAMBAND_HAS_SDL2
+static void win_renderer_toggle(void);
+
 /*
  * Render one first-person frame when the SDL prototype is active.
  * The legacy Term/GDI path remains the source of truth; this only mirrors
@@ -1942,6 +1944,11 @@ static void win_renderer_pulse(void)
 {
 	RendererContext *renderer = get_renderer();
 	double look_x;
+
+	if (controller_consume_first_person_toggle()) {
+		win_renderer_toggle();
+		return;
+	}
 
 	if (!renderer || !renderer->first_person_mode) return;
 
