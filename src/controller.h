@@ -94,6 +94,12 @@ double controller_get_look_x(void);
 int controller_consume_first_person_toggle(void);
 
 /*
+ * Consume B/cancel as a first-person exit action. Returns TRUE once per press
+ * and does not fire while controller menus are active.
+ */
+int controller_consume_first_person_cancel(void);
+
+/*
  * Feed first-person camera state to controller movement transforms. When
  * active, D-pad/left-stick movement becomes camera-relative for the SDL view.
  */

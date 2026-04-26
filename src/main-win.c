@@ -1960,6 +1960,10 @@ static void win_renderer_pulse(void)
 		controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
 		return;
 	}
+	if (controller_consume_first_person_cancel()) {
+		win_renderer_toggle();
+		return;
+	}
 
 	renderer_sync_from_player(renderer);
 	look_x = controller_get_look_x();

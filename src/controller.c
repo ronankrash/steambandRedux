@@ -29,6 +29,7 @@ static bool g_back_button_was_pressed = FALSE;
 static int g_back_button_press_count = 0;
 static bool g_back_command_pending = FALSE;
 static bool g_fp_toggle_chord_was_pressed = FALSE;
+static bool g_fp_cancel_was_pressed = FALSE;
 static bool g_fp_camera_active = FALSE;
 static double g_fp_dir_x = -1.0;
 static double g_fp_dir_y = 0.0;
@@ -389,6 +390,25 @@ int controller_consume_first_person_toggle(void) {
 
     if (!chord_pressed) {
         g_fp_toggle_chord_was_pressed = FALSE;
+    }
+
+    return FALSE;
+}
+
+int controller_consume_first_person_cancel(void) {
+    bool cancel_pressed;
+
+    if (!g_connected) return FALSE;
+    if (controller_menu_is_active() || controller_config_menu_is_active()) return FALSE;
+
+    cancel_pressed = (g_state.Gamepad.wButtons & XINPUT_GAMEPAD_B) != 0;
+    if (cancel_pressed && !g_fp_cancel_was_pressed) {
+        g_fp_cancel_was_pressed = TRUE;
+        return TRUE;
+    }
+
+    if (!cancel_pressed) {
+        g_fp_cancel_was_pressed = FALSE;
     }
 
     return FALSE;
