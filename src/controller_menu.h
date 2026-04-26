@@ -39,6 +39,10 @@ int controller_menu_is_active(void);
  */
 int controller_menu_get_command_count(void);
 int controller_menu_has_command_key(int key_code);
+const char *controller_menu_get_command_category(int index);
+const char *controller_menu_get_command_name(int index);
+void controller_menu_format_command_label(int index, char *buf, int buf_size);
+int controller_menu_layout_fits_width(int term_width);
 
 #endif /* INCLUDED_CONTROLLER_MENU_H */
 

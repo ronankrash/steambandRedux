@@ -29,7 +29,20 @@ Optional automated check before manual play:
 
 ```bash
 ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
+powershell -ExecutionPolicy Bypass -File tools\probe_rog_ally_fp.ps1
 ```
+
+The probe launches the SDL build, sends `Ctrl+F12`, checks renderer startup and
+first-person activation in the log, then closes the process. It is not a
+replacement for the manual controller pass below.
+
+Optional no-hardware first-person keyboard probe:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\probe_rog_ally_fp.ps1
+```
+
+The default probe launches the SDL2 Debug build, foregrounds the native Win32 window, injects `Ctrl+F12`, waits briefly, exits, and reports whether the new log segment proves renderer init, DDA startup, first-person activation, and clean shutdown. Add `-TryNewGame` for a separate best-effort title-screen `N` injection; that mode does not run the first-person activation check, and the character birth prompts remain visual and require manual confirmation.
 
 ## First Minute Smoke
 
@@ -41,7 +54,7 @@ ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
    - Keyboard: `W`/Up forward, `S`/Down back, `A`/`D` strafe, Left/Right arrows turn.
    - Controller: D-pad/left stick move, right stick turns.
 6. Confirm the first-person HUD updates HP/SP/depth/focus/status gauges and the SDL title bar shows exact HP/SP/depth/status text.
-7. Double-press `Back` to open the command menu and confirm the selected command appears as a short first-person HUD/title overlay.
+7. Double-press `Back` to open the command menu. Confirm the three-column menu stays inside the legacy window, every command has a short category prefix, and the selected command appears as a category/name first-person HUD/title overlay.
 8. Press `Escape` or `Ctrl+F12` while the SDL window is focused to return to the 2D fallback.
 9. Exit the game and review the logs.
 
@@ -59,6 +72,11 @@ ctest --test-dir build-rescue-sdl2 -C Debug --output-on-failure
 - `LB`: rest (`R`).
 - `RB`: search (`s`).
 - `L3 + R3`: toggle first-person prototype.
+
+## Menu Feel Checks
+
+- Command menu: category prefixes should be readable at handheld scale, D-pad focus should stay obvious, and `B`/`Back` should close without sending a command.
+- Config menu: highlighted mapping should be echoed near the top, `A` enters remap mode, `B`/`Back` cancels remap mode, and `B`/`Back` saves and closes from normal mode.
 
 ## Logs To Check
 

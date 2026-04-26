@@ -21,6 +21,12 @@ static int g_config_menu_remap_target = -1; /* Button index being remapped */
 
 /* Use controller_get_button_display_name directly */
 
+#define CONFIG_MENU_START_X 4
+#define CONFIG_MENU_START_Y 5
+#define CONFIG_MENU_CLEAR_Y 2
+#define CONFIG_MENU_CLEAR_WIDTH 76
+#define CONFIG_MENU_CLEAR_HEIGHT 18
+
 /*
  * Get key code display name
  */
@@ -42,41 +48,63 @@ static void get_key_display_name(int key_code, char *buf, int buf_size) {
     buf[buf_size - 1] = '\0';
 }
 
+static void config_menu_clear_area(void) {
+    int i;
+
+    for (i = 0; i < CONFIG_MENU_CLEAR_HEIGHT; i++) {
+        Term_erase(CONFIG_MENU_START_X - 2, CONFIG_MENU_CLEAR_Y + i, CONFIG_MENU_CLEAR_WIDTH);
+    }
+}
+
 /*
  * Display config menu
  */
 static void config_menu_display(void) {
     int i, x, y;
-    int menu_start_x = 5;
-    int menu_start_y = 3;
     char key_buf[32];
+    char line[80];
     int count = controller_get_mapping_count();
 
+    config_menu_clear_area();
+
     /* Draw menu title */
-    Term_putstr(menu_start_x, menu_start_y - 1, 50, TERM_WHITE, "Controller Button Configuration");
+    Term_putstr(CONFIG_MENU_START_X, CONFIG_MENU_CLEAR_Y, 50, TERM_WHITE,
+                "Controller Button Configuration");
     if (g_config_menu_remapping) {
-        Term_putstr(menu_start_x, menu_start_y - 2, 50, TERM_YELLOW, "Press button to assign, or B to cancel");
+        Term_putstr(CONFIG_MENU_START_X, CONFIG_MENU_CLEAR_Y + 1, 62, TERM_YELLOW,
+                    "Remap mode: press another mapped button, B/Back cancels");
     } else {
-        Term_putstr(menu_start_x, menu_start_y - 2, 50, TERM_YELLOW, "A: Remap  B: Cancel/Save  D-Pad: Navigate");
+        Term_putstr(CONFIG_MENU_START_X, CONFIG_MENU_CLEAR_Y + 1, 62, TERM_YELLOW,
+                    "D-Pad: Navigate  A: Remap highlighted  B/Back: Save+close");
+    }
+
+    if (g_config_menu_selected >= 0 && g_config_menu_selected < count) {
+        WORD button = controller_get_mapping_button(g_config_menu_selected);
+        int key_code = controller_get_mapping_key_code(g_config_menu_selected);
+        get_key_display_name(key_code, key_buf, sizeof(key_buf));
+        snprintf(line, sizeof(line), "Selected: %s -> %s",
+                 controller_get_button_display_name(button), key_buf);
+        line[sizeof(line) - 1] = '\0';
+        Term_putstr(CONFIG_MENU_START_X, CONFIG_MENU_CLEAR_Y + 2, 70, TERM_L_BLUE, line);
     }
 
     /* Draw button mappings */
     for (i = 0; i < count; i++) {
-        y = menu_start_y + i;
-        x = menu_start_x;
+        y = CONFIG_MENU_START_Y + i;
+        x = CONFIG_MENU_START_X;
 
         /* Highlight selected item */
         byte attr = (i == g_config_menu_selected) ? TERM_L_BLUE : TERM_WHITE;
 
         /* Draw button name */
-        char line[80];
         WORD button = controller_get_mapping_button(i);
         int key_code = controller_get_mapping_key_code(i);
         const char *button_name = controller_get_button_display_name(button);
         get_key_display_name(key_code, key_buf, sizeof(key_buf));
 
-        snprintf(line, sizeof(line), "%-15s -> %s", button_name, key_buf);
-        Term_putstr(x, y, 50, attr, line);
+        snprintf(line, sizeof(line), "%-18s -> %s", button_name, key_buf);
+        line[sizeof(line) - 1] = '\0';
+        Term_putstr(x, y, 58, attr, line);
 
         /* Draw selection indicator */
         if (i == g_config_menu_selected) {
@@ -86,7 +114,8 @@ static void config_menu_display(void) {
 
     /* Draw save instruction */
     if (!g_config_menu_remapping) {
-        Term_putstr(menu_start_x, menu_start_y + 12, 50, TERM_WHITE, "Press B to save and exit");
+        Term_putstr(CONFIG_MENU_START_X, CONFIG_MENU_START_Y + count + 1, 60, TERM_WHITE,
+                    "Changes save when closing with B or Back");
     }
 }
 
@@ -122,13 +151,7 @@ void controller_config_menu_show(void) {
  */
 void controller_config_menu_hide(void) {
     if (g_config_menu_active) {
-        /* Clear menu area */
-        int menu_start_x = 5;
-        int menu_start_y = 1;
-        int i;
-        for (i = 0; i < 20; i++) {
-            Term_erase(menu_start_x - 2, menu_start_y + i, 60);
-        }
+        config_menu_clear_area();
     }
     g_config_menu_active = FALSE;
     g_config_menu_remapping = FALSE;

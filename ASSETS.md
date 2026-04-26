@@ -29,3 +29,5 @@ Before adding an asset:
 ## Visual Direction
 
 Target a Victorian steampunk dungeon-crawler look: brass, gears, leather, wood, gaslight, dark brick, and readable 16/32-bit inspired pixel art. Celtic Tales and later Wizardry games are style references only; do not copy or trace their assets.
+
+See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline checklist, and handheld UI goals. No external art candidates are approved or integrated yet.

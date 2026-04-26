@@ -65,6 +65,10 @@ void test_renderer_basic(void) {
     RendererColor quartz_wall;
     RendererColor ceiling_top;
     RendererColor floor_bottom;
+    RendererColor detail_base;
+    RendererColor mortar_detail;
+    RendererColor seam_detail;
+    RendererColor rivet_detail;
     RendererHudSnapshot hud;
     char label[16];
     char status[32];
@@ -110,6 +114,19 @@ void test_renderer_basic(void) {
     TEST_ASSERT_TRUE_MESSAGE(ceiling_top.b >= floor_bottom.b, "Ceiling haze should remain cooler than floor");
     TEST_ASSERT_TRUE_MESSAGE(ceiling_top.r <= renderer_atmosphere_color(239, 480).r,
                              "Ceiling should brighten toward the horizon");
+    detail_base.r = 100;
+    detail_base.g = 80;
+    detail_base.b = 60;
+    detail_base.a = 255;
+    mortar_detail = renderer_wall_detail_color(detail_base, &ray_hit, 10, 1);
+    seam_detail = renderer_wall_detail_color(detail_base, &ray_hit, 17, 2);
+    rivet_detail = renderer_wall_detail_color(detail_base, &ray_hit, 38, 2);
+    TEST_ASSERT_TRUE_MESSAGE(mortar_detail.r < detail_base.r && mortar_detail.g < detail_base.g,
+                             "Procedural wall mortar should darken masonry rows");
+    TEST_ASSERT_TRUE_MESSAGE(seam_detail.r < detail_base.r && seam_detail.b < detail_base.b,
+                             "Procedural wall seams should darken vertical plate breaks");
+    TEST_ASSERT_TRUE_MESSAGE(rivet_detail.r > detail_base.r && rivet_detail.g > detail_base.g,
+                             "Procedural brass rivets should add warm highlights");
 
     ctx = get_renderer();
     memset(ctx, 0, sizeof(*ctx));

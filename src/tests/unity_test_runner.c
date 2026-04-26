@@ -54,6 +54,7 @@ extern void test_controller_menu_show_hide(void);
 extern void test_controller_config_menu_show_hide(void);
 extern void test_controller_menu_mutual_exclusivity(void);
 extern void test_controller_command_menu_core_fp_coverage(void);
+extern void test_controller_command_menu_categories_fit_handheld_layout(void);
 extern void test_controller_mapping_count_consistency(void);
 extern void test_controller_invalid_mapping_index(void);
 extern void test_controller_back_single_delays_map_until_gesture_window(void);
@@ -112,6 +113,7 @@ int main(void) {
     RUN_TEST(test_controller_config_menu_show_hide);
     RUN_TEST(test_controller_menu_mutual_exclusivity);
     RUN_TEST(test_controller_command_menu_core_fp_coverage);
+    RUN_TEST(test_controller_command_menu_categories_fit_handheld_layout);
     RUN_TEST(test_controller_mapping_count_consistency);
     RUN_TEST(test_controller_invalid_mapping_index);
     RUN_TEST(test_controller_back_single_delays_map_until_gesture_window);

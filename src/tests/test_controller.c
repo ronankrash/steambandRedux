@@ -311,6 +311,51 @@ void test_controller_command_menu_core_fp_coverage(void) {
     TEST_ASSERT_TRUE_MESSAGE(controller_menu_has_command_key('O'), "Load game should be reachable at title");
 }
 
+void test_controller_command_menu_categories_fit_handheld_layout(void) {
+    int i;
+    int count = controller_menu_get_command_count();
+    int saw_inventory = FALSE;
+    int saw_actions = FALSE;
+    int saw_movement = FALSE;
+    int saw_info = FALSE;
+    int saw_system = FALSE;
+    char label[32];
+
+    TEST_ASSERT_TRUE_MESSAGE(controller_menu_layout_fits_width(80),
+                             "Command grid should fit the legacy 80-column terminal");
+    TEST_ASSERT_FALSE_MESSAGE(controller_menu_layout_fits_width(70),
+                              "Layout check should catch narrower-than-supported views");
+
+    for (i = 0; i < count; i++) {
+        const char *category = controller_menu_get_command_category(i);
+        const char *name = controller_menu_get_command_name(i);
+
+        TEST_ASSERT_NOT_NULL(category);
+        TEST_ASSERT_NOT_NULL(name);
+        TEST_ASSERT_TRUE_MESSAGE(strlen(category) > 0, "Each command needs a visible category");
+        TEST_ASSERT_TRUE_MESSAGE(strlen(name) > 0, "Each command needs a visible name");
+
+        controller_menu_format_command_label(i, label, sizeof(label));
+        TEST_ASSERT_NOT_NULL_MESSAGE(strchr(label, ':'), "Formatted command labels should show category context");
+        TEST_ASSERT_TRUE_MESSAGE(strlen(label) <= 23, "Formatted labels should fit one terminal grid slot");
+
+        if (strcmp(category, "Inventory") == 0) saw_inventory = TRUE;
+        if (strcmp(category, "Actions") == 0) saw_actions = TRUE;
+        if (strcmp(category, "Movement") == 0) saw_movement = TRUE;
+        if (strcmp(category, "Info") == 0) saw_info = TRUE;
+        if (strcmp(category, "System") == 0) saw_system = TRUE;
+    }
+
+    TEST_ASSERT_TRUE_MESSAGE(saw_inventory, "Inventory category should be present");
+    TEST_ASSERT_TRUE_MESSAGE(saw_actions, "Actions category should be present");
+    TEST_ASSERT_TRUE_MESSAGE(saw_movement, "Movement category should be present");
+    TEST_ASSERT_TRUE_MESSAGE(saw_info, "Info category should be present");
+    TEST_ASSERT_TRUE_MESSAGE(saw_system, "System category should be present");
+
+    controller_menu_format_command_label(-1, label, sizeof(label));
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("", label, "Invalid command labels should be safe");
+}
+
 /* Test 8.3.1: Test button mapping count consistency */
 void test_controller_mapping_count_consistency(void) {
     int count = controller_get_mapping_count();

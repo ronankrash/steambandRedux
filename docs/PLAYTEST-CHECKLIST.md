@@ -108,6 +108,9 @@ Pass if:
 
 - Double `Back` within roughly 500 ms opens `Controller Command Menu` after the triple-press window expires.
 - D-pad navigates the grid.
+- The grid stays within the legacy 80-column window and does not leave stale text behind while moving focus.
+- Each command line has a short category prefix such as `Inv`, `Act`, `Move`, `Info`, or `Sys`.
+- First-person HUD/title feedback reports the highlighted command as category plus command name.
 - `A` selects a command and closes the menu.
 - `B` or `Back` cancels and closes the menu.
 - Selected commands match keyboard behavior.
@@ -122,6 +125,7 @@ Pass if:
 
 - Triple `Back` within roughly 500 ms opens `Controller Button Configuration`.
 - D-pad up/down navigates mappings.
+- The highlighted mapping is echoed near the top and old remap prompts do not overlap after navigation.
 - `A` enters remap mode.
 - Pressing another mapped button updates the target mapping.
 - The `A` press used to enter remap mode is ignored until released.
@@ -194,9 +198,10 @@ Without physical ROG Ally hardware, validate:
 
 - SDL2 and non-SDL builds/tests pass.
 - SDL2 launch stays alive long enough to reach the legacy prompt.
-- `Ctrl+F12` activates first-person mode and logs activation.
+- `tools\probe_rog_ally_fp.ps1` can inject `Ctrl+F12` through the native window and verify first-person activation in `steamband.log`.
 - `Escape`/`Ctrl+F12` exit behavior is checked with a focused SDL window.
 - Log output records whether SDL controller mapping is available or falls back to XInput.
+- Character creation is only partially automatable with current tooling: `tools\probe_rog_ally_fp.ps1 -TryNewGame` can inject the title-screen `N` as a separate bounded probe, but the visual birth flow and save creation still require manual confirmation or a future UI-state/readback harness.
 
 Requires ROG Ally or XInput hardware:
 
