@@ -81,6 +81,23 @@
 
 
 /*
+ * MSVC structured exception handling (__try/__except) compatibility shim.
+ *
+ * The native Windows build uses MSVC, whose compiler implements SEH keywords.
+ * MinGW-w64's GCC does not support __try/__except, so when building the Windows
+ * target with MinGW (e.g. cross-compiling on Linux) we map them to pass-through
+ * constructs. The protected code still runs; only the (compiler-level) crash
+ * interception is unavailable. The MSVC build is unaffected.
+ */
+#if !defined(_MSC_VER)
+# undef __try
+# undef __except
+# define __try
+# define __except(filter) if (0)
+#endif
+
+
+/*
  * Use HTML-Help.
  */
 /* #define HTML_HELP */

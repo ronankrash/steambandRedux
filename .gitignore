@@ -1,0 +1,2 @@
+# Local cross-compilation / out-of-source build directories
+/build-mingw/
