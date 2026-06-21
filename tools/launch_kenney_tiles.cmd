@@ -24,6 +24,9 @@ if not exist "%POC_TILESET%" (
 
 echo Launching SteambandRedux with Kenney CC0 Roguelike/RPG proof-of-concept tiles.
 echo.
+echo Before starting a game you will see a DEMO preview map in the SDL window.
+echo For live dungeon tiles: File -^> New (or controller N), then click the SDL window.
+echo.
 set "STEAMBAND_LOG_LEVEL=INFO"
 set "STEAMBAND_START_TOPDOWN=1"
 set "STEAMBAND_TOPDOWN_TILESET=%POC_TILESET%"

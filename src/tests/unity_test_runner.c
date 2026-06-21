@@ -61,6 +61,10 @@ extern void test_controller_back_single_delays_map_until_gesture_window(void);
 extern void test_controller_back_double_opens_command_without_map(void);
 extern void test_controller_back_triple_opens_config_immediately(void);
 extern void test_controller_first_person_camera_relative_movement(void);
+extern void test_controller_thumbstick_movement_direction(void);
+extern void test_controller_thumbstick_vertical_nav_delta(void);
+extern void test_controller_item_ui_idle_by_default(void);
+extern void test_controller_quick_menu_has_core_commands(void);
 extern void test_sdl2_controller_init(void);
 
 int main(void) {
@@ -120,6 +124,10 @@ int main(void) {
     RUN_TEST(test_controller_back_double_opens_command_without_map);
     RUN_TEST(test_controller_back_triple_opens_config_immediately);
     RUN_TEST(test_controller_first_person_camera_relative_movement);
+    RUN_TEST(test_controller_thumbstick_movement_direction);
+    RUN_TEST(test_controller_thumbstick_vertical_nav_delta);
+    RUN_TEST(test_controller_item_ui_idle_by_default);
+    RUN_TEST(test_controller_quick_menu_has_core_commands);
     RUN_TEST(test_sdl2_controller_init);
 
     return UNITY_END();

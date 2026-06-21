@@ -10,6 +10,8 @@
 #include "controller.h"
 #include "controller_menu.h"
 #include "controller_config_menu.h"
+#include "controller_item_ui.h"
+#include "controller_quick_menu.h"
 #include "logging.h"
 #include "test_helpers.h"
 #include <stdio.h>
@@ -124,7 +126,7 @@ void test_controller_playability_hints_are_short_and_actionable(void) {
 
     TEST_ASSERT_NOT_NULL(strstr(hint0, "A=Enter"));
     TEST_ASSERT_NOT_NULL(strstr(hint0, "B=Esc"));
-    TEST_ASSERT_NOT_NULL(strstr(hint1, "Back=Map/Menu/Config"));
+    TEST_ASSERT_NOT_NULL(strstr(hint1, "START=Quick"));
     TEST_ASSERT_NOT_NULL(strstr(hint2, "Ctrl+F12"));
     TEST_ASSERT_NOT_NULL(strstr(hint2, "L3+R3"));
     TEST_ASSERT_NOT_NULL(strstr(hint2, "left stick moves"));
@@ -456,5 +458,32 @@ void test_controller_first_person_camera_relative_movement(void) {
     TEST_ASSERT_EQUAL_INT('i', controller_transform_movement_key('i'));
 
     controller_set_first_person_camera(FALSE, 0.0, 0.0, 0.0, 0.0);
+}
+
+void test_controller_thumbstick_movement_direction(void) {
+    TEST_ASSERT_EQUAL_INT(0, controller_thumbstick_to_movement_key(0, 0));
+    TEST_ASSERT_EQUAL_INT('8', controller_thumbstick_to_movement_key(0, 32767));
+    TEST_ASSERT_EQUAL_INT('2', controller_thumbstick_to_movement_key(0, -32767));
+    TEST_ASSERT_EQUAL_INT('6', controller_thumbstick_to_movement_key(32767, 0));
+    TEST_ASSERT_EQUAL_INT('4', controller_thumbstick_to_movement_key(-32767, 0));
+    TEST_ASSERT_EQUAL_INT('9', controller_thumbstick_to_movement_key(32767, 32767));
+    TEST_ASSERT_EQUAL_INT('7', controller_thumbstick_to_movement_key(-32767, 32767));
+}
+
+void test_controller_thumbstick_vertical_nav_delta(void) {
+    TEST_ASSERT_EQUAL_INT(0, controller_thumbstick_vertical_nav_delta(0));
+    TEST_ASSERT_EQUAL_INT(-1, controller_thumbstick_vertical_nav_delta(32767));
+    TEST_ASSERT_EQUAL_INT(1, controller_thumbstick_vertical_nav_delta(-32767));
+}
+
+void test_controller_item_ui_idle_by_default(void) {
+    controller_item_ui_reset();
+    TEST_ASSERT_FALSE(controller_item_ui_is_active());
+}
+
+void test_controller_quick_menu_has_core_commands(void) {
+    controller_quick_menu_init();
+    TEST_ASSERT_TRUE(controller_quick_menu_get_command_count() >= 8);
+    TEST_ASSERT_FALSE(controller_quick_menu_is_active());
 }
 

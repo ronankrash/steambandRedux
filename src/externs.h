@@ -85,6 +85,7 @@ extern bool arg_graphics;
 extern bool arg_force_original;
 extern bool arg_force_roguelike;
 extern bool character_generated;
+extern bool game_in_progress;
 extern bool character_dungeon;
 extern bool character_loaded;
 extern bool character_saved;
@@ -678,6 +679,12 @@ extern void do_cmd_rerate(void);
 
 /* store.c */
 extern void do_cmd_store(void);
+extern bool store_is_shopping(void);
+extern int store_get_stock_count(void);
+extern int store_get_page_top(void);
+extern char store_get_item_label(int item);
+extern object_type *store_get_stock_item(int item);
+extern bool store_item_can_sell(const object_type *o_ptr);
 extern void store_shuffle(int which);
 extern void store_maint(int which);
 extern void store_init(int which);

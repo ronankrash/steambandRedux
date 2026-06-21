@@ -53,6 +53,7 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Tile contract: `topdown-v1`; 24x24 tiles, 9 columns x 4 rows, row-major category order: darkness, floor, wall, door, up stairs, down stairs, trap, glyph, shop, General Store shop, Clothing store shop, Gun shop, Machinist shop, Alchemy shop, Magic shop, Black Market shop, Home, rubble, ore vein, object, food/anodyne object, scroll/book object, potion/flask object, weapon/tool object, armor object, ray gun/launcher object, ammo object, money object, jewelry object, device/chest object, generic monster, automata, undead/demon, beast, humanoid, player.
 - Dimension guard: compatible BMPs must be exactly 216x96 pixels for the current contract; invalid dimensions fall back to procedural tiles.
 - Validation: run `python tools/validate_topdown_tileset.py path/to/topdown_tileset.bmp` before using a custom sheet.
+- Mapping specs: `tools/mappings/topdown-v1-*.json`; see `docs/TOPDOWN-V1-MAPPINGS.md`. Validate with `python tools/validate_topdown_mappings.py`.
 - Regeneration: run `python tools/generate_topdown_tilesheet.py` from the repository root.
 - Coverage report: run `python tools/report_topdown_asset_coverage.py` to compare current tiles against legacy terrain, object, and monster data.
 

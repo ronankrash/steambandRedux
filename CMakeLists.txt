@@ -54,6 +54,10 @@ set(SOURCES
     src/controller.c
     src/controller_menu.c
     src/controller_config_menu.c
+    src/controller_item_ui.c
+    src/controller_quick_menu.c
+    src/controller_followup.c
+    src/controller_store_ui.c
     src/cmd-item.c
     src/cmd-know.c
     src/cmd-misc.c
@@ -168,6 +172,10 @@ add_executable(UnityTestRunner
     src/controller.c
     src/controller_menu.c
     src/controller_config_menu.c
+    src/controller_item_ui.c
+    src/controller_quick_menu.c
+    src/controller_followup.c
+    src/controller_store_ui.c
     ${UNITY_SOURCES}
 )
 if(STEAMBAND_HAS_SDL2)

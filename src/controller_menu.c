@@ -1,6 +1,7 @@
 /* File: controller_menu.c */
 #include "controller_menu.h"
 #include "controller_config_menu.h"
+#include "controller_quick_menu.h"
 #include "angband.h"
 #include "logging.h"
 #include "controller.h"
@@ -93,6 +94,7 @@ static bool g_menu_active = FALSE;
 static int g_menu_selected = 0;  /* Currently selected item index */
 static int g_menu_category = 0;   /* Currently selected category (0 = all) */
 static DWORD g_menu_last_nav = 0; /* Last navigation time for rate limiting */
+static WORD g_menu_prev_buttons = 0;
 
 /*
  * Grid layout constants. Keep the command menu inside the legacy 80-column
@@ -274,8 +276,12 @@ void controller_menu_show(void) {
     if (controller_config_menu_is_active()) {
         controller_config_menu_hide();
     }
+    if (controller_quick_menu_is_active()) {
+        controller_quick_menu_hide();
+    }
     g_menu_active = TRUE;
     g_menu_selected = 0;
+    g_menu_prev_buttons = 0;
     menu_display();
 }
 
@@ -287,6 +293,7 @@ void controller_menu_hide(void) {
         menu_clear_area();
     }
     g_menu_active = FALSE;
+    g_menu_prev_buttons = 0;
     menu_update_first_person_hint();
 }
 
@@ -335,25 +342,31 @@ static void menu_handle_navigation(XINPUT_STATE *state) {
     }
 }
 
+static bool menu_button_edge(XINPUT_STATE *state, WORD button) {
+    bool now = (state->Gamepad.wButtons & button) != 0;
+    bool prev = (g_menu_prev_buttons & button) != 0;
+    return now && !prev;
+}
+
 /*
  * Handle menu selection
  */
 static void menu_handle_selection(XINPUT_STATE *state) {
     int count = menu_item_count();
 
-    /* A button selects */
-    if (state->Gamepad.wButtons & XINPUT_GAMEPAD_A) {
+    if (menu_button_edge(state, XINPUT_GAMEPAD_A)) {
         if (g_menu_selected < count) {
-            /* Send keypress for selected command */
             Term_keypress(g_menu_items[g_menu_selected].key_code);
-            /* Hide menu */
             controller_menu_hide();
+            controller_absorb_mapped_button_states(state);
         }
+        return;
     }
 
-    /* B or BACK cancels */
-    if (state->Gamepad.wButtons & (XINPUT_GAMEPAD_B | XINPUT_GAMEPAD_BACK)) {
+    if (menu_button_edge(state, XINPUT_GAMEPAD_B) ||
+        menu_button_edge(state, XINPUT_GAMEPAD_BACK)) {
         controller_menu_hide();
+        controller_absorb_mapped_button_states(state);
     }
 }
 
@@ -380,6 +393,7 @@ int controller_menu_check(void) {
 
     /* Handle selection */
     menu_handle_selection(&state);
+    g_menu_prev_buttons = state.Gamepad.wButtons;
 
     return TRUE;
 }

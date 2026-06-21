@@ -9,6 +9,7 @@
  */
 
 #include "angband.h"
+#include "controller_store_ui.h"
 
 
 
@@ -302,6 +303,7 @@ static void purchase_analyze(s32b price, s32b value, s32b guess)
  * We store the current "store number" here so everyone can access it
  */
 static int store_num = 7;
+static bool store_shopping_active = FALSE;
 
 /*
  * We store the current "store page" here so everyone can access it
@@ -3271,6 +3273,9 @@ void do_cmd_store(void)
 	/* Do not leave */
 	leave_store = FALSE;
 
+	store_shopping_active = TRUE;
+	controller_store_ui_on_shop_enter();
+
 	/* Interact with player */
 	while (!leave_store)
 	{
@@ -3310,6 +3315,10 @@ void do_cmd_store(void)
 
 		/* Process the command */
 		store_process_command();
+
+		if (controller_store_ui_is_active()) {
+			controller_store_ui_refresh();
+		}
 
 		/* Notice stuff */
 		notice_stuff();
@@ -3405,6 +3414,8 @@ void do_cmd_store(void)
 		if (st_ptr->store_open >= turn) leave_store = TRUE;
 	}
 
+	store_shopping_active = FALSE;
+	controller_store_ui_on_shop_leave();
 
 	/* Take a turn */
 	p_ptr->energy_use = 100;
@@ -3622,4 +3633,34 @@ void store_init(int which)
 	{
 		object_wipe(&st_ptr->stock[k]);
 	}
+}
+
+
+/*
+ * Controller / UI helpers (read-only store state for shop overlays).
+ */
+bool store_is_shopping(void) {
+	return store_shopping_active ? TRUE : FALSE;
+}
+
+int store_get_stock_count(void) {
+	if (!st_ptr) return 0;
+	return st_ptr->stock_num;
+}
+
+int store_get_page_top(void) {
+	return store_top;
+}
+
+char store_get_item_label(int item) {
+	return (char)store_to_label(item);
+}
+
+object_type *store_get_stock_item(int item) {
+	if (!st_ptr || item < 0 || item >= st_ptr->stock_num) return NULL;
+	return &st_ptr->stock[item];
+}
+
+bool store_item_can_sell(const object_type *o_ptr) {
+	return store_will_buy(o_ptr);
 }

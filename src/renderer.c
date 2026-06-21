@@ -181,15 +181,24 @@ void renderer_top_down_title(const RendererHudSnapshot* hud, char* out, size_t o
     char message_suffix[96];
 
     if (!out || out_size == 0) return;
+
+    message_suffix[0] = '\0';
+    if (hud && hud->has_message) {
+        snprintf(message_suffix, sizeof(message_suffix), " - %s", hud->last_message);
+        message_suffix[sizeof(message_suffix) - 1] = '\0';
+    }
+
     if (!hud) {
-        renderer_copy_text(out, out_size, "SteambandRedux 2D Tiles - no game state - Ctrl+F11 exits");
+        renderer_copy_text(out, out_size, "SteambandRedux 2D Tiles - demo preview - Ctrl+F11 exits");
         return;
     }
 
-    message_suffix[0] = '\0';
-    if (hud->has_message) {
-        snprintf(message_suffix, sizeof(message_suffix), " - %s", hud->last_message);
-        message_suffix[sizeof(message_suffix) - 1] = '\0';
+    if (renderer_top_down_uses_preview_map()) {
+        snprintf(out, out_size,
+                 "SteambandRedux 2D Tiles - DEMO preview tiles - File New to play - Ctrl+F11 exits%s",
+                 message_suffix);
+        out[out_size - 1] = '\0';
+        return;
     }
 
     snprintf(out, out_size,
@@ -1265,6 +1274,46 @@ static bool renderer_monster_race_for_grid(int y, int x, monster_race** race_out
     return TRUE;
 }
 
+static byte renderer_preview_feature_at(int y, int x) {
+    switch (test_map[y % 16][x % 16]) {
+        case 1: return FEAT_WALL_EXTRA;
+        case 2: return FEAT_QUARTZ;
+        default: return FEAT_FLOOR;
+    }
+}
+
+bool renderer_top_down_uses_preview_map(void) {
+    return (!p_ptr) ? TRUE : FALSE;
+}
+
+RendererTileInfo renderer_classify_top_down_tile(const RendererContext* ctx, int y, int x) {
+    RendererTileInfo info;
+
+    if (!renderer_top_down_uses_preview_map()) {
+        return renderer_classify_tile(y, x);
+    }
+
+    memset(&info, 0, sizeof(info));
+    info.category = RENDERER_TILE_DARKNESS;
+    info.feat = FEAT_NONE;
+    if (y < 0 || x < 0 || y >= DUNGEON_HGT || x >= DUNGEON_WID) {
+        return info;
+    }
+
+    info.in_bounds = TRUE;
+    info.feat = renderer_preview_feature_at(y, x);
+    info.remembered = TRUE;
+    if (ctx) {
+        info.has_player = (y == (int)ctx->posX && x == (int)ctx->posY) ? TRUE : FALSE;
+    }
+    info.category = renderer_tile_category_from_values(info.feat, TRUE,
+                                                       info.has_player, FALSE, FALSE);
+  if (info.feat == FEAT_QUARTZ) {
+        info.category = RENDERER_TILE_ORE;
+    }
+    return info;
+}
+
 RendererTileInfo renderer_classify_tile(int y, int x) {
     RendererTileInfo info;
     monster_race* r_ptr = NULL;
@@ -1718,28 +1767,20 @@ static void renderer_draw_top_down_player_focus(RendererContext* ctx, const SDL_
 }
 
 static void renderer_draw_top_down_focus_overlay(RendererContext* ctx) {
-    SDL_Rect panel;
-    SDL_Rect click_bar;
+    SDL_Rect banner;
 
     if (!ctx || !ctx->renderer || ctx->keyboard_focus) return;
 
     SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_BLEND);
-    panel.x = ctx->width / 2 - 96;
-    panel.y = ctx->height / 2 - 18;
-    panel.w = 192;
-    panel.h = 36;
-    if (panel.x < 8) panel.x = 8;
-    if (panel.y < 8) panel.y = 8;
-    SDL_SetRenderDrawColor(ctx->renderer, 20, 12, 10, 214);
-    SDL_RenderFillRect(ctx->renderer, &panel);
+    banner.x = 8;
+    banner.y = 8;
+    banner.w = ctx->width - 16;
+    if (banner.w > 420) banner.w = 420;
+    banner.h = 14;
+    SDL_SetRenderDrawColor(ctx->renderer, 20, 12, 10, 200);
+    SDL_RenderFillRect(ctx->renderer, &banner);
     SDL_SetRenderDrawColor(ctx->renderer, 176, 86, 64, 245);
-    SDL_RenderDrawRect(ctx->renderer, &panel);
-
-    click_bar.x = panel.x + 18;
-    click_bar.y = panel.y + 14;
-    click_bar.w = panel.w - 36;
-    click_bar.h = 8;
-    SDL_RenderFillRect(ctx->renderer, &click_bar);
+    SDL_RenderDrawRect(ctx->renderer, &banner);
     SDL_SetRenderDrawBlendMode(ctx->renderer, SDL_BLENDMODE_NONE);
 }
 
@@ -1764,13 +1805,9 @@ static void renderer_render_top_down(RendererContext* ctx) {
         for (int col = 0; col < view.cols; col++) {
             int cy = view.origin_y + row;
             int cx = view.origin_x + col;
-            RendererTileInfo info = renderer_classify_tile(cy, cx);
+            RendererTileInfo info = renderer_classify_top_down_tile(ctx, cy, cx);
             RendererColor color;
             SDL_Rect rect;
-
-            if (!p_ptr && cy == (int)ctx->posY && cx == (int)ctx->posX) {
-                info.category = RENDERER_TILE_PLAYER;
-            }
 
             color = renderer_tile_color(info.category);
             rect = renderer_top_down_cell_rect(&view, offset_x, offset_y, col, row);

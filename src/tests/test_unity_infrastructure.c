@@ -72,6 +72,7 @@ void test_renderer_basic(void) {
     RendererColor marker_color;
     RendererMarkerProjection marker;
     RendererTileInfo tile;
+    RendererTileInfo preview_tile;
     RendererTileViewport tile_view;
     RendererTopDownTilesetSpec tile_spec;
     SDL_Rect tile_src;
@@ -394,6 +395,17 @@ void test_renderer_basic(void) {
     TEST_ASSERT_FALSE_MESSAGE(renderer_texture_loading_allowed(ctx), "Unapproved textures must not load");
     TEST_ASSERT_FALSE_MESSAGE(renderer_autostart_top_down_requested(),
                               "Top-down autostart should be opt-in through environment");
+    TEST_ASSERT_TRUE_MESSAGE(renderer_top_down_uses_preview_map(),
+                             "Top-down preview should be active without player state");
+    preview_tile = renderer_classify_top_down_tile(ctx, 5, 5);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_PLAYER, preview_tile.category,
+                                  "Preview map should mark camera cell as player");
+    preview_tile = renderer_classify_top_down_tile(ctx, 2, 2);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_ORE, preview_tile.category,
+                                  "Preview map quartz should classify as ore");
+    preview_tile = renderer_classify_top_down_tile(ctx, 0, 0);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(RENDERER_TILE_WALL, preview_tile.category,
+                                  "Preview map border should classify as wall");
     TEST_ASSERT_FALSE_MESSAGE(ctx->show_debug_minimap, "Debug minimap should be hidden by default for immersion");
     TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_trace_column(ctx, RENDER_WIDTH / 2, &ray_hit),
                                   "Center trace should be deterministic and testable");

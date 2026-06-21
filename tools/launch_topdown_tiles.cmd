@@ -31,6 +31,9 @@ echo   Arrow keys/numpad/controller = legacy roguelike movement
 echo   Escape/B = legacy cancel while the SDL tile window is focused
 echo   Ctrl+F11 = hide/show the SDL2 top-down tile window
 echo.
+echo Before File New you will see a DEMO preview map (walls/floor/ore sample).
+echo After starting a game, click the SDL tile window so keyboard/controller input works.
+echo.
 echo This launcher sets STEAMBAND_START_TOPDOWN=1 so the tile window opens automatically.
 echo.
 

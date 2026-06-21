@@ -2,12 +2,17 @@
 #include "controller.h"
 #include "controller_menu.h"
 #include "controller_config_menu.h"
+#include "controller_item_ui.h"
+#include "controller_quick_menu.h"
+#include "controller_followup.h"
+#include "controller_store_ui.h"
 #include "angband.h"
 #include "logging.h"
 #include <windows.h>
 #include <xinput.h>
 #ifdef STEAMBAND_HAS_SDL2
 #include <SDL.h>  /* SDL2 for improved controller support including ROG Ally mappings */
+#include "renderer.h"
 #endif
 #include <stdlib.h>
 #include <string.h>
@@ -94,7 +99,7 @@ const char* controller_get_playability_hint(int line, int first_person_available
         case 0:
             return "ROG Ally: A=Enter B=Esc X=Inventory Y=Equipment";
         case 1:
-            return "D-pad/left stick=Move LB=Rest RB=Search Back=Map/Menu/Config";
+            return "D-pad/stick=Move LB=Rest RB=Search START=Quick cmds Back=Menu";
         case 2:
             return first_person_available ?
                 "FP: Ctrl+F12/L3+R3, W/left stick moves, right stick turns, Esc exits" :
@@ -282,13 +287,14 @@ void controller_init(void) {
         } else {
             LOG_I("Controller initialized: No controller detected (port 0)");
         }
-        LOG_I("ROG Ally defaults: A=Enter, B=Escape, X=inventory, Y=equipment, D-pad/left stick=movement, LB=rest, RB=search");
-        LOG_I("ROG Ally gestures: Back=map after 500 ms, double Back=command menu, triple Back=config, L3+R3=first-person toggle");
+        LOG_I("ROG Ally defaults: A=Enter/select, B=Escape, X=inventory, Y=equipment, START=quick cmds");
+        LOG_I("ROG Ally gestures: Back=map/menu/config, D-pad/left stick=move, LB=rest, RB=search, L3+R3=FP");
     }
 
     /* Initialize menu systems */
     controller_menu_init();
     controller_config_menu_init();
+    controller_quick_menu_init();
     controller_back_gesture_reset();
 }
 
@@ -300,61 +306,61 @@ void controller_init(void) {
  *   1 2 3
  */
 static void check_thumbsticks(void) {
-    /* Deadzone thresholds */
+    if (controller_item_ui_is_active()) return;
+
     const int DEADZONE = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
     short lx = g_state.Gamepad.sThumbLX;
     short ly = g_state.Gamepad.sThumbLY;
+    int key;
 
-    /* Check if outside deadzone (either axis) */
     if ((lx < -DEADZONE || lx > DEADZONE) || (ly < -DEADZONE || ly > DEADZONE)) {
-        int key = 0;
-        /* Calculate movement direction based on angle */
-        /* Use atan2 to get angle in radians, then map to 8 directions */
-        /* Note: XInput Y axis is inverted (positive Y is up, but we want positive Y = north = '8') */
-        double angle = atan2(-(double)ly, (double)lx); /* Negate ly because Y is inverted */
+        /* XInput Y is positive when the stick is pushed up; negate for numpad north='8'. */
+        key = controller_vector_to_key((double)lx, (double)(-ly));
+        if (key == 0) return;
 
-        /* Normalize angle to 0-2*PI range */
-        if (angle < 0) angle += 2.0 * 3.14159265358979323846;
-
-        /* Divide circle into 8 sectors (45 degrees each = PI/4 radians) */
-        /* Each sector maps to a numpad key */
-        /* Sector boundaries: 0, PI/8, 3*PI/8, 5*PI/8, 7*PI/8, 9*PI/8, 11*PI/8, 13*PI/8, 15*PI/8 */
-        /* Map to keys: 6 (right), 9 (up-right), 8 (up), 7 (up-left), 4 (left), 1 (down-left), 2 (down), 3 (down-right) */
-
-        const double PI_8 = 3.14159265358979323846 / 8.0;
-
-        if (angle < PI_8 || angle >= 15 * PI_8) {
-            /* Right (0-22.5 degrees or 337.5-360 degrees) */
-            key = '6';
-        } else if (angle < 3 * PI_8) {
-            /* Up-right (22.5-67.5 degrees) */
-            key = '9';
-        } else if (angle < 5 * PI_8) {
-            /* Up (67.5-112.5 degrees) */
-            key = '8';
-        } else if (angle < 7 * PI_8) {
-            /* Up-left (112.5-157.5 degrees) */
-            key = '7';
-        } else if (angle < 9 * PI_8) {
-            /* Left (157.5-202.5 degrees) */
-            key = '4';
-        } else if (angle < 11 * PI_8) {
-            /* Down-left (202.5-247.5 degrees) */
-            key = '1';
-        } else if (angle < 13 * PI_8) {
-            /* Down (247.5-292.5 degrees) */
-            key = '2';
-        } else {
-            /* Down-right (292.5-337.5 degrees) */
-            key = '3';
-        }
-
-        /* Queue keypress if enough time passed since last move (rate limiting) */
         static DWORD last_move = 0;
         DWORD now = GetTickCount();
-        if (now - last_move > 150) { /* 150ms delay prevents movement spam */
+        if (now - last_move > 150) {
             Term_keypress(controller_transform_movement_key(key));
             last_move = now;
+        }
+    }
+}
+
+int controller_thumbstick_to_movement_key(short lx, short ly) {
+    const int DEADZONE = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+
+    if ((lx < -DEADZONE || lx > DEADZONE) || (ly < -DEADZONE || ly > DEADZONE)) {
+        return controller_vector_to_key((double)lx, (double)(-ly));
+    }
+    return 0;
+}
+
+int controller_thumbstick_vertical_nav_delta(short ly) {
+    const int DEADZONE = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+
+    /* XInput Y is positive when the stick is pushed up. */
+    if (ly > DEADZONE) return -1;
+    if (ly < -DEADZONE) return 1;
+    return 0;
+}
+
+void controller_absorb_mapped_button_states(XINPUT_STATE *state) {
+    int i;
+    DWORD now;
+
+    if (!state) return;
+
+    now = GetTickCount();
+    for (i = 0; g_mapping[i].button != 0; i++) {
+        if ((state->Gamepad.wButtons & g_mapping[i].button) != 0) {
+            g_mapping[i].pressed = TRUE;
+            if (!g_mapping[i].press_time) {
+                g_mapping[i].press_time = now;
+            }
+            if (!g_mapping[i].last_repeat) {
+                g_mapping[i].last_repeat = now;
+            }
         }
     }
 }
@@ -378,7 +384,8 @@ int controller_consume_first_person_toggle(void) {
     bool chord_pressed;
 
     if (!g_connected) return FALSE;
-    if (controller_menu_is_active() || controller_config_menu_is_active()) return FALSE;
+    if (controller_menu_is_active() || controller_config_menu_is_active() ||
+        controller_quick_menu_is_active() || controller_item_ui_is_active()) return FALSE;
 
     chord_pressed = ((g_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0) &&
                     ((g_state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0);
@@ -399,7 +406,8 @@ int controller_consume_first_person_cancel(void) {
     bool cancel_pressed;
 
     if (!g_connected) return FALSE;
-    if (controller_menu_is_active() || controller_config_menu_is_active()) return FALSE;
+    if (controller_menu_is_active() || controller_config_menu_is_active() ||
+        controller_quick_menu_is_active() || controller_item_ui_is_active()) return FALSE;
 
     cancel_pressed = (g_state.Gamepad.wButtons & XINPUT_GAMEPAD_B) != 0;
     if (cancel_pressed && !g_fp_cancel_was_pressed) {
@@ -414,6 +422,69 @@ int controller_consume_first_person_cancel(void) {
     return FALSE;
 }
 
+static int controller_overlay_active(void) {
+    return controller_menu_is_active() || controller_config_menu_is_active() ||
+           controller_quick_menu_is_active() || controller_item_ui_is_active() ||
+           controller_followup_overlay_active() || store_is_shopping();
+}
+
+static int controller_in_play_session(void) {
+    return character_generated && game_in_progress && p_ptr && !p_ptr->is_dead;
+}
+
+int controller_is_connected(void) {
+    return g_connected ? TRUE : FALSE;
+}
+
+#ifdef STEAMBAND_HAS_SDL2
+static void controller_merge_sdl_gamepad_buttons(XINPUT_STATE *state) {
+    if (!state || !g_sdl_controller) return;
+
+    SDL_GameControllerUpdate();
+
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_A)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_A;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_B)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_B;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_X)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_X;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_Y)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_Y;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_START)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_START;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_BACK)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_BACK;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_LEFTSHOULDER)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_LEFT_SHOULDER;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_RIGHT_SHOULDER;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_DPAD_UP)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_UP;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_DPAD_DOWN)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_DOWN;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_LEFT;
+    }
+    if (SDL_GameControllerGetButton(g_sdl_controller, SDL_CONTROLLER_BUTTON_DPAD_RIGHT)) {
+        state->Gamepad.wButtons |= XINPUT_GAMEPAD_DPAD_RIGHT;
+    }
+}
+#else
+static void controller_merge_sdl_gamepad_buttons(XINPUT_STATE *state) {
+    (void)state;
+}
+#endif
+
 /*
  * Check controller input
  */
@@ -423,6 +494,15 @@ int controller_check(void) {
     int i;
     bool handled = FALSE;
     DWORD now = GetTickCount();
+
+#ifdef STEAMBAND_HAS_SDL2
+    {
+        RendererContext *renderer_ctx = get_renderer();
+        if (renderer_ctx && !renderer_ctx->first_person_mode) {
+            g_fp_camera_active = FALSE;
+        }
+    }
+#endif
 
     /* Poll controller 0 */
     dwResult = XInputGetState(0, &state);
@@ -436,6 +516,8 @@ int controller_check(void) {
             LOG_I("Controller connected: Xbox 360 controller (port 0)");
         }
         g_previous_connected = TRUE;
+
+        controller_merge_sdl_gamepad_buttons(&state);
 
         /* Check packet number to see if state changed */
         if (state.dwPacketNumber != g_last_packet) {
@@ -453,8 +535,39 @@ int controller_check(void) {
         /* Check if command menu is active - handle menu input */
         if (controller_menu_is_active()) {
             if (controller_menu_check()) {
+                controller_absorb_mapped_button_states(&state);
                 return TRUE; /* Menu handled input */
             }
+        }
+
+        /* Quick command menu (START while playing) */
+        if (controller_quick_menu_is_active()) {
+            if (controller_quick_menu_check()) {
+                controller_absorb_mapped_button_states(&state);
+                return TRUE;
+            }
+        }
+
+        /* Shop overlay while inside a store */
+        if (store_is_shopping()) {
+            if (controller_store_ui_poll(&state, now)) {
+                controller_absorb_mapped_button_states(&state);
+                return TRUE;
+            }
+        }
+
+        /* Target assist / rest / quantity overlays */
+        if (controller_followup_is_active()) {
+            controller_followup_poll(&state, now);
+            controller_absorb_mapped_button_states(&state);
+            return TRUE;
+        }
+
+        /* Inventory/equipment browser (X/Y face buttons) */
+        if (controller_item_ui_is_active()) {
+            controller_item_ui_poll(&state, now);
+            controller_absorb_mapped_button_states(&state);
+            return TRUE;
         }
 
         /* Check for BACK button gestures. Single BACK still falls through to
@@ -462,7 +575,9 @@ int controller_check(void) {
          * menu after the triple-press window expires; triple BACK opens config
          * immediately.
          */
-        if (!controller_menu_is_active() && !controller_config_menu_is_active()) {
+        if (!controller_menu_is_active() && !controller_config_menu_is_active() &&
+            !controller_quick_menu_is_active() && !controller_item_ui_is_active() &&
+            !store_is_shopping() && !controller_followup_overlay_active()) {
             bool back_pressed = (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) != 0;
             switch (controller_back_gesture_update(back_pressed, now)) {
                 case CONTROLLER_BACK_ACTION_MAP:
@@ -479,8 +594,10 @@ int controller_check(void) {
             }
         }
 
-        /* If any menu is active, don't process normal button mappings */
-        if (controller_menu_is_active() || controller_config_menu_is_active()) {
+        /* If any overlay menu is active, don't process normal button mappings */
+        if (controller_menu_is_active() || controller_config_menu_is_active() ||
+            controller_quick_menu_is_active() || controller_followup_overlay_active() ||
+            store_is_shopping()) {
             return FALSE;
         }
 
@@ -496,7 +613,27 @@ int controller_check(void) {
 
             if (current_pressed && !g_mapping[i].pressed) {
                 /* Button Down Event - Initial press */
-                Term_keypress(controller_transform_movement_key(g_mapping[i].key_code));
+                if (g_mapping[i].button == XINPUT_GAMEPAD_X && g_mapping[i].key_code == 'i') {
+                    if (controller_in_play_session()) {
+                        controller_item_ui_open_inventory();
+                    }
+                } else if (g_mapping[i].button == XINPUT_GAMEPAD_Y && g_mapping[i].key_code == 'e') {
+                    if (controller_in_play_session()) {
+                        controller_item_ui_open_equipment();
+                    }
+                } else if (g_mapping[i].button == XINPUT_GAMEPAD_START && g_mapping[i].key_code == 27) {
+                    if (controller_in_play_session()) {
+                        controller_quick_menu_show();
+                    } else {
+                        Term_keypress(controller_transform_movement_key(g_mapping[i].key_code));
+                    }
+                } else if (g_mapping[i].button == XINPUT_GAMEPAD_A && g_mapping[i].key_code == 13) {
+                    if (!controller_in_play_session() || controller_overlay_active()) {
+                        Term_keypress(controller_transform_movement_key(g_mapping[i].key_code));
+                    }
+                } else {
+                    Term_keypress(controller_transform_movement_key(g_mapping[i].key_code));
+                }
                 g_mapping[i].pressed = TRUE;
                 g_mapping[i].press_time = now;
                 g_mapping[i].last_repeat = now; /* Initialize last_repeat for repeat timing */

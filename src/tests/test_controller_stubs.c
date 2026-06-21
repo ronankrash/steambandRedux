@@ -110,3 +110,83 @@ cptr message_str(s16b age) {
     return "";
 }
 
+/* Stubs for controller_item_ui.c */
+bool character_generated = FALSE;
+bool game_in_progress = FALSE;
+bool item_tester_full = FALSE;
+static object_type inventory_stub[INVEN_TOTAL];
+object_type *inventory = inventory_stub;
+byte tval_to_attr[128];
+
+void screen_save(void) {}
+void screen_load(void) {}
+void show_inven(void) {}
+void show_equip(void) {}
+bool item_tester_okay(const object_type *o_ptr) {
+    (void)o_ptr;
+    return TRUE;
+}
+void object_desc(char *buf, const object_type *o_ptr, int pref, int mode) {
+    (void)o_ptr;
+    (void)pref;
+    (void)mode;
+    if (buf) strcpy(buf, "item");
+}
+char index_to_label(int i) {
+    return (char)('a' + (i % 26));
+}
+void prt(cptr s, int row, int col) {
+    (void)s;
+    (void)row;
+    (void)col;
+}
+void put_str(cptr s, int row, int col) {
+    (void)s;
+    (void)row;
+    (void)col;
+}
+void c_put_str(byte attr, cptr s, int row, int col) {
+    (void)attr;
+    (void)s;
+    (void)row;
+    (void)col;
+}
+errr Term_fresh(void) {
+    return 0;
+}
+void bell(cptr str) {
+    (void)str;
+}
+void msg_print(cptr str) {
+    (void)str;
+}
+cptr mention_use(int i) {
+    (void)i;
+    return "slot";
+}
+s16b wield_slot(const object_type *o_ptr) {
+    (void)o_ptr;
+    return INVEN_WIELD;
+}
+
+bool store_is_shopping(void) {
+    return FALSE;
+}
+int store_get_stock_count(void) {
+    return 0;
+}
+int store_get_page_top(void) {
+    return 0;
+}
+char store_get_item_label(int item) {
+    return (char)('a' + (item % 26));
+}
+object_type *store_get_stock_item(int item) {
+    (void)item;
+    return NULL;
+}
+bool store_item_can_sell(const object_type *o_ptr) {
+    (void)o_ptr;
+    return FALSE;
+}
+

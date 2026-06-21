@@ -15,6 +15,8 @@ from pathlib import Path
 from PIL import Image
 
 import generate_topdown_tilesheet as base
+from topdown_mapping import default_mapping_path, load_mapping, ultima_index_map
+from ultima5_lzw import find_tiles16_in_install, load_tiles16_bytes, tiles16_usage_hint
 
 
 EGA_PALETTE = [
@@ -25,11 +27,10 @@ EGA_PALETTE = [
 ]
 
 
-def decode_tiles16(path: Path) -> list[Image.Image]:
-    data = path.read_bytes()
+def decode_tiles16_bytes(data: bytes) -> list[Image.Image]:
     tile_size = 16 * 8
     if len(data) < tile_size or len(data) % tile_size != 0:
-        raise ValueError(f"{path} size {len(data)} is not a multiple of {tile_size} bytes")
+        raise ValueError(f"tile data size {len(data)} is not a multiple of {tile_size} bytes")
 
     tiles: list[Image.Image] = []
     count = len(data) // tile_size
@@ -63,9 +64,35 @@ def parse_mapping(text: str) -> dict[int, int]:
     return mapping
 
 
+def resolve_tiles16_source(tiles16: str | None, install_dir: str | None) -> Path:
+    if install_dir:
+        install_path = Path(install_dir)
+        if not install_path.is_dir():
+            raise FileNotFoundError(f"install directory not found: {install_path}")
+        found = find_tiles16_in_install(install_path)
+        if found is None:
+            raise FileNotFoundError(f"no TILES.16 found under {install_path}")
+        return found
+
+    if not tiles16:
+        raise FileNotFoundError("provide --tiles16 or --install-dir")
+
+    path = Path(tiles16)
+    if not path.is_file():
+        raise FileNotFoundError(str(path))
+    return path
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--tiles16", required=True, help="Path to local uncompressed Ultima V tiles.16 file.")
+    parser.add_argument(
+        "--tiles16",
+        help="Path to TILES.16 from your Ultima V install (LZW-compressed or raw).",
+    )
+    parser.add_argument(
+        "--install-dir",
+        help="Ultima V install directory containing TILES.16 (alternative to --tiles16).",
+    )
     parser.add_argument(
         "--output",
         default="lib/user/topdown_tileset.bmp",
@@ -76,9 +103,26 @@ def main() -> int:
         default="",
         help="Comma-separated topdown-index:ultima-tile-index overrides, e.g. 1:0x12,2:0x30.",
     )
+    parser.add_argument(
+        "--mapping-file",
+        default=str(default_mapping_path("topdown-v1-ultima5-local.json")),
+        help="JSON mapping spec for topdown-v1 slots. Default is the local Ultima V starter map.",
+    )
     args = parser.parse_args()
 
-    tiles = decode_tiles16(Path(args.tiles16))
+    try:
+        source_path = resolve_tiles16_source(args.tiles16, args.install_dir)
+        raw_tiles = load_tiles16_bytes(source_path)
+        tiles = decode_tiles16_bytes(raw_tiles)
+    except FileNotFoundError as exc:
+        print(f"FAIL: {exc}")
+        print()
+        print(tiles16_usage_hint())
+        return 1
+    except ValueError as exc:
+        print(f"FAIL: {exc}")
+        return 1
+
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
 
@@ -87,20 +131,24 @@ def main() -> int:
     atlas = Image.open(temp).convert("RGBA")
     temp.unlink(missing_ok=True)
 
-    # Conservative defaults: use the same early tile IDs as a visual sampling.
-    # Users can refine the exact Ultima tile choices with --mapping.
-    default_mapping = {
-        0: 0x00, 1: 0x01, 2: 0x30, 3: 0x04, 4: 0x06, 5: 0x07,
-        6: 0x10, 7: 0x03, 8: 0x08, 17: 0x31, 18: 0x32,
-    }
-    default_mapping.update(parse_mapping(args.mapping))
+    mapping_path = Path(args.mapping_file)
+    if mapping_path.exists():
+        tile_mapping = ultima_index_map(load_mapping(mapping_path))
+        print(f"Loaded mapping: {mapping_path}")
+    else:
+        tile_mapping = {
+            0: 0x00, 1: 0x01, 2: 0x30, 3: 0x04, 4: 0x06, 5: 0x07,
+            6: 0x10, 7: 0x03, 8: 0x08, 17: 0x31, 18: 0x32,
+        }
+        print(f"Mapping file missing ({mapping_path}); using built-in fallback sample.")
+    tile_mapping.update(parse_mapping(args.mapping))
 
-    for target_index, source_index in default_mapping.items():
+    for target_index, source_index in tile_mapping.items():
         if 0 <= target_index < len(base.CATEGORIES) and 0 <= source_index < len(tiles):
             paste_tile(atlas, tiles[source_index], target_index)
 
     atlas.convert("RGB").save(output, "BMP")
-    print(f"Converted {args.tiles16} -> {output}")
+    print(f"Converted {source_path} -> {output}")
     print("Output is local-only; do not commit Ultima-derived assets.")
     return 0
 

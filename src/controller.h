@@ -18,6 +18,8 @@ void controller_init(void);
  */
 int controller_check(void);
 
+int controller_is_connected(void);
+
 #define CONTROLLER_BACK_ACTION_NONE    0
 #define CONTROLLER_BACK_ACTION_MAP     1
 #define CONTROLLER_BACK_ACTION_COMMAND 2
@@ -106,6 +108,14 @@ int controller_consume_first_person_cancel(void);
 void controller_set_first_person_camera(int active, double dir_x, double dir_y,
                                         double plane_x, double plane_y);
 int controller_transform_movement_key(int key_code);
+int controller_thumbstick_to_movement_key(short lx, short ly);
+int controller_thumbstick_vertical_nav_delta(short ly);
+
+/*
+ * Mark mapped buttons that are currently held so a later controller_check()
+ * pass does not treat them as a fresh press (used by overlay UIs).
+ */
+void controller_absorb_mapped_button_states(XINPUT_STATE *state);
 
 #endif /* INCLUDED_CONTROLLER_H */
 
