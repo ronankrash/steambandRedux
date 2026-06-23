@@ -82,12 +82,29 @@ def validate_mapping(data: dict[str, Any], path: Path | None = None) -> list[str
             if not isinstance(source, int) or source < 0:
                 errors.append(f"{label}: index {index} needs non-negative integer source_tile")
         elif mapping_kind == "spritesheet_cell":
+            special = entry.get("special")
+            if special is not None:
+                if special not in {"solid_black"}:
+                    errors.append(f"{label}: index {index} has unsupported special {special!r}")
+                continue
+
             source_col = entry.get("source_col")
             source_row = entry.get("source_row")
             if not isinstance(source_col, int) or source_col < 0:
                 errors.append(f"{label}: index {index} needs non-negative integer source_col")
             if not isinstance(source_row, int) or source_row < 0:
                 errors.append(f"{label}: index {index} needs non-negative integer source_row")
+
+            sheet = entry.get("sheet", data.get("default_sheet", "map"))
+            if sheet is not None:
+                try:
+                    entry_source_sheet(data, entry)
+                except MappingError as exc:
+                    errors.append(f"{label}: {exc}")
+
+    source_sheets = data.get("source_sheets")
+    if source_sheets is not None and not isinstance(source_sheets, dict):
+        errors.append(f"{label}: source_sheets must be an object when present")
 
     return errors
 
@@ -130,6 +147,46 @@ def spritesheet_cell_size(data: dict[str, Any]) -> int:
     if not isinstance(size, int) or size <= 0:
         raise MappingError("spritesheet_cell mappings require positive integer cell_size")
     return size
+
+
+def spritesheet_sources(data: dict[str, Any]) -> dict[str, str]:
+    """Return named source sheets for multi-sheet mappings."""
+    sources: dict[str, str] = {}
+    default_sheet = data.get("default_sheet", "map")
+    default_path = data.get("source_path", "")
+    if isinstance(default_path, str) and default_path:
+        sources[str(default_sheet)] = default_path
+
+    extra = data.get("source_sheets")
+    if extra is None:
+        return sources
+    if not isinstance(extra, dict):
+        raise MappingError("source_sheets must be an object when present")
+
+    for name, path in extra.items():
+        if not isinstance(name, str) or not name:
+            raise MappingError("source_sheets keys must be non-empty strings")
+        if not isinstance(path, str) or not path:
+            raise MappingError(f"source_sheets[{name!r}] must be a non-empty string path")
+        sources[name] = path
+    return sources
+
+
+def entry_source_sheet(data: dict[str, Any], entry: dict[str, Any]) -> str:
+    sheet = entry.get("sheet", data.get("default_sheet", "map"))
+    if not isinstance(sheet, str) or not sheet:
+        raise MappingError(f"index {entry.get('index')}: invalid sheet name")
+    sources = spritesheet_sources(data)
+    if sheet not in sources:
+        raise MappingError(
+            f"index {entry.get('index')}: unknown sheet {sheet!r}; known sheets: {sorted(sources)}"
+        )
+    return sheet
+
+
+def entry_source_path(data: dict[str, Any], entry: dict[str, Any]) -> str:
+    sheet = entry_source_sheet(data, entry)
+    return spritesheet_sources(data)[sheet]
 
 
 def default_mapping_path(name: str) -> Path:

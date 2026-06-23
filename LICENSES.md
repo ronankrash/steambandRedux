@@ -50,3 +50,15 @@ python tools/license_scan.py --details
 ## Asset Policy
 
 Future visual/audio assets must be CC0, Public Domain, MIT, or otherwise clearly commercial-permissive. No NC, ND, unclear freeware, ripped game art, or AI-generated assets without documented commercial rights.
+
+## Integrated Third-Party Art
+
+- Component: DENZI 16x16 Ultima VI oblique tilesets
+- Paths: `third_party/assets/denzi/`, generated atlas `lib/xtra/graf/topdown_denzi.bmp`
+- Source: https://opengameart.org/content/denzis-16x16-oblique-tilesets
+- Author: DENZI (denzi.diary@gmail.com)
+- License: CC-BY-SA 3.0
+- License file: `third_party/assets/denzi/LICENSE.TXT`
+- Attribution: required; see `ASSETS.md`
+- Share-alike: generated atlas and mapping JSON are derivative works under CC-BY-SA 3.0
+- Commercial use: permitted with attribution and share-alike compliance
