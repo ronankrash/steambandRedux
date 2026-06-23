@@ -1,12 +1,12 @@
 # Asset Inventory
 
-Last updated: 2026-04-26
+Last updated: 2026-06-23
 
-No external first-person art, top-down tile art, audio, fonts, or texture packs are approved for use yet.
+No external first-person art or audio packs are approved for use yet.
 
-The SDL renderers keep texture/tile slots empty by default. Texture or tilesheet
-loading must remain disabled until an asset is listed here with a verified
-commercial-permissive license and durable source/license reference.
+The SDL2 top-down renderer now ships with an integrated DENZI Ultima-style oblique
+tile atlas (`lib/xtra/graf/topdown_denzi.bmp`) documented below. First-person texture
+slots remain empty by default.
 
 ## Approval Requirements
 
@@ -80,3 +80,23 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Commercial-use notes: included license permits personal and commercial use; credit is appreciated but not mandatory. This is not Ultima, Balor, Wizardry, or other proprietary art; it is a permissive roguelike/RPG pack used as a legal visual proof of concept.
 - Renderer use: optional `topdown-v1` atlas. Launch with `tools/launch_kenney_tiles.cmd` or set `STEAMBAND_TOPDOWN_TILESET` to this BMP.
 - Generation: run `python tools/build_kenney_topdown_poc.py` from the repository root.
+
+### SDL2 DENZI Ultima VI Oblique Top-Down Tiles (Integrated)
+
+- File: `lib/xtra/graf/topdown_denzi.bmp`
+- Source art:
+  - `third_party/assets/denzi/16x16 oblique/16x16_ultim6_wind_map_Denzi060606-5.gif`
+  - `third_party/assets/denzi/16x16 oblique/16x16_ultim6_item_Denzi060817-2.PNG`
+  - `third_party/assets/denzi/16x16 oblique/16x16_ultim6_GUI_item010618-1.PNG`
+  - `third_party/assets/denzi/16x16 oblique/16x16_ultim6_monster_Denzi050817-1.PNG`
+  - `third_party/assets/denzi/16x16 oblique/16x16_ultim6_character_Denzi050731.PNG`
+- Source page: https://opengameart.org/content/denzis-16x16-oblique-tilesets
+- Author: DENZI (denzi.diary@gmail.com)
+- License: CC-BY-SA 3.0 (Attribution-ShareAlike)
+- License copy: `third_party/assets/denzi/LICENSE.TXT`
+- Attribution: "Dungeon tiles, items, monsters, and character art by DENZI (https://opengameart.org/content/denzis-16x16-oblique-tilesets), licensed under CC-BY-SA 3.0."
+- Commercial-use notes: CC-BY-SA 3.0 permits commercial use with attribution and share-alike on derivatives. The generated `topdown_denzi.bmp` atlas and mapping JSON are derivative works and must remain under CC-BY-SA 3.0. This is Ultima-inspired community art, not proprietary Ultima assets.
+- Renderer use: integrated `topdown-v1` atlas with all 36 categories mapped. Auto-loaded by SDL2 top-down mode after the user override path and before the procedural placeholder. Launch with `tools/launch_denzi_tiles.cmd`, `tools/launch_denzi_tiles.sh`, or set `STEAMBAND_TOPDOWN_TILESET` to this BMP.
+- Mapping: `tools/mappings/topdown-v1-denzi-cc-by-sa.json`
+- Generation: run `python tools/build_denzi_topdown.py` from the repository root.
+- Validation: run `python tools/test_denzi_topdown_integration.py`.
