@@ -1,0 +1,25 @@
+{
+  "atlas_version": "fp-walls-v1",
+  "mapping_kind": "spritesheet_cell",
+  "source_name": "DENZI 16x16 Ultima VI oblique map tiles",
+  "source_path": "third_party/assets/denzi/16x16 oblique/16x16_ultim6_wind_map_Denzi060606-5.gif",
+  "license_note": "CC-BY-SA 3.0. See third_party/assets/denzi/LICENSE.TXT and ASSETS.md.",
+  "source_pitch": 16,
+  "cell_size": 16,
+  "output_size": 64,
+  "output_dir": "lib/xtra/graf/fp_walls_denzi",
+  "notes": [
+    "First-person wall textures are 64x64 BMPs upscaled from 16x16 oblique map faces.",
+    "Indices align with renderer_wall_texture_index_from_feat() in renderer.c."
+  ],
+  "entries": [
+    {"index": 0, "name": "masonry", "category": "wall", "source_col": 16, "source_row": 33},
+    {"index": 1, "name": "permanent", "category": "perm_wall", "source_col": 2, "source_row": 0},
+    {"index": 2, "name": "secret", "category": "secret_wall", "source_col": 18, "source_row": 32},
+    {"index": 3, "name": "rubble", "category": "rubble", "source_col": 24, "source_row": 31},
+    {"index": 4, "name": "magma", "category": "ore_magma", "source_col": 29, "source_row": 0},
+    {"index": 5, "name": "quartz", "category": "ore_quartz", "source_col": 27, "source_row": 27},
+    {"index": 6, "name": "cave", "category": "wall_alt", "source_col": 17, "source_row": 33},
+    {"index": 7, "name": "timber", "category": "wood", "source_col": 4, "source_row": 14}
+  ]
+}

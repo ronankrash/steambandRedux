@@ -54,7 +54,7 @@ Future visual/audio assets must be CC0, Public Domain, MIT, or otherwise clearly
 ## Integrated Third-Party Art
 
 - Component: DENZI 16x16 Ultima VI oblique tilesets
-- Paths: `third_party/assets/denzi/`, generated atlas `lib/xtra/graf/topdown_denzi.bmp`
+- Paths: `third_party/assets/denzi/`, generated atlas `lib/xtra/graf/topdown_denzi.bmp`, first-person wall BMPs `lib/xtra/graf/fp_walls_denzi/`
 - Source: https://opengameart.org/content/denzis-16x16-oblique-tilesets
 - Author: DENZI (denzi.diary@gmail.com)
 - License: CC-BY-SA 3.0

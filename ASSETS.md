@@ -100,3 +100,20 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Mapping: `tools/mappings/topdown-v1-denzi-cc-by-sa.json`
 - Generation: run `python tools/build_denzi_topdown.py` from the repository root.
 - Validation: run `python tools/test_denzi_topdown_integration.py`.
+
+### SDL2 DENZI First-Person Wall Textures (Integrated)
+
+- Files: `lib/xtra/graf/fp_walls_denzi/wall_00_masonry.bmp` through `wall_07_timber.bmp`
+- Manifest: `lib/xtra/graf/fp_walls_denzi/manifest.json`
+- Source art: `third_party/assets/denzi/16x16 oblique/16x16_ultim6_wind_map_Denzi060606-5.gif` (oblique wall faces cropped and upscaled to 64x64)
+- Source page: https://opengameart.org/content/denzis-16x16-oblique-tilesets
+- Author: DENZI (denzi.diary@gmail.com)
+- License: CC-BY-SA 3.0 (Attribution-ShareAlike)
+- License copy: `third_party/assets/denzi/LICENSE.TXT`
+- Attribution: same DENZI credit as the top-down atlas; first-person wall BMPs are derivative works.
+- Commercial-use notes: CC-BY-SA 3.0 permits commercial use with attribution and share-alike on derivatives.
+- Renderer use: SDL2 first-person raycaster samples these BMPs per `FEAT_*` wall type when `Ctrl+F12` / `L3+R3` first-person mode is active. Auto-loaded from `lib/xtra/graf/fp_walls_denzi/` or `STEAMBAND_FP_WALL_TEXTURES`.
+- Mapping: `tools/mappings/fp-walls-v1-denzi-cc-by-sa.json`
+- Generation: run `python tools/build_denzi_fp_walls.py` from the repository root.
+- Validation: run `python tools/test_denzi_fp_walls_integration.py`.
+- Fallback: if wall BMPs are missing, first-person mode keeps the procedural masonry shading path.

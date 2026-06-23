@@ -28,6 +28,7 @@ echo Before starting a game you will see a DEMO preview map in the SDL window.
 echo For live dungeon tiles: File -^> New (or controller N), then click the SDL window.
 echo Arrow keys / controller move once a character exists.
 echo Ctrl+F11 toggles top-down mode; Ctrl+F12 toggles first-person mode.
+echo Ctrl+F12 first-person mode uses DENZI wall textures when fp_walls_denzi is present.
 echo.
 set "STEAMBAND_LOG_LEVEL=INFO"
 set "STEAMBAND_START_TOPDOWN=1"

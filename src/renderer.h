@@ -21,6 +21,7 @@
 #define RENDER_HEIGHT 480
 #define TEX_WIDTH     64
 #define TEX_HEIGHT    64
+#define RENDERER_WALL_TEXTURE_COUNT 8
 
 #define RENDERER_TOPDOWN_ATLAS_VERSION "topdown-v1"
 
@@ -177,8 +178,10 @@ typedef struct {
     double planeX;
     double planeY;
 
-    /* Texture slots remain empty until assets are documented in ASSETS.md. */
-    SDL_Texture* wall_textures[8];
+    /* Texture slots documented in ASSETS.md (DENZI first-person wall BMPs). */
+    SDL_Texture* wall_textures[RENDERER_WALL_TEXTURE_COUNT];
+    Uint8* wall_texture_pixels[RENDERER_WALL_TEXTURE_COUNT];
+    bool wall_texture_valid[RENDERER_WALL_TEXTURE_COUNT];
     SDL_Texture* top_down_tilesheet;
     RendererTopDownTilesetSpec top_down_tileset;
     bool textures_approved;
@@ -262,6 +265,13 @@ bool renderer_key_exits_mode(const RendererContext* ctx, SDL_Keycode key, SDL_Ke
 void renderer_set_overlay_message(const char* message);
 bool renderer_should_forward_key_event(const RendererContext* ctx);
 bool renderer_texture_loading_allowed(const RendererContext* ctx);
+bool renderer_load_wall_textures(RendererContext* ctx);
+int renderer_wall_texture_index_from_feat(byte feat);
+double renderer_wall_texture_x(double pos_x, double pos_y, int side,
+                               double ray_dir_x, double ray_dir_y, double distance);
+int renderer_wall_texture_y(int line_height, int draw_start, int screen_y);
+RendererColor renderer_sample_wall_texture_pixel(const Uint8* pixels, int tex_x, int tex_y);
+RendererColor renderer_shade_wall_texture_pixel(RendererColor base, double distance, int side);
 int renderer_key_to_command(SDL_Keycode key, SDL_Keymod mod);
 RendererContext* get_renderer(void);
 
