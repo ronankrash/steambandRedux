@@ -123,10 +123,11 @@ Do not trust older docs or prior agent claims unless backed by source or command
 
 - Latest DENZI oblique tileset integration passed Python pipeline checks on Linux:
   - `python tools/test_denzi_topdown_integration.py`
+  - `python tools/test_denzi_fp_walls_integration.py`
   - `python tools/validate_topdown_mappings.py`
   - `python tools/validate_topdown_tileset.py lib/xtra/graf/topdown_denzi.bmp`
   - `python tools/report_topdown_asset_coverage.py`
-  - Windows/SDL manual playtest still required: `tools/launch_denzi_tiles.cmd`, then File -> New, verify dungeon readability TD-01 through TD-13 from `docs/PLAYTEST-CHECKLIST.md`.
+  - Windows/SDL manual playtest still required: `tools/launch_denzi_fp.cmd` or `tools/launch_denzi_tiles.cmd`, then File -> New, verify FP walls and top-down readability.
 - Latest ROG Ally playtest-prep pass added a Unity contract test for default controller mappings and passed:
   - `cmake --build build-rescue-nosdl --config Debug`
   - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`

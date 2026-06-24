@@ -117,3 +117,4 @@ See `docs/ART-DIRECTION.md` for the no-asset renderer palette, texture-pipeline 
 - Generation: run `python tools/build_denzi_fp_walls.py` from the repository root.
 - Validation: run `python tools/test_denzi_fp_walls_integration.py`.
 - Fallback: if wall BMPs are missing, first-person mode keeps the procedural masonry shading path.
+
