@@ -1,0 +1,62 @@
+{
+  "version": "fp-walls-v1",
+  "texture_size": 64,
+  "textures": [
+    {
+      "index": 0,
+      "name": "masonry",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_00_masonry.bmp",
+      "source_col": 16,
+      "source_row": 33
+    },
+    {
+      "index": 1,
+      "name": "permanent",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_01_permanent.bmp",
+      "source_col": 2,
+      "source_row": 0
+    },
+    {
+      "index": 2,
+      "name": "secret",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_02_secret.bmp",
+      "source_col": 18,
+      "source_row": 32
+    },
+    {
+      "index": 3,
+      "name": "rubble",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_03_rubble.bmp",
+      "source_col": 24,
+      "source_row": 31
+    },
+    {
+      "index": 4,
+      "name": "magma",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_04_magma.bmp",
+      "source_col": 29,
+      "source_row": 0
+    },
+    {
+      "index": 5,
+      "name": "quartz",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_05_quartz.bmp",
+      "source_col": 27,
+      "source_row": 27
+    },
+    {
+      "index": 6,
+      "name": "cave",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_06_cave.bmp",
+      "source_col": 17,
+      "source_row": 33
+    },
+    {
+      "index": 7,
+      "name": "timber",
+      "path": "lib/xtra/graf/fp_walls_denzi/wall_07_timber.bmp",
+      "source_col": 4,
+      "source_row": 14
+    }
+  ]
+}

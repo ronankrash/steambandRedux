@@ -64,6 +64,7 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - Wall strips use deterministic feature-aware colors plus distance/side shading; debug minimap is hidden by default for immersion.
   - SDL resize events clamp renderer dimensions to a safe readable viewport range.
   - Texture slots remain empty unless assets are explicitly approved in `ASSETS.md`.
+  - DENZI first-person wall textures are integrated: 8x 64x64 BMPs in `lib/xtra/graf/fp_walls_denzi/` auto-load in FP mode with feature-aware mapping (masonry, permanent, secret, rubble, magma, quartz, cave, timber). Procedural shading remains the fallback when BMPs are absent.
 - First-person view is not yet a finished gameplay mode. It is a live prototype/mirror of player position and cave data, not a polished replacement for the 2D UI.
 - SDL2 top-down tile renderer now exists as a no-asset prototype:
   - Hidden by default.
@@ -122,10 +123,11 @@ Do not trust older docs or prior agent claims unless backed by source or command
 
 - Latest DENZI oblique tileset integration passed Python pipeline checks on Linux:
   - `python tools/test_denzi_topdown_integration.py`
+  - `python tools/test_denzi_fp_walls_integration.py`
   - `python tools/validate_topdown_mappings.py`
   - `python tools/validate_topdown_tileset.py lib/xtra/graf/topdown_denzi.bmp`
   - `python tools/report_topdown_asset_coverage.py`
-  - Windows/SDL manual playtest still required: `tools/launch_denzi_tiles.cmd`, then File -> New, verify dungeon readability TD-01 through TD-13 from `docs/PLAYTEST-CHECKLIST.md`.
+  - Windows/SDL manual playtest still required: `tools/launch_denzi_fp.cmd` or `tools/launch_denzi_tiles.cmd`, then File -> New, verify FP walls and top-down readability.
 - Latest ROG Ally playtest-prep pass added a Unity contract test for default controller mappings and passed:
   - `cmake --build build-rescue-nosdl --config Debug`
   - `ctest --test-dir build-rescue-nosdl -C Debug --output-on-failure`

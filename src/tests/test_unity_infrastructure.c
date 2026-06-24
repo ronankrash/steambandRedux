@@ -127,6 +127,32 @@ void test_renderer_basic(void) {
     quartz_wall = renderer_wall_base_color(&ray_hit);
     TEST_ASSERT_TRUE_MESSAGE(quartz_wall.g != masonry_wall.g || quartz_wall.b != masonry_wall.b,
                              "Fallback wall color should vary by deterministic feature type");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_wall_texture_index_from_feat(FEAT_WALL_EXTRA),
+                                  "Generic walls should map to masonry texture");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(1, renderer_wall_texture_index_from_feat(FEAT_PERM_SOLID),
+                                  "Permanent walls should map to permanent texture");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(3, renderer_wall_texture_index_from_feat(FEAT_RUBBLE),
+                                  "Rubble should map to rubble texture");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(5, renderer_wall_texture_index_from_feat(FEAT_QUARTZ),
+                                  "Quartz veins should map to quartz texture");
+    TEST_ASSERT_TRUE_MESSAGE(fabs(renderer_wall_texture_x(5.5, 5.5, 0, -1.0, 0.0, 4.5) - 0.5) < 0.0001,
+                             "Wall texture X should be deterministic for vertical hits");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(0, renderer_wall_texture_y(106, 187, 187),
+                                  "Top of wall strip should map to texture row 0");
+    TEST_ASSERT_EQUAL_INT_MESSAGE(63, renderer_wall_texture_y(106, 187, 293),
+                                  "Bottom of wall strip should map to final texture row");
+    {
+        Uint8 sample_pixels[TEX_WIDTH * TEX_HEIGHT * 3];
+        RendererColor sample_color;
+        memset(sample_pixels, 0, sizeof(sample_pixels));
+        sample_pixels[(16 * TEX_WIDTH + 20) * 3] = 200;
+        sample_pixels[(16 * TEX_WIDTH + 20) * 3 + 1] = 40;
+        sample_pixels[(16 * TEX_WIDTH + 20) * 3 + 2] = 10;
+        sample_color = renderer_sample_wall_texture_pixel(sample_pixels, 20, 16);
+        TEST_ASSERT_EQUAL_INT_MESSAGE(200, sample_color.r, "Wall texture sampling should read red channel");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(40, sample_color.g, "Wall texture sampling should read green channel");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(10, sample_color.b, "Wall texture sampling should read blue channel");
+    }
     ceiling_top = renderer_atmosphere_color(0, 480);
     floor_bottom = renderer_atmosphere_color(479, 480);
     TEST_ASSERT_TRUE_MESSAGE(ceiling_top.b >= floor_bottom.b, "Ceiling haze should remain cooler than floor");

@@ -42,6 +42,24 @@ static const char* g_top_down_tilesheet_candidates[] = {
     NULL
 };
 
+static const char* g_fp_wall_texture_dirs[] = {
+    "lib/xtra/graf/fp_walls_denzi",
+    "../lib/xtra/graf/fp_walls_denzi",
+    "../../lib/xtra/graf/fp_walls_denzi",
+    NULL
+};
+
+static const char* g_fp_wall_texture_names[RENDERER_WALL_TEXTURE_COUNT] = {
+    "wall_00_masonry.bmp",
+    "wall_01_permanent.bmp",
+    "wall_02_secret.bmp",
+    "wall_03_rubble.bmp",
+    "wall_04_magma.bmp",
+    "wall_05_quartz.bmp",
+    "wall_06_cave.bmp",
+    "wall_07_timber.bmp"
+};
+
 /* Test map for when cave not initialized (TDD/unit test support) */
 static int test_map[16][16] = {
     {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -545,7 +563,7 @@ bool renderer_init(RendererContext* ctx) {
     ctx->dirY = 0.0;
     ctx->planeX = 0.0;
     ctx->planeY = 0.66;  /* FOV ~66 degrees */
-    ctx->textures_approved = FALSE;
+    ctx->textures_approved = TRUE;
     ctx->textures_loaded = FALSE;
 
     /* SDL init - already partially done in controller.c, but ensure video */
@@ -577,13 +595,15 @@ bool renderer_init(RendererContext* ctx) {
         LOG_W("Renderer: Screen texture creation failed, using direct draw: %s", SDL_GetError());
     }
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < RENDERER_WALL_TEXTURE_COUNT; i++) {
         ctx->wall_textures[i] = NULL;
+        ctx->wall_texture_pixels[i] = NULL;
+        ctx->wall_texture_valid[i] = FALSE;
     }
     ctx->top_down_tilesheet = NULL;
     ctx->top_down_tileset = renderer_default_top_down_tileset_spec();
-    /* No asset files are loaded until ASSETS.md documents an approved source. */
-    ctx->textures_approved = FALSE;
+    /* DENZI first-person wall textures are documented in ASSETS.md. */
+    ctx->textures_approved = TRUE;
     ctx->textures_loaded = FALSE;
     ctx->top_down_tiles_loaded = FALSE;
 
@@ -605,8 +625,12 @@ void renderer_shutdown(RendererContext* ctx) {
     if (ctx->renderer) SDL_DestroyRenderer(ctx->renderer);
     if (ctx->window) SDL_DestroyWindow(ctx->window);
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < RENDERER_WALL_TEXTURE_COUNT; i++) {
         if (ctx->wall_textures[i]) SDL_DestroyTexture(ctx->wall_textures[i]);
+        if (ctx->wall_texture_pixels[i]) {
+            free(ctx->wall_texture_pixels[i]);
+            ctx->wall_texture_pixels[i] = NULL;
+        }
     }
 
     memset(ctx, 0, sizeof(RendererContext));  /* Secure cleanup */
@@ -1849,6 +1873,194 @@ bool renderer_texture_loading_allowed(const RendererContext* ctx) {
     return (ctx && ctx->textures_approved) ? TRUE : FALSE;
 }
 
+int renderer_wall_texture_index_from_feat(byte feat) {
+    if (feat == FEAT_SECRET) return 2;
+    if (feat == FEAT_RUBBLE) return 3;
+    if (feat == FEAT_MAGMA || feat == FEAT_MAGMA_H || feat == FEAT_MAGMA_K) return 4;
+    if (feat == FEAT_QUARTZ || feat == FEAT_QUARTZ_H || feat == FEAT_QUARTZ_K) return 5;
+    if (feat >= FEAT_PERM_EXTRA && feat <= FEAT_PERM_SOLID) return 1;
+    if (feat == FEAT_WALL_INNER || feat == FEAT_WALL_OUTER) return 6;
+    if (feat == FEAT_WALL_SOLID) return 7;
+    return 0;
+}
+
+double renderer_wall_texture_x(double pos_x, double pos_y, int side,
+                               double ray_dir_x, double ray_dir_y, double distance) {
+    double wall_x;
+
+    if (side == 0) {
+        wall_x = pos_y + distance * ray_dir_y;
+    } else {
+        wall_x = pos_x + distance * ray_dir_x;
+    }
+    wall_x -= floor(wall_x);
+    if ((side == 0 && ray_dir_x > 0.0) || (side == 1 && ray_dir_y < 0.0)) {
+        wall_x = 1.0 - wall_x;
+    }
+    if (wall_x < 0.0) wall_x = 0.0;
+    if (wall_x > 0.999999) wall_x = 0.999999;
+    return wall_x;
+}
+
+int renderer_wall_texture_y(int line_height, int draw_start, int screen_y) {
+    int tex_y;
+
+    if (line_height <= 0) return 0;
+    tex_y = ((screen_y - draw_start) * TEX_HEIGHT) / line_height;
+    if (tex_y < 0) tex_y = 0;
+    if (tex_y >= TEX_HEIGHT) tex_y = TEX_HEIGHT - 1;
+    return tex_y;
+}
+
+RendererColor renderer_sample_wall_texture_pixel(const Uint8* pixels, int tex_x, int tex_y) {
+    RendererColor color;
+    int offset;
+    int clamped_x = tex_x;
+    int clamped_y = tex_y;
+
+    color.r = 96;
+    color.g = 88;
+    color.b = 78;
+    color.a = 255;
+
+    if (!pixels) return color;
+    if (clamped_x < 0) clamped_x = 0;
+    if (clamped_x >= TEX_WIDTH) clamped_x = TEX_WIDTH - 1;
+    if (clamped_y < 0) clamped_y = 0;
+    if (clamped_y >= TEX_HEIGHT) clamped_y = TEX_HEIGHT - 1;
+
+    offset = (clamped_y * TEX_WIDTH + clamped_x) * 3;
+    color.r = pixels[offset];
+    color.g = pixels[offset + 1];
+    color.b = pixels[offset + 2];
+    color.a = 255;
+    return color;
+}
+
+RendererColor renderer_shade_wall_texture_pixel(RendererColor base, double distance, int side) {
+    return renderer_depth_shade(base, distance, side);
+}
+
+static bool renderer_copy_wall_texture_pixels(SDL_Surface* surface, Uint8** out_pixels) {
+    SDL_Surface* converted;
+    Uint8* pixels;
+    int row_bytes;
+    int y;
+
+    if (!surface || !out_pixels) return FALSE;
+
+    converted = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGB24, 0);
+    if (!converted) return FALSE;
+
+    if (converted->w != TEX_WIDTH || converted->h != TEX_HEIGHT) {
+        SDL_FreeSurface(converted);
+        return FALSE;
+    }
+
+    pixels = (Uint8*)malloc((size_t)TEX_WIDTH * (size_t)TEX_HEIGHT * 3u);
+    if (!pixels) {
+        SDL_FreeSurface(converted);
+        return FALSE;
+    }
+
+    row_bytes = converted->pitch;
+    for (y = 0; y < TEX_HEIGHT; y++) {
+        const Uint8* src = (const Uint8*)converted->pixels + y * row_bytes;
+        Uint8* dst = pixels + y * TEX_WIDTH * 3;
+        memcpy(dst, src, (size_t)TEX_WIDTH * 3u);
+    }
+
+    SDL_FreeSurface(converted);
+    *out_pixels = pixels;
+    return TRUE;
+}
+
+static bool renderer_try_load_wall_texture_file(RendererContext* ctx, int index, const char* path) {
+    SDL_Surface* surface;
+    Uint8* pixels = NULL;
+    SDL_Texture* texture = NULL;
+
+    if (!ctx || !path || index < 0 || index >= RENDERER_WALL_TEXTURE_COUNT) return FALSE;
+
+    surface = SDL_LoadBMP(path);
+    if (!surface) return FALSE;
+
+    if (!renderer_copy_wall_texture_pixels(surface, &pixels)) {
+        SDL_FreeSurface(surface);
+        return FALSE;
+    }
+
+    if (ctx->renderer) {
+        texture = SDL_CreateTextureFromSurface(ctx->renderer, surface);
+    }
+    SDL_FreeSurface(surface);
+
+    if (ctx->wall_texture_pixels[index]) {
+        free(ctx->wall_texture_pixels[index]);
+        ctx->wall_texture_pixels[index] = NULL;
+    }
+    if (ctx->wall_textures[index]) {
+        SDL_DestroyTexture(ctx->wall_textures[index]);
+        ctx->wall_textures[index] = NULL;
+    }
+
+    ctx->wall_texture_pixels[index] = pixels;
+    ctx->wall_textures[index] = texture;
+    ctx->wall_texture_valid[index] = TRUE;
+    return TRUE;
+}
+
+bool renderer_load_wall_textures(RendererContext* ctx) {
+    const char* override_dir;
+    const char* base_dir = NULL;
+    int loaded = 0;
+    char path[512];
+    int i;
+    int j;
+
+    if (!ctx || !renderer_texture_loading_allowed(ctx)) return FALSE;
+    if (ctx->textures_loaded) return TRUE;
+
+    override_dir = SDL_getenv("STEAMBAND_FP_WALL_TEXTURES");
+    if (override_dir && override_dir[0]) {
+        base_dir = override_dir;
+    } else {
+        for (i = 0; !base_dir && g_fp_wall_texture_dirs[i]; i++) {
+            char probe[512];
+            SDL_RWops* rw;
+            snprintf(probe, sizeof(probe), "%s/%s", g_fp_wall_texture_dirs[i],
+                     g_fp_wall_texture_names[0]);
+            rw = SDL_RWFromFile(probe, "rb");
+            if (rw) {
+                SDL_RWclose(rw);
+                base_dir = g_fp_wall_texture_dirs[i];
+            }
+        }
+    }
+
+    if (!base_dir) {
+        LOG_I("SDL2 first-person wall textures not found; using procedural wall shading.");
+        return FALSE;
+    }
+
+    for (j = 0; j < RENDERER_WALL_TEXTURE_COUNT; j++) {
+        snprintf(path, sizeof(path), "%s/%s", base_dir, g_fp_wall_texture_names[j]);
+        if (renderer_try_load_wall_texture_file(ctx, j, path)) {
+            loaded++;
+        }
+    }
+
+    if (loaded <= 0) {
+        LOG_W("SDL2 first-person wall texture directory present but no valid 64x64 BMPs loaded: %s", base_dir);
+        return FALSE;
+    }
+
+    ctx->textures_loaded = TRUE;
+    LOG_I("SDL2 first-person wall textures ready: %d/%d slots from %s",
+          loaded, RENDERER_WALL_TEXTURE_COUNT, base_dir);
+    return TRUE;
+}
+
 bool renderer_autostart_top_down_requested(void) {
     const char* value = SDL_getenv("STEAMBAND_START_TOPDOWN");
     if (!value || !value[0]) return FALSE;
@@ -1914,27 +2126,46 @@ void renderer_render(RendererContext* ctx) {
 
         RendererRayHit hit = renderer_cast_ray(ctx->posX, ctx->posY, rayDirX, rayDirY, 0);
         RendererWallStrip strip = renderer_wall_strip(ctx->height, hit.distance);
+        byte feat = renderer_feature_at(hit.map_y, hit.map_x);
+        int tex_index = renderer_wall_texture_index_from_feat(feat);
+        const Uint8* tex_pixels = NULL;
+        double wall_x = 0.0;
+        int tex_x = 0;
 
-        RendererColor color = renderer_depth_shade(renderer_wall_base_color(&hit), hit.distance, hit.side);
+        if (ctx->textures_loaded && tex_index >= 0 && tex_index < RENDERER_WALL_TEXTURE_COUNT &&
+            ctx->wall_texture_valid[tex_index]) {
+            tex_pixels = ctx->wall_texture_pixels[tex_index];
+        }
+        if (tex_pixels) {
+            wall_x = renderer_wall_texture_x(ctx->posX, ctx->posY, hit.side,
+                                             rayDirX, rayDirY, hit.distance);
+            tex_x = (int)(wall_x * TEX_WIDTH);
+            if (tex_x < 0) tex_x = 0;
+            if (tex_x >= TEX_WIDTH) tex_x = TEX_WIDTH - 1;
 
-        /* Draw the vertical wall strip with perspective */
-        SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
-        SDL_RenderDrawLine(ctx->renderer, x, strip.draw_start, x, strip.draw_end);
-
-        /* Sparse procedural platework gives a 90s texture read without shipping art assets. */
-        for (int y = strip.draw_start; y <= strip.draw_end; y++) {
-            RendererColor detail = renderer_wall_detail_color(color, &hit, x, y);
-            if (detail.r != color.r || detail.g != color.g || detail.b != color.b || detail.a != color.a) {
-                SDL_SetRenderDrawColor(ctx->renderer, detail.r, detail.g, detail.b, detail.a);
+            for (int y = strip.draw_start; y <= strip.draw_end; y++) {
+                int tex_y = renderer_wall_texture_y(strip.line_height, strip.draw_start, y);
+                RendererColor sample = renderer_sample_wall_texture_pixel(tex_pixels, tex_x, tex_y);
+                RendererColor color = renderer_shade_wall_texture_pixel(sample, hit.distance, hit.side);
+                SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
                 SDL_RenderDrawPoint(ctx->renderer, x, y);
             }
-        }
+        } else {
+            RendererColor color = renderer_depth_shade(renderer_wall_base_color(&hit), hit.distance, hit.side);
 
-        /* Future: texture mapping would sample from wall_textures[texNum] at (texX, texY)
-         * where texX = (int)(wallX * TEX_WIDTH), wallX from hit position fractional.
-         * e.g. double wallX; if (side==0) wallX = ctx->posY + perpWallDist*rayDirY; else ...
-         * wallX -= floor(wallX); texX = (int)(wallX * TEX_WIDTH);
-         */
+            /* Draw the vertical wall strip with perspective */
+            SDL_SetRenderDrawColor(ctx->renderer, color.r, color.g, color.b, color.a);
+            SDL_RenderDrawLine(ctx->renderer, x, strip.draw_start, x, strip.draw_end);
+
+            /* Sparse procedural platework gives a 90s texture read without shipping art assets. */
+            for (int y = strip.draw_start; y <= strip.draw_end; y++) {
+                RendererColor detail = renderer_wall_detail_color(color, &hit, x, y);
+                if (detail.r != color.r || detail.g != color.g || detail.b != color.b || detail.a != color.a) {
+                    SDL_SetRenderDrawColor(ctx->renderer, detail.r, detail.g, detail.b, detail.a);
+                    SDL_RenderDrawPoint(ctx->renderer, x, y);
+                }
+            }
+        }
     }
 
     /* Optional minimap for debugging; disabled by default to preserve immersion. */
@@ -1972,6 +2203,9 @@ void renderer_toggle_mode(RendererContext* ctx) {
     if (ctx->first_person_mode) {
         ctx->keyboard_focus = TRUE;
         renderer_sync_from_player(ctx);
+        if (!ctx->textures_loaded) {
+            renderer_load_wall_textures(ctx);
+        }
         if (ctx->window) {
             SDL_SetWindowTitle(ctx->window,
                                "SteambandRedux FP - W/Up forward, S/Down back, A/D strafe, Arrows turn, Esc exits");
