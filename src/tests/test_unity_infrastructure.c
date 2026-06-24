@@ -538,6 +538,23 @@ void test_renderer_basic(void) {
                                  "Null top-down title should identify the renderer mode");
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "Ctrl+F11"),
                                  "Null top-down title should advertise the correct toggle");
+    {
+        static player_type renderer_test_player;
+        static player_other renderer_test_other;
+
+        memset(&renderer_test_player, 0, sizeof(renderer_test_player));
+        memset(&renderer_test_other, 0, sizeof(renderer_test_other));
+        renderer_test_player.chp = 23;
+        renderer_test_player.mhp = 40;
+        renderer_test_player.csp = 5;
+        renderer_test_player.msp = 12;
+        renderer_test_player.depth = 9;
+        renderer_test_other.opt[OPT_depth_in_feet] = TRUE;
+        p_ptr = &renderer_test_player;
+        op_ptr = &renderer_test_other;
+        renderer_set_overlay_message("Command menu: Inventory");
+        hud = renderer_collect_hud_snapshot(NULL);
+    }
     renderer_top_down_title(&hud, top_down_title, sizeof(top_down_title));
     TEST_ASSERT_NOT_NULL_MESSAGE(strstr(top_down_title, "2D Tiles"),
                                  "Top-down title should identify the renderer mode");
