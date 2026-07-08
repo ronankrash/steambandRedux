@@ -396,6 +396,30 @@ void test_renderer_basic(void) {
     TEST_ASSERT_EQUAL_INT_MESSAGE(72, tile_src.y, "Player tile should be in the fourth row source atlas");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.w, "Source tile width should match the atlas contract");
     TEST_ASSERT_EQUAL_INT_MESSAGE(24, tile_src.h, "Source tile height should match the atlas contract");
+    {
+        RendererTopDownTilesetSpec c64_spec = renderer_c64_ultima_topdown_tileset_spec();
+        SDL_Rect c64_src;
+        TEST_ASSERT_EQUAL_INT_MESSAGE(16, c64_spec.tile_width, "C64 top-down tilesheet should use 16px source tiles");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(16, c64_spec.tile_height, "C64 top-down tilesheet should use square 16px source tiles");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(144, renderer_top_down_expected_width(&c64_spec),
+                                      "C64 atlas width should match 9x16 contract");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(64, renderer_top_down_expected_height(&c64_spec),
+                                      "C64 atlas height should match 4x16 contract");
+        TEST_ASSERT_TRUE_MESSAGE(renderer_top_down_spec_for_dimensions(144, 64, &c64_spec),
+                               "144x64 BMPs should resolve to the C64 atlas spec");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(16, c64_spec.tile_width,
+                                      "Dimension resolver should return C64 tile width");
+        TEST_ASSERT_TRUE_MESSAGE(renderer_top_down_spec_for_dimensions(216, 96, &c64_spec),
+                               "216x96 BMPs should resolve to the topdown-v1 atlas spec");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(24, c64_spec.tile_width,
+                                      "Dimension resolver should return topdown-v1 tile width");
+        c64_src = renderer_top_down_source_rect(&renderer_c64_ultima_topdown_tileset_spec(),
+                                                RENDERER_TILE_PLAYER);
+        TEST_ASSERT_EQUAL_INT_MESSAGE(128, c64_src.x, "Player tile should be in the last C64 column");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(48, c64_src.y, "Player tile should be in the last C64 row");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(16, c64_src.w, "C64 source tile width should be 16px");
+        TEST_ASSERT_EQUAL_INT_MESSAGE(16, c64_src.h, "C64 source tile height should be 16px");
+    }
     TEST_ASSERT_FALSE_MESSAGE(renderer_load_top_down_tilesheet(NULL),
                               "Top-down tilesheet loader should reject a null renderer context safely");
 

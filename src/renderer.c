@@ -33,6 +33,9 @@ static const char* g_top_down_tilesheet_candidates[] = {
     "lib/user/topdown_tileset.bmp",
     "../lib/user/topdown_tileset.bmp",
     "../../lib/user/topdown_tileset.bmp",
+    "lib/xtra/graf/topdown_c64_ultima.bmp",
+    "../lib/xtra/graf/topdown_c64_ultima.bmp",
+    "../../lib/xtra/graf/topdown_c64_ultima.bmp",
     "lib/xtra/graf/topdown_denzi.bmp",
     "../lib/xtra/graf/topdown_denzi.bmp",
     "../../lib/xtra/graf/topdown_denzi.bmp",
@@ -571,6 +574,7 @@ bool renderer_init(RendererContext* ctx) {
         LOG_E("Renderer: SDL video init failed: %s", SDL_GetError());
         return FALSE;
     }
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 
     ctx->window = SDL_CreateWindow("SteambandRedux - First Person Raycaster Prototype",
                                   SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -602,6 +606,8 @@ bool renderer_init(RendererContext* ctx) {
     }
     ctx->top_down_tilesheet = NULL;
     ctx->top_down_tileset = renderer_default_top_down_tileset_spec();
+    renderer_copy_text(ctx->top_down_atlas_version, sizeof(ctx->top_down_atlas_version),
+                       RENDERER_TOPDOWN_ATLAS_VERSION);
     /* DENZI first-person wall textures are documented in ASSETS.md. */
     ctx->textures_approved = TRUE;
     ctx->textures_loaded = FALSE;
@@ -1385,12 +1391,19 @@ RendererTileViewport renderer_tile_viewport(const RendererContext* ctx, int tile
     if (!ctx || ctx->width <= 0 || ctx->height <= 0) return view;
 
     if (tile_size <= 0) {
-        int by_width = ctx->width / 41;
-        int by_height = (ctx->height - 48) / 25;
-        tile_size = (by_width < by_height) ? by_width : by_height;
+        if (ctx->top_down_tileset.tile_width == 16) {
+            tile_size = (ctx->width >= 960) ? 32 : 16;
+        } else {
+            int by_width = ctx->width / 41;
+            int by_height = (ctx->height - 48) / 25;
+            tile_size = (by_width < by_height) ? by_width : by_height;
+        }
     }
     if (tile_size < 8) tile_size = 8;
     if (tile_size > 32) tile_size = 32;
+    if (ctx->top_down_tileset.tile_width == 16 && (tile_size % 16) != 0) {
+        tile_size = (tile_size >= 24) ? 32 : 16;
+    }
 
     view.tile_size = tile_size;
     view.cols = ctx->width / tile_size;
@@ -1534,6 +1547,42 @@ RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void) {
     return spec;
 }
 
+RendererTopDownTilesetSpec renderer_c64_ultima_topdown_tileset_spec(void) {
+    RendererTopDownTilesetSpec spec;
+    int i;
+
+    memset(&spec, 0, sizeof(spec));
+    spec.tile_width = 16;
+    spec.tile_height = 16;
+    spec.columns = 9;
+    spec.rows = 4;
+    for (i = 0; i < RENDERER_TILE_CATEGORY_COUNT; i++) {
+        spec.category_to_tile[i] = i;
+    }
+    return spec;
+}
+
+bool renderer_top_down_spec_for_dimensions(int width, int height, RendererTopDownTilesetSpec* out_spec) {
+    RendererTopDownTilesetSpec c64_spec;
+    RendererTopDownTilesetSpec v1_spec;
+
+    if (!out_spec || width <= 0 || height <= 0) return FALSE;
+
+    c64_spec = renderer_c64_ultima_topdown_tileset_spec();
+    if (renderer_top_down_dimensions_valid(&c64_spec, width, height)) {
+        *out_spec = c64_spec;
+        return TRUE;
+    }
+
+    v1_spec = renderer_default_top_down_tileset_spec();
+    if (renderer_top_down_dimensions_valid(&v1_spec, width, height)) {
+        *out_spec = v1_spec;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 int renderer_top_down_expected_width(const RendererTopDownTilesetSpec* spec) {
     if (!spec || spec->tile_width <= 0 || spec->columns <= 0) return 0;
     return spec->tile_width * spec->columns;
@@ -1611,14 +1660,20 @@ bool renderer_load_top_down_tilesheet(RendererContext* ctx) {
         return FALSE;
     }
 
-    if (!renderer_top_down_dimensions_valid(&ctx->top_down_tileset, surface->w, surface->h)) {
-        LOG_W("SDL2 top-down tilesheet has invalid dimensions %dx%d; expected %dx%d. Using procedural fallback.",
-              surface->w, surface->h,
-              renderer_top_down_expected_width(&ctx->top_down_tileset),
-              renderer_top_down_expected_height(&ctx->top_down_tileset));
+    if (!renderer_top_down_spec_for_dimensions(surface->w, surface->h, &ctx->top_down_tileset)) {
+        LOG_W("SDL2 top-down tilesheet has invalid dimensions %dx%d; expected 144x64 or 216x96. Using procedural fallback.",
+              surface->w, surface->h);
         SDL_FreeSurface(surface);
         ctx->top_down_tiles_loaded = FALSE;
         return FALSE;
+    }
+
+    if (ctx->top_down_tileset.tile_width == 16) {
+        renderer_copy_text(ctx->top_down_atlas_version, sizeof(ctx->top_down_atlas_version),
+                           RENDERER_TOPDOWN_ATLAS_VERSION_C64);
+    } else {
+        renderer_copy_text(ctx->top_down_atlas_version, sizeof(ctx->top_down_atlas_version),
+                           RENDERER_TOPDOWN_ATLAS_VERSION);
     }
 
     SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255));
@@ -1634,7 +1689,7 @@ bool renderer_load_top_down_tilesheet(RendererContext* ctx) {
     SDL_SetTextureBlendMode(ctx->top_down_tilesheet, SDL_BLENDMODE_BLEND);
     ctx->top_down_tiles_loaded = TRUE;
     LOG_I("SDL2 top-down atlas ready: %s, %dx%d pixels, %dx%d tiles, %d categories.",
-          RENDERER_TOPDOWN_ATLAS_VERSION,
+          ctx->top_down_atlas_version,
           renderer_top_down_expected_width(&ctx->top_down_tileset),
           renderer_top_down_expected_height(&ctx->top_down_tileset),
           ctx->top_down_tileset.columns,

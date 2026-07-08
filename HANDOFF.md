@@ -1,7 +1,7 @@
 # SteambandRedux Handoff
 
-Last updated: 2026-06-23
-Branch: `cursor/denzi-oblique-tileset-7ff6`
+Last updated: 2026-07-08
+Branch: `cursor/c64-ultima-tileset-7ff6`
 Remote status at update: branch is ahead of `origin/steambranch`; only local runtime score data may be dirty.
 
 ## Current Mission
@@ -88,8 +88,8 @@ Do not trust older docs or prior agent claims unless backed by source or command
   - The SDL top-down title includes HP/SP/depth/status plus recent legacy/command feedback, so tile-first play has readable state text even without font assets.
   - The player tile now gets a bright focus/crosshair overlay in top-down mode so the current position is easier to spot at handheld scale.
   - If the SDL top-down window loses keyboard focus, a centered warning panel is drawn so input loss reads as a focus problem, not a game bug.
-  - It does not load external art by default beyond the integrated DENZI atlas; Ultima V and Balor of the Evil Eye remain documented as style references only, not proprietary asset sources.
-  - Integrated DENZI Ultima-style oblique atlas at `lib/xtra/graf/topdown_denzi.bmp` maps all 36 `topdown-v1` categories from DENZI's CC-BY-SA 3.0 OpenGameArt pack. Auto-loaded after user override and before the procedural placeholder. Launch with `tools\launch_denzi_tiles.cmd` or `tools/launch_denzi_tiles.sh`.
+  - Default top-down atlas is now **C64/EGA orthogonal** at `lib/xtra/graf/topdown_c64_ultima.bmp` (`c64-ultima-v1`: native 16×16, 144×64 BMP, nearest-neighbor, integer 16/32px display). Generate with `python tools/generate_c64_ultima_tilesheet.py`; launch with `tools/launch_c64_ultima_tiles.cmd`.
+  - Optional DENZI Ultima VI oblique atlas at `lib/xtra/graf/topdown_denzi.bmp` maps all 36 `topdown-v1` categories (24×24 upscaled). Launch with `tools\launch_denzi_tiles.cmd` for VI oblique mode.
   - Mapping spec: `tools/mappings/topdown-v1-denzi-cc-by-sa.json`; build with `python tools/build_denzi_topdown.py`; validate with `python tools/test_denzi_topdown_integration.py`.
   - Source art is vendored under `third_party/assets/denzi/` with `LICENSE.TXT` and `CREDIT.TXT`.
   - A legal proof-of-concept external atlas exists at `lib/xtra/graf/topdown_poc_puny_world.bmp`, generated from Shade's CC0 Puny World tileset and launched with `tools\launch_puny_world_tiles.cmd`.

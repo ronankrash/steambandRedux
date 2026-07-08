@@ -4,7 +4,9 @@ Last updated: 2026-04-26
 
 ## Presentation Target
 
-Aim for a mid-to-late 90s first-person dungeon crawler read: chunky 4:3 composition, low-resolution wall texture rhythm, warm gaslight, oxidized metal, soot-dark stone, and clear UI gauges that work on a handheld screen. References such as later Wizardry-era crawlers, Lands of Lore-era readability, and Victorian/steampunk adventure art are style references only.
+Primary SDL2 top-down target: **Commodore 64 / Ultima IV–V orthogonal** readability — 16×16 tiles, 16-color EGA palette discipline, flat grass and stone, building silhouettes with roof caps and doors. Ultima VI oblique art (DENZI) remains an optional secondary mode.
+
+Secondary first-person target: mid-to-late 90s dungeon crawler read with warm gaslight and soot-dark stone. References such as later Wizardry-era crawlers are style references only.
 
 ## Current No-Asset Renderer Goals
 

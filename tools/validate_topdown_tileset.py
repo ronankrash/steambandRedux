@@ -7,9 +7,13 @@ import argparse
 import struct
 from pathlib import Path
 
-ATLAS_VERSION = "topdown-v1"
-EXPECTED_WIDTH = 216
-EXPECTED_HEIGHT = 96
+ATLAS_VERSIONS = {
+    "topdown-v1": {"width": 216, "height": 96, "tile": 24},
+    "c64-ultima-v1": {"width": 144, "height": 64, "tile": 16},
+}
+DEFAULT_VERSION = "topdown-v1"
+EXPECTED_WIDTH = ATLAS_VERSIONS[DEFAULT_VERSION]["width"]
+EXPECTED_HEIGHT = ATLAS_VERSIONS[DEFAULT_VERSION]["height"]
 EXPECTED_BPP = 24
 
 
@@ -28,17 +32,20 @@ def read_bmp_header(path: Path) -> tuple[int, int, int]:
     return width, abs(height), bpp
 
 
-def validate(path: Path) -> list[str]:
+def validate(path: Path, version: str = DEFAULT_VERSION) -> list[str]:
     errors: list[str] = []
+    spec = ATLAS_VERSIONS.get(version)
+    if not spec:
+        return [f"unknown atlas version {version!r}"]
     try:
         width, height, bpp = read_bmp_header(path)
     except Exception as exc:
         return [str(exc)]
 
-    if width != EXPECTED_WIDTH:
-        errors.append(f"width {width}, expected {EXPECTED_WIDTH}")
-    if height != EXPECTED_HEIGHT:
-        errors.append(f"height {height}, expected {EXPECTED_HEIGHT}")
+    if width != spec["width"]:
+        errors.append(f"width {width}, expected {spec['width']}")
+    if height != spec["height"]:
+        errors.append(f"height {height}, expected {spec['height']}")
     if bpp != EXPECTED_BPP:
         errors.append(f"bits-per-pixel {bpp}, expected {EXPECTED_BPP}")
     return errors
@@ -46,7 +53,13 @@ def validate(path: Path) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("path", help="Path to a candidate topdown-v1 BMP atlas.")
+    parser.add_argument("path", help="Path to a candidate topdown BMP atlas.")
+    parser.add_argument(
+        "--version",
+        default=DEFAULT_VERSION,
+        choices=sorted(ATLAS_VERSIONS),
+        help="Atlas contract version to validate against.",
+    )
     args = parser.parse_args()
 
     path = Path(args.path)
@@ -54,14 +67,18 @@ def main() -> int:
         print(f"FAIL: missing file: {path}")
         return 1
 
-    errors = validate(path)
+    errors = validate(path, args.version)
     if errors:
-        print(f"FAIL: {path} is not compatible with {ATLAS_VERSION}")
+        print(f"FAIL: {path} is not compatible with {args.version}")
         for error in errors:
             print(f"  - {error}")
         return 1
 
-    print(f"PASS: {path} is compatible with {ATLAS_VERSION} ({EXPECTED_WIDTH}x{EXPECTED_HEIGHT}, {EXPECTED_BPP} bpp)")
+    spec = ATLAS_VERSIONS[args.version]
+    print(
+        f"PASS: {path} is compatible with {args.version} "
+        f"({spec['width']}x{spec['height']}, {EXPECTED_BPP} bpp)"
+    )
     return 0
 
 

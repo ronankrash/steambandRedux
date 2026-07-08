@@ -24,6 +24,7 @@
 #define RENDERER_WALL_TEXTURE_COUNT 8
 
 #define RENDERER_TOPDOWN_ATLAS_VERSION "topdown-v1"
+#define RENDERER_TOPDOWN_ATLAS_VERSION_C64 "c64-ultima-v1"
 
 #define RENDERER_MOVE_FORWARD  1
 #define RENDERER_MOVE_BACKWARD 2
@@ -187,6 +188,7 @@ typedef struct {
     bool textures_approved;
     bool textures_loaded;
     bool top_down_tiles_loaded;
+    char top_down_atlas_version[24];
 } RendererContext;
 
 /* Public API */
@@ -237,6 +239,8 @@ SDL_Rect renderer_top_down_cell_rect(const RendererTileViewport* view,
                                      int col, int row);
 RendererColor renderer_tile_color(int category);
 RendererTopDownTilesetSpec renderer_default_top_down_tileset_spec(void);
+RendererTopDownTilesetSpec renderer_c64_ultima_topdown_tileset_spec(void);
+bool renderer_top_down_spec_for_dimensions(int width, int height, RendererTopDownTilesetSpec* out_spec);
 int renderer_top_down_expected_width(const RendererTopDownTilesetSpec* spec);
 int renderer_top_down_expected_height(const RendererTopDownTilesetSpec* spec);
 bool renderer_top_down_dimensions_valid(const RendererTopDownTilesetSpec* spec, int width, int height);
