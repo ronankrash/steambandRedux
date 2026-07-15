@@ -1,0 +1,59 @@
+---
+description: Core standards for SteambandRedux: TDD, security for legacy C, open source licensing, git workflow, production readiness for Steam
+alwaysApply: true
+---
+
+# SteambandRedux Core Standards
+
+This project is a fork intended to become a Steam-ready first-person steampunk dungeon crawler. The rescue baseline is process-first: preserve original gameplay while making build, tests, licensing, and handoff truthful.
+
+## 0. Test-Driven Development (TDD) - Mandatory
+- **All functionality** must have best-practice tests before or alongside implementation.
+- Use Unity framework (existing in src/tests/) for C code.
+- Tests must cover usability, functionality, edge cases, regression prevention.
+- Run full test suite (`ctest` or UnityTestRunner.exe) after changes.
+- Add/update tests that materially reduce regression risk. Prioritize comprehensive coverage over "minimal tests". See src/tests/ for examples (Unity framework).
+- Verify changes with narrowest meaningful checks first.
+
+## 1. Security & Compliance for Legacy Codebase
+- **Always analyze for security or compliance errors** on every change (buffer overflows, unsafe strcpy, null derefs, race conditions in legacy C).
+- Fix vulnerabilities immediately (prefer small focused edits).
+- Pay special attention to z-virt.c, files.c, util.c, main-win.c, controller*.c.
+- Use modern practices: bounds checking, secure string functions where possible, proper error handling.
+- For production Steam release: no secrets in repo, proper Steamworks integration, secure save handling.
+
+## 2. Open Source & Licensing
+- **Everything must be open source compliant**.
+- Only use assets with permissive licenses (CC0, MIT, Public Domain). Prefer OpenGameArt.org, itch.io CC0 steampunk/Victorian pixel art tilesets/sprites.
+- Document all asset sources and licenses in a LICENSES.md or ASSETS.md.
+- Maintain original Angband/Steamband license compatibility (see readme.txt and source headers). The legacy not-for-profit language is an unresolved release risk; do not claim paid/Steam release clearance until documented.
+- Do not commit into original repo - keep all work in this fork.
+- Steam integration must respect Steamworks SDK license.
+
+## 3. Git Workflow
+- **Frequent sequential commits**: Small, focused, reversible edits. One logical change per commit.
+- Use conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`.
+- **Semver tagging and releases**: Tags are only for verified working versions. Do not cite tags that are not present in `git tag`.
+- Work only in feature branches in this fork. Never push to original repo.
+- Update [HANDOFF.md](HANDOFF.md) on significant changes.
+- See git rule for details.
+
+## 4. Controller-First Development
+- Fully playable via keyboard **and** controller.
+- Default mappings optimized for **Asus ROG Ally**.
+- One dedicated playtester agent focuses on mobile PC gameplay, controller UX, intuitive menus.
+- Leverage and extend existing controller_menu.c, controller_config_menu.c, controller.c.
+
+## 5. Architecture & Extensibility
+- Preserve core roguelike logic (cave generation, combat, items like ray guns).
+- Transition to SDL2 for rendering, input, better controller/Steam support (as per plan).
+- Design for moddability: JSON configs for content, easy extension for NPCs with AI/memory systems (future memorypalace).
+- End goal: polished, controller-optimized, intuitive menus, easily extendible game.
+
+## 6. Agent Team & Handoff
+- Follow specialized skills for roles (playtester, licensing, security, modding, graphics).
+- Update HANDOFF.md after every significant update with current state, completed work, risks, next steps.
+- Agents must not overstate work. Mark features as implemented only when code is integrated, verified, and documented.
+- Historical `agent-os/` content is reference only unless explicitly migrated.
+
+**Always cite specific files, use small reversible edits, verify changes, prioritize production readiness for Steam.**
