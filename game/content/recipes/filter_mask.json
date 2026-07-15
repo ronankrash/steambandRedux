@@ -1,0 +1,1 @@
+{"id":"recipe_filter_mask","name":"Assemble Filter Mask","engineering_required":1,"ingredients":[{"item_id":"item_scrap","count":2},{"item_id":"item_machine_oil","count":1}],"result_id":"item_filter_mask"}

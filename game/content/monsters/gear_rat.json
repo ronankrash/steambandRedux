@@ -1,0 +1,1 @@
+{"id":"mon_gear_rat","name":"Gear Rat","hp":8,"melee_accuracy":45,"melee_damage":2,"ranged_accuracy":0,"ranged_damage":0,"defense":0,"behavior":"melee_pursuer","vision":6,"abilities":["melee"],"drop_item_id":"item_scrap"}

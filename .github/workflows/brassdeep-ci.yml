@@ -1,0 +1,63 @@
+name: Brassdeep CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate content
+        run: python tools/validate_content.py
+
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools/bin
+            ~/.local/share/godot/export_templates
+          key: godot-4.7.1-stable-linux-templates
+
+      - name: Install Godot 4.7.1
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p tools/bin
+          curl -fsSL -o /tmp/godot.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          unzip -o /tmp/godot.zip -d /tmp
+          mv /tmp/Godot_v4.7.1-stable_linux.x86_64 tools/bin/godot
+          chmod +x tools/bin/godot
+          curl -fsSL -o /tmp/templates.tpz \
+            https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_export_templates.tpz
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.7.1.stable"
+          unzip -o /tmp/templates.tpz -d /tmp/templates
+          cp -a /tmp/templates/templates/* "$HOME/.local/share/godot/export_templates/4.7.1.stable/"
+
+      - name: Import project
+        run: |
+          tools/bin/godot --headless --path game --import || true
+          tools/bin/godot --headless --path game --quit-after 1
+
+      - name: Run headless tests
+        run: tools/bin/godot --headless --path game --script res://tests/run_headless_tests.gd
+
+      - name: Export Windows build
+        run: |
+          mkdir -p build
+          tools/bin/godot --headless --path game --export-release "Windows Desktop" build/Brassdeep.exe
+          cd build && zip -r Brassdeep-windows.zip Brassdeep.exe Brassdeep.pck 2>/dev/null || zip -r Brassdeep-windows.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Brassdeep-windows
+          path: build/Brassdeep-windows.zip

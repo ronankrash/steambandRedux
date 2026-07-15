@@ -1,0 +1,1 @@
+{"id":"item_ball_ammo","name":"Lead Balls","description":"Ammunition for pepperbox pistols.","equip_slot":"none","is_ammo":true,"ammo_for":"item_pepperbox","max_stack":30,"damage":0,"accuracy":0,"defense":0,"range_tiles":0,"allowed_affixes":[]}

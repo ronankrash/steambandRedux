@@ -1,0 +1,1 @@
+{"id":"recipe_calibrated_pepperbox","name":"Calibrate Pepperbox","engineering_required":3,"ingredients":[{"item_id":"item_pepperbox","count":1},{"item_id":"item_scrap","count":1},{"item_id":"item_machine_oil","count":1}],"result_id":"item_calibrated_pepperbox"}
