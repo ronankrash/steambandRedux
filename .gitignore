@@ -1,40 +1,28 @@
-# Build outputs
+# Generated builds
 build/
-build-*/
-out/
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-CTestTestfile.cmake
-Testing/
-*.vcxproj
-*.vcxproj.filters
-*.sln
-*.obj
-*.pdb
-*.ilk
+*.zip
 *.exe
+!game/export_presets.cfg
 
-# Runtime output
-lib/logs/
+# Godot
+game/.godot/
+*.translation
+
+# Local/runtime
 *.log
-window_debug.log
-
-# Local/player data
-lib/save/
-*.sav
-
-# Local-only proprietary asset experiments (do not commit)
-local_assets/
-lib/user/topdown_tileset.bmp
-
-# Local dependency/cache artifacts
+.cache/
 .vs/
 .vscode/
-.cache/
 
-# OS/editor noise
+# Python
+**/__pycache__/
+*.pyc
+
+# OS
 Thumbs.db
 Desktop.ini
 *.tmp
 *.bak
+
+# Godot binary (install locally / CI)
+tools/bin/

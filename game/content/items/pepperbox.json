@@ -1,0 +1,1 @@
+{"id":"item_pepperbox","name":"Pepperbox Pistol","description":"Multi-barrel black-powder sidearm.","equip_slot":"weapon","damage":3,"accuracy":1,"defense":0,"range_tiles":5,"max_stack":1,"allowed_affixes":["affix_accurate"]}
