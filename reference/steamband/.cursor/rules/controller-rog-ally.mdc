@@ -1,0 +1,28 @@
+---
+description: Controller testing and ROG Ally optimization standards for SteambandRedux
+globs: **/controller*.{c,h,mdc}
+alwaysApply: false
+---
+
+# Controller & ROG Ally Standards
+
+## Playtester Focus
+- Dedicated agent role for mobile PC gameplay testing.
+- Ensure full playability with keyboard + controller (default for Asus ROG Ally).
+- Test all menus, movement (8-way thumbstick), command grid (BACK button), remapping.
+- Validate intuitive UX for couch/controller-first experience.
+- Test with physical ROG Ally or equivalent (Xbox-like layout, shoulder buttons, thumbsticks).
+
+## Input Mapping
+- Extend existing controller.c, controller_menu.c, controller_config_menu.c.
+- Default mappings optimized for ROG Ally (A/B/X/Y, D-Pad, LB/RB, Start/Back).
+- Support key repeat, diagonal movement, simultaneous keyboard fallback.
+- Persistent configs in lib/user/controller.prf.
+- Comprehensive unit tests in src/tests/test_controller.c.
+
+## Verification
+- Run playtesting after every input/UI change.
+- Verify Steam overlay compatibility if applicable.
+- Document any ROG Ally specific quirks or optimizations.
+
+Use alongside steamband-core.mdc.

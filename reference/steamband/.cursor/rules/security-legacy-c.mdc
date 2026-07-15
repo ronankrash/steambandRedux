@@ -1,0 +1,34 @@
+---
+description: Security auditing and fixes for legacy C codebase in SteambandRedux
+globs: **/*.{c,h}
+alwaysApply: false
+---
+
+# Legacy C Security Standards
+
+## Mandatory Analysis on Every Change
+- **Analyze for security/compliance errors** in all modifications to old codebase.
+- Common issues in Angband-derived code: buffer overflows (strcpy, sprintf), integer overflows, null pointer derefs, uninitialized memory, race conditions, insecure file I/O.
+- Pay special attention to:
+  - src/z-virt.c (virtual memory/string funcs)
+  - src/files.c, src/save.c, src/load2.c (file/save handling)
+  - src/main-win.c (Windows entry, input)
+  - src/util.c, src/z-util.c
+  - controller*.c (input mapping)
+
+## Best Practices & Fixes
+- Use bounded functions (strncpy, snprintf) or safer alternatives.
+- Add bounds checks, validate all inputs/indices.
+- Proper error handling, logging (use existing logging.c).
+- Thread safety where applicable (existing mutex in logging).
+- For Steam production: secure cloud saves, no hardcoded secrets, validate all data.
+- Update tests to cover security paths.
+
+## Process
+1. Read relevant files before editing.
+2. Identify root causes, not just symptoms.
+3. Make small, focused, reversible fixes.
+4. Add tests for fixed issues.
+5. Verify with full build, tests, static analysis if available.
+
+Cross-reference steamband-core.mdc. Fix critical issues immediately. Document in HANDOFF.md.
