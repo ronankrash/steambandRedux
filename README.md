@@ -12,7 +12,6 @@ Steamband historical sources live under [`reference/steamband/`](reference/steam
 ## Bootstrap
 
 ```bash
-# Validate content + run headless simulation tests
 chmod +x tools/run_ci_local.sh
 ./tools/run_ci_local.sh
 
@@ -23,7 +22,13 @@ BRASSDEEP_EXPORT=1 ./tools/run_ci_local.sh
 ./tools/bin/godot --path game
 ```
 
-CI installs Godot 4.7.1 and export templates, validates content, runs tests, and uploads `Brassdeep-windows.zip`.
+## Phase 2 playable loop
+
+1. Create one of **36** race/class combinations (compare bonuses on pad).
+2. Prepare in **Brassharbor** (merchants, healer, workbench/forge/alchemy, storage).
+3. Descend a **5-level** expedition (foundry/mine themes, hazards, boss on depth 5).
+4. Fight, loot, craft, spend skill points; extract back to town or die.
+5. Save/load schema **v2** (v1 migrates when possible).
 
 ## Repository layout
 
@@ -34,23 +39,11 @@ CI installs Godot 4.7.1 and export templates, validates content, runs tests, and
 | `game/presentation/` | Scenes, UI, isometric view, input |
 | `game/content/` | Data-driven definitions |
 | `game/assets/` | Original placeholders |
-| `tests/` | Extra test notes / mirrors |
+| `tests/` | Test notes |
 | `tools/` | Validation and CI helpers |
 | `docs/` | Design and architecture |
 | `reference/` | External historical references |
 | `build/` | Ignored export output |
-
-## Vertical slice (implemented)
-
-- Character creation: Human / Automaton × Adventurer / Engineer
-- Procedural industrial-ruin dungeon
-- Turn scheduler with enemy acts after player
-- Bump melee, pepperbox firearm + ammo, LOS, poison status, combat log
-- Three enemy behaviors: pursuer, ranged sentry, poison spitter
-- Inventory, equipment, stacking ammo, one affix system hook
-- Workbench crafting with three recipes
-- Doors, containers, lever, destructible boiler, fog-of-war
-- Save/load schema v1, death summary, restart
 
 ## Documentation
 
@@ -60,4 +53,5 @@ CI installs Godot 4.7.1 and export templates, validates content, runs tests, and
 - `docs/INPUT_AND_HANDHELD_UI.md`
 - `docs/DECISIONS.md`
 - `NEXT_TASKS.md`
+- `HANDOFF.md`
 - `AGENTS.md`
