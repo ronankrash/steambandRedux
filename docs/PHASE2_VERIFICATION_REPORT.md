@@ -10,7 +10,7 @@
 | Ref | SHA | Notes |
 |-----|-----|-------|
 | Dirty PR #15 head (`cursor/brassdeep-phase2-7ff6`) | `0fc8320e302236298425bb24164da127f1ef4cc1` | Contained unrelated C64/DENZI/SDL2 history |
-| Clean verify tip (`cursor/brassdeep-phase2-verify-7ff6`) | `fe8e7000a16fc3b0fc45876562c7a579c4663434` | Brassdeep-only commits rebased onto `steambranch` |
+| Clean verify tip (`cursor/brassdeep-phase2-verify-7ff6`) | `5790691` (docs) / `fe8e700` (verification) | Brassdeep-only commits rebased onto `steambranch` |
 | Base | `origin/steambranch` | Preferred merge base |
 
 Clean commit series (onto relocate + Brassdeep):
