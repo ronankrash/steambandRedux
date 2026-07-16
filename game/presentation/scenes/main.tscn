@@ -37,6 +37,18 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Brassdeep"
 
+[node name="HudBar" type="PanelContainer" parent="UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 36.0
+offset_bottom = 68.0
+grow_horizontal = 2
+
+[node name="Hud" type="Label" parent="UI/HudBar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Equipment HUD"
+
 [node name="PromptBar" type="PanelContainer" parent="UI"]
 anchors_preset = 12
 anchor_top = 1.0
@@ -56,12 +68,12 @@ anchors_preset = 3
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -360.0
-offset_top = 48.0
-offset_bottom = 280.0
+offset_top = 76.0
+offset_bottom = 300.0
 grow_horizontal = 0
 
 [node name="Log" type="RichTextLabel" parent="UI/LogPanel"]
-custom_minimum_size = Vector2(340, 220)
+custom_minimum_size = Vector2(340, 210)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 14
 scroll_following = true
@@ -73,10 +85,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -180.0
-offset_right = 220.0
-offset_bottom = 180.0
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -97,5 +109,5 @@ text = "Brassdeep"
 horizontal_alignment = 1
 
 [node name="MenuList" type="ItemList" parent="UI/MenuPanel/Margin/VBox"]
-custom_minimum_size = Vector2(360, 260)
+custom_minimum_size = Vector2(500, 340)
 layout_mode = 2
