@@ -22,16 +22,28 @@
 
 - **Decision:** Content JSON with string IDs; saves declare `schema_version`.
 - **Why:** Validatable data and graceful migration failures.
-- **Status:** Accepted
+- **Status:** Accepted (schema now v2)
 
-## ADR-005: Turn-based sim, animated presentation later
+## ADR-005: Turn-based sim, animated presentation
 
-- **Decision:** Game state advances on committed turns; visuals may tween afterward.
-- **Why:** Avoid real-time combat complexity in milestone 1.
+- **Decision:** Game state advances on committed turns; `AnimSequencer` visualizes afterward and locks input via `awaiting_visual`.
+- **Why:** Avoid real-time combat; presentation cannot alter combat results.
 - **Status:** Accepted
 
 ## ADR-006: Procedural geometric placeholders
 
 - **Decision:** Original drawn polygons/circles for tiles/actors; no third-party art yet.
 - **Why:** Unblock playable slice without licensing risk.
+- **Status:** Accepted
+
+## ADR-007: Progression model (Phase 2)
+
+- **Decision:** Traditional save-and-reload roguelike with a persistent hub. Character XP/skills/inventory persist across expeditions via save. Death ends the character (permadeath for that operative); no separate meta-unlock tree.
+- **Why:** Matches classic Steamband/Angband expectations while supporting town prep between runs.
+- **Status:** Accepted
+
+## ADR-008: Save schema v2
+
+- **Decision:** Increment to schema 2 for hub depth, merchants, storage, skills, settings. Migrate schema 1 when possible; reject unknown versions with a clear message.
+- **Why:** Phase 2 state does not fit schema 1 safely without explicit fields.
 - **Status:** Accepted

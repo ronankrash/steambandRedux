@@ -1,14 +1,14 @@
 # NEXT_TASKS
 
-Ordered, independently testable follow-ups toward greater Steamband-inspired depth.
+Ordered follow-ups after Phase 2 demo milestone.
 
-1. **Tween movement animations** — presentation-only tweens between grid cells; keep `awaiting_visual` while playing (timer stub exists).
-2. **Equip/ammo HUD** — show equipped weapon, ammo count, and ranged failure toasts without opening inventory.
-3. **Expand races/classes from matrix** — add 2 more original races and 2 classes with content tests (no Steamband prose copies).
-4. **Town store stub** — data-driven shop inventory and buy/sell using scrap as currency.
-5. **More monster abilities** — steam_burst AoE and fear status with LOS rules.
-6. **Export smoke under Wine** — verify CI Windows ZIP launches headless/console on Linux CI.
-7. **Content JSON Schema** — formal schema files for races/classes/items/monsters/recipes.
-8. **Dungeon biometrics** — cavern vs masonry vs machine room tags for lighting/palette.
-9. **Death replay seed** — death screen copies seed to clipboard and offers exact rerun.
-10. **Handheld layout pass** — 7" safe margins, larger menu font, prompt bar always visible.
+1. **Tween polish** — attack wind-up variants, boss telegraphs, screen shake toggle.
+2. **Controller remapping UI** — persist custom bindings in settings/save.
+3. **More races/classes** — expand toward Steamband breadth with original prose.
+4. **Town flavor** — ambient NPCs, rest cutscene, expedition briefing panel.
+5. **Vault rooms** — special locked treasure rooms with guaranteed rare affixes.
+6. **Wine/CI smoke** — launch exported Windows build under Wine in CI.
+7. **Content JSON Schema** — formal schema files for CI contracts.
+8. **Audio bed** — CC0 industrial ambience and UI ticks.
+9. **Death seed share** — copy seed + race/class for exact rerun.
+10. **Handheld layout audit** — ROG Ally 7" font/safe-area pass with screenshots.

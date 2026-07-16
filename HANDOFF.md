@@ -2,22 +2,38 @@
 
 ## Current state
 
-- Legacy Steamband tree relocated to `reference/steamband/` (reference only; licensing uncertain for reuse).
-- New Godot **4.7.1-stable** project under `game/` with simulation / presentation / content layers.
-- Vertical slice playable: create → explore → combat → loot → craft → save/load → death/restart.
-- Headless tests + `tools/validate_content.py` + GitHub Actions Windows export workflow.
+- Branch: `cursor/brassdeep-phase2-7ff6` (Phase 2 demo)
+- Engine: Godot **4.7.1-stable**, compatibility renderer
+- Legacy Steamband under `reference/steamband/` (reference only)
+- Playable loop: create operative → Brassharbor hub → buy/sell/craft/storage → 5-depth expedition → extract or die → save/load
 
-## Verified
+## Implemented (Phase 2)
 
-- Content validation passes.
-- Headless simulation tests cover RNG, turns, melee, LOS, stacking, equipment, affixes, crafting, skill points, save schema.
+- Event-driven `AnimSequencer` (move/attack/death FX, normal/fast)
+- 6 races × 6 classes, skill system (8 families, 14 abilities)
+- 9 equipment slots, encumbrance, inventory ops, HUD
+- 3 crafting stations, 20+ recipes, 3 merchants + healer + storage
+- Multi-level expeditions (foundry/mine), 13 monsters incl. boss
+- XP/level + skill points; progression model ADR-007
+- Save schema **v2** with v1 migration
 
-## Risks
+## Verification
 
-- Steamband reference materials are **not** cleared for commercial reuse; Brassdeep content is original.
-- Presentation art is geometric placeholders (readable, not polished).
-- Visual animation lock is a short timer, not full tweens yet.
-- Windows export requires Godot export templates (installed in CI).
+```bash
+python3 tools/validate_content.py
+./tools/run_ci_local.sh
+BRASSDEEP_EXPORT=1 ./tools/run_ci_local.sh
+```
+
+Headless tests: **84 passed**.
+
+## Risks / limitations
+
+- Placeholder geometric art (original, not polished)
+- No quests/dialogue; town is functional hub only
+- Controller remapping not yet a full settings editor
+- Steamband parity remains partial (see feature matrix)
+- Licensing: do not reuse Steamband data/prose in production content
 
 ## Next
 
