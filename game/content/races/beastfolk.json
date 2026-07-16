@@ -1,0 +1,37 @@
+{
+  "id": "race_beastfolk",
+  "name": "Beastfolk",
+  "description": "Feral tunnel hunters with natural melee prowess and pack instincts.",
+  "base_hp": 21,
+  "melee_accuracy": 54,
+  "melee_damage": 3,
+  "ranged_accuracy": 38,
+  "ranged_damage": 1,
+  "defense": 1,
+  "engineering": -1,
+  "marksmanship": 0,
+  "smithing": 0,
+  "medicine": 0,
+  "stealth": 2,
+  "occult": 0,
+  "resistances": {
+    "poison": 15,
+    "fear": -10,
+    "steam": 0
+  },
+  "skill_affinities": {
+    "skill_melee": 0.8,
+    "skill_stealth": 0.85,
+    "skill_engineering": 1.4
+  },
+  "starting_items": [
+    {
+      "item_id": "item_bayonet",
+      "count": 1
+    }
+  ],
+  "forbidden_slots": [],
+  "passives": [
+    "passive_pack_hunter"
+  ]
+}

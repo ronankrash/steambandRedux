@@ -1,0 +1,18 @@
+{
+  "id": "item_filter_mask",
+  "name": "Filter Mask",
+  "description": "Crafted respirator against steam toxins.",
+  "equip_slot": "head",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 1,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 1,
+  "value": 12,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_insulated"
+  ],
+  "is_ammo": false
+}

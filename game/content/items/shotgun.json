@@ -1,0 +1,20 @@
+{
+  "id": "item_shotgun",
+  "name": "Coach Shotgun",
+  "description": "Short scattergun devastating at close range.",
+  "equip_slot": "ranged",
+  "damage": 5,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 4,
+  "max_stack": 1,
+  "weight": 4,
+  "value": 30,
+  "category": "firearm",
+  "ammo_type": "shell",
+  "allowed_affixes": [
+    "affix_heavy",
+    "affix_reinforced"
+  ],
+  "is_ammo": false
+}

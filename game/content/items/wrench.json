@@ -1,0 +1,19 @@
+{
+  "id": "item_wrench",
+  "name": "Brass Wrench",
+  "description": "A heavy adjustable wrench for tight bolts and skulls.",
+  "equip_slot": "mainhand",
+  "damage": 2,
+  "accuracy": 2,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 3,
+  "value": 8,
+  "category": "weapon",
+  "allowed_affixes": [
+    "affix_balanced",
+    "affix_heavy"
+  ],
+  "is_ammo": false
+}

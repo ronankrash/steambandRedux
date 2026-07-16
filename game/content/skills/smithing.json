@@ -1,0 +1,21 @@
+{
+  "id": "skill_smithing",
+  "name": "Smithing",
+  "description": "Forge weapons and armor with higher quality.",
+  "family": "craft",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "craft_quality",
+      "name": "Craft Quality",
+      "description": "Crafted gear gains bonus stats.",
+      "rank_required": 2,
+      "effects": {
+        "craft_bonus_damage": 1,
+        "craft_bonus_defense": 1
+      }
+    }
+  ]
+}

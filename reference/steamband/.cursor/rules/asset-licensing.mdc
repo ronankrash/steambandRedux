@@ -1,0 +1,28 @@
+---
+description: Standards for sourcing and documenting open-source steampunk/Victorian pixel art assets
+globs: **/*.{c,h,md,mdc,json}**/*.png
+alwaysApply: false
+---
+
+# Steampunk Asset Licensing Standards
+
+## Permissive Licenses Only
+- **Only use CC0, MIT, Public Domain, or equivalent commercial-friendly licenses**.
+- Preferred sources: OpenGameArt.org (CC0 tilesets), itch.io free steampunk/Victorian pixel art (verify license per pack).
+- Target early 90s pixel art style (Celtic Tales, Eye of the Beholder influence) with Victorian steampunk aesthetic (brass gears, pipes, leather, wood textures, gas lamps).
+- For first-person dungeon crawler: wall/floor textures, sprites for monsters/NPCs/items, UI elements.
+- Reference screenshots are style direction only. Do not copy, trace, extract, or recreate proprietary assets from reference games.
+
+## Documentation Requirements
+- Create/update ASSETS.md or LICENSES.md listing every asset, source URL, exact license, author, and integration notes.
+- Include license text copies in third_party/assets/licenses/ if required.
+- Never use assets with restrictive licenses (no NC, ND, or non-commercial only).
+- Do not add assets with unclear commercial rights, AI provenance problems, or "free for personal use" terms.
+- For mods/extensibility: document how to add new assets via config or data files.
+
+## Integration
+- Use SDL2 textures for first-person renderer (walls, floors, sprites).
+- Ensure assets work with raycasting or 2.5D view.
+- Optimize for performance in production Steam build.
+
+Always cross-reference with steamband-core.mdc licensing section. Verify before any asset commit.

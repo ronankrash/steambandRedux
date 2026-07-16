@@ -1,0 +1,18 @@
+{
+  "id": "recipe_smoke_bomb",
+  "name": "Pack Smoke Bomb",
+  "station": "alchemy",
+  "skill_required": "skill_engineering",
+  "skill_rank": 1,
+  "ingredients": [
+    {
+      "item_id": "item_sulfur",
+      "count": 2
+    },
+    {
+      "item_id": "item_scrap",
+      "count": 1
+    }
+  ],
+  "result_id": "item_smoke_bomb"
+}

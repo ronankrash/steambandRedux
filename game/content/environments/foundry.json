@@ -1,0 +1,18 @@
+{
+  "id": "env_foundry",
+  "name": "Foundry Depths",
+  "description": "Roaring furnaces, steam vents, and molten runoff.",
+  "palette": {
+    "floor": "#3a2a22",
+    "wall": "#5c4030",
+    "accent": "#c45a1a",
+    "fog": "#2a1a12"
+  },
+  "hazard_chance": 0.18,
+  "monster_tags": [
+    "foundry",
+    "machine",
+    "occult"
+  ],
+  "ambient": "steam_hiss"
+}

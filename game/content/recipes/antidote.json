@@ -1,0 +1,18 @@
+{
+  "id": "recipe_antidote",
+  "name": "Distill Antidote",
+  "station": "alchemy",
+  "skill_required": "skill_medicine",
+  "skill_rank": 2,
+  "ingredients": [
+    {
+      "item_id": "item_herbs",
+      "count": 3
+    },
+    {
+      "item_id": "item_sulfur",
+      "count": 1
+    }
+  ],
+  "result_id": "item_antidote_vial"
+}

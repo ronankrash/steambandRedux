@@ -1,0 +1,19 @@
+{
+  "id": "item_bayonet",
+  "name": "Socket Bayonet",
+  "description": "Knife bayonet for close quarters when powder runs dry.",
+  "equip_slot": "mainhand",
+  "damage": 2,
+  "accuracy": 4,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 1,
+  "value": 10,
+  "category": "weapon",
+  "allowed_affixes": [
+    "affix_sharp",
+    "affix_poisoned"
+  ],
+  "is_ammo": false
+}

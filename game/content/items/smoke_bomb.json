@@ -1,0 +1,17 @@
+{
+  "id": "item_smoke_bomb",
+  "name": "Smoke Bomb",
+  "description": "Sulfur charge that blankets an area in choking smoke.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 5,
+  "weight": 0,
+  "value": 10,
+  "category": "consumable",
+  "use_effect": "smoke_cloud",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

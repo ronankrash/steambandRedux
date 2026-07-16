@@ -1,0 +1,21 @@
+{
+  "id": "skill_medicine",
+  "name": "Medicine",
+  "description": "Healing, antidotes, and field triage.",
+  "family": "support",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "medical_treatment",
+      "name": "Medical Treatment",
+      "description": "Consumable heals restore extra HP.",
+      "rank_required": 2,
+      "effects": {
+        "heal_bonus": 4,
+        "medicine": 1
+      }
+    }
+  ]
+}

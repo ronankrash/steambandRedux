@@ -1,0 +1,25 @@
+{
+  "id": "mon_repair_drone",
+  "name": "Repair Drone",
+  "description": "Maintenance bot that patches nearby constructs mid-fight.",
+  "hp": 10,
+  "melee_accuracy": 32,
+  "melee_damage": 1,
+  "ranged_accuracy": 0,
+  "ranged_damage": 0,
+  "defense": 1,
+  "behavior": "repairer",
+  "vision": 6,
+  "hear_radius": 5,
+  "abilities": [
+    "melee"
+  ],
+  "drop_item_id": "item_gears",
+  "xp": 16,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry",
+    "machine"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mon_clockwork_sentry",
+  "name": "Clockwork Sentry",
+  "description": "Tripod-mounted automaton guarding forge corridors.",
+  "hp": 12,
+  "melee_accuracy": 35,
+  "melee_damage": 2,
+  "ranged_accuracy": 50,
+  "ranged_damage": 3,
+  "defense": 1,
+  "behavior": "ranged_sentry",
+  "vision": 7,
+  "hear_radius": 5,
+  "abilities": [
+    "ranged"
+  ],
+  "drop_item_id": "item_ball_ammo",
+  "xp": 20,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry",
+    "machine"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mon_gear_rat",
+  "name": "Gear Rat",
+  "description": "Scrabbling rodent with cog-teeth that chews through cable.",
+  "hp": 8,
+  "melee_accuracy": 45,
+  "melee_damage": 2,
+  "ranged_accuracy": 0,
+  "ranged_damage": 0,
+  "defense": 0,
+  "behavior": "melee_pursuer",
+  "vision": 6,
+  "hear_radius": 4,
+  "abilities": [
+    "melee"
+  ],
+  "drop_item_id": "item_scrap",
+  "xp": 12,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "mine",
+    "machine"
+  ]
+}

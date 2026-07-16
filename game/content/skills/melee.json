@@ -1,0 +1,31 @@
+{
+  "id": "skill_melee",
+  "name": "Melee",
+  "description": "Close combat accuracy, damage, and finishing techniques.",
+  "family": "combat",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "power_strike",
+      "name": "Power Strike",
+      "description": "Heavy blow that adds burst melee damage.",
+      "rank_required": 2,
+      "effects": {
+        "melee_damage": 2,
+        "crit_chance": 5
+      }
+    },
+    {
+      "id": "cleave_ready",
+      "name": "Cleave Ready",
+      "description": "Improved follow-through on adjacent foes.",
+      "rank_required": 4,
+      "effects": {
+        "melee_accuracy": 4,
+        "cleave": true
+      }
+    }
+  ]
+}

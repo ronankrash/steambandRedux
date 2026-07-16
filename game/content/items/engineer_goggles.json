@@ -1,0 +1,18 @@
+{
+  "id": "item_engineer_goggles",
+  "name": "Engineer Goggles",
+  "description": "Tinted lenses that reduce glare from forge light.",
+  "equip_slot": "head",
+  "damage": 0,
+  "accuracy": 1,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 1,
+  "value": 10,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_calibrated"
+  ],
+  "is_ammo": false
+}

@@ -1,0 +1,16 @@
+{
+  "id": "item_coal",
+  "name": "Coal",
+  "description": "Dense fuel for forges and boilers.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 20,
+  "weight": 1,
+  "value": 2,
+  "category": "material",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

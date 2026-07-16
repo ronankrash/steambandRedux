@@ -1,0 +1,46 @@
+---
+description: Git, commit, semver, and release standards for SteambandRedux fork
+alwaysApply: false
+---
+
+# Git & Release Workflow
+
+## Core Principles
+- **This is a fork** - All work stays in this repository. Do not commit to original Steamband repo.
+- Frequent **sequential small commits** after each logical task or bugfix. Prefer reversible edits.
+- Use **conventional commit messages** focusing on "why" (see examples below).
+- Start significant work from a feature/rescue branch, not directly on `main`, unless the user explicitly requests otherwise.
+- Never mix generated artifacts, local saves/logs, third-party imports, and source changes in one commit.
+
+## Commit Standards
+- Format: `type(scope): concise description`
+  - Types: feat, fix, refactor, test, docs, chore, security
+  - Example: `test(controller): add ROG Ally default mapping tests`
+  - Body: Explain purpose, reference files if relevant. No long hashes.
+- **NEVER**:
+  - Amend pushed commits
+  - Force push
+  - Skip hooks
+  - Commit secrets or large binaries without .gitattributes
+- Run `git status`, `git diff` before committing (use Shell tool).
+
+## Semver & Releases
+- Use semantic versioning only for verified working releases.
+- Do not tag or document a version until build, tests, launch smoke test, handoff, and license notes are complete.
+- After milestones (e.g. playable baseline, integrated first-person prototype), create annotated tags: `git tag -a v0.2.0 -m "First-person prototype with verified baseline"`
+- Prepare releases with changelog summarizing changes, test results, assets used.
+- Frequent tags for handoff points.
+
+## Branching
+- Feature branches: `feature/first-person-renderer`, `feature/sdl2-integration`.
+- Main branch for stable, tagged releases.
+- Update HANDOFF.md on significant changes before PRs or major commits.
+
+## Verification Before Commit
+- All tests pass.
+- Rules followed (TDD, security audit, licensing).
+- Relevant Cursor rules applied.
+- Handoff updated if significant.
+- `git status --short` reviewed and every staged path intentionally classified.
+
+This rule works with steamband-core.mdc. Use TodoWrite for complex tasks.

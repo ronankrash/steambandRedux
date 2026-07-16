@@ -1,0 +1,41 @@
+{
+  "id": "skill_marksmanship",
+  "name": "Marksmanship",
+  "description": "Firearm accuracy, reload speed, and ranged crits.",
+  "family": "combat",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "improved_reload",
+      "name": "Improved Reload",
+      "description": "Faster chamber cycles between shots.",
+      "rank_required": 1,
+      "effects": {
+        "reload_speed": 1,
+        "ranged_accuracy": 2
+      }
+    },
+    {
+      "id": "steady_aim",
+      "name": "Steady Aim",
+      "description": "Brace for a precise long-range shot.",
+      "rank_required": 3,
+      "effects": {
+        "ranged_accuracy": 6,
+        "range_bonus": 1
+      }
+    },
+    {
+      "id": "crit_chance",
+      "name": "Deadeye",
+      "description": "Critical hit chance with firearms.",
+      "rank_required": 5,
+      "effects": {
+        "crit_chance": 10,
+        "ranged_damage": 1
+      }
+    }
+  ]
+}

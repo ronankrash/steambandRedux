@@ -1,0 +1,25 @@
+{
+  "id": "mon_pressure_valve",
+  "name": "Pressure Valve",
+  "description": "Overcharged tank that bursts steam when cornered.",
+  "hp": 11,
+  "melee_accuracy": 35,
+  "melee_damage": 2,
+  "ranged_accuracy": 40,
+  "ranged_damage": 2,
+  "defense": 0,
+  "behavior": "steam_burster",
+  "vision": 5,
+  "hear_radius": 3,
+  "abilities": [
+    "steam_burst"
+  ],
+  "drop_item_id": "item_coal",
+  "xp": 20,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry",
+    "machine"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "mon_steam_wraith",
+  "name": "Steam Wraith",
+  "description": "Condensed vapor spirit that spews caustic mist.",
+  "hp": 10,
+  "melee_accuracy": 40,
+  "melee_damage": 1,
+  "ranged_accuracy": 48,
+  "ranged_damage": 2,
+  "defense": 0,
+  "behavior": "poison_spitter",
+  "vision": 6,
+  "hear_radius": 3,
+  "abilities": [
+    "poison_spit"
+  ],
+  "drop_item_id": "item_machine_oil",
+  "xp": 18,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry",
+    "occult"
+  ]
+}

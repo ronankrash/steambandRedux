@@ -1,0 +1,36 @@
+{
+  "id": "race_human",
+  "name": "Human",
+  "description": "Adaptable surface folk with balanced training and no glaring weaknesses.",
+  "base_hp": 22,
+  "melee_accuracy": 50,
+  "melee_damage": 2,
+  "ranged_accuracy": 48,
+  "ranged_damage": 2,
+  "defense": 1,
+  "engineering": 1,
+  "marksmanship": 1,
+  "smithing": 1,
+  "medicine": 1,
+  "stealth": 1,
+  "occult": 0,
+  "resistances": {
+    "poison": 0,
+    "fear": 0,
+    "steam": 0
+  },
+  "skill_affinities": {
+    "skill_medicine": 0.9,
+    "skill_defense": 0.95
+  },
+  "starting_items": [
+    {
+      "item_id": "item_field_ration",
+      "count": 2
+    }
+  ],
+  "forbidden_slots": [],
+  "passives": [
+    "passive_adaptable"
+  ]
+}

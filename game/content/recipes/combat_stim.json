@@ -1,0 +1,22 @@
+{
+  "id": "recipe_combat_stim",
+  "name": "Mix Combat Stim",
+  "station": "alchemy",
+  "skill_required": "skill_medicine",
+  "skill_rank": 2,
+  "ingredients": [
+    {
+      "item_id": "item_herbs",
+      "count": 1
+    },
+    {
+      "item_id": "item_sulfur",
+      "count": 1
+    },
+    {
+      "item_id": "item_oil_can",
+      "count": 1
+    }
+  ],
+  "result_id": "item_combat_stim"
+}

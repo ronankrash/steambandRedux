@@ -1,0 +1,8 @@
+{
+  "id": "affix_riveted",
+  "name_prefix": "Riveted",
+  "description": "Extra rivets hold plates firm.",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 3
+}

@@ -1,0 +1,17 @@
+{
+  "id": "item_rifle_ammo",
+  "name": "Rifle Cartridges",
+  "description": "Full-power cartridges for rifles and carbines.",
+  "equip_slot": "ammo",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 24,
+  "weight": 0,
+  "value": 2,
+  "category": "ammo",
+  "is_ammo": true,
+  "ammo_for": "rifle",
+  "allowed_affixes": []
+}

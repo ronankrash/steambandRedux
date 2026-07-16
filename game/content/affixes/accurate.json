@@ -1,0 +1,8 @@
+{
+  "id": "affix_accurate",
+  "name_prefix": "Accurate",
+  "description": "True aim.",
+  "damage": 0,
+  "accuracy": 3,
+  "defense": 0
+}

@@ -1,0 +1,19 @@
+{
+  "id": "item_padded_gauntlets",
+  "name": "Padded Gauntlets",
+  "description": "Quilted gauntlets that soften incoming blows.",
+  "equip_slot": "hands",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 1,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 2,
+  "value": 10,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_reinforced",
+    "affix_riveted"
+  ],
+  "is_ammo": false
+}

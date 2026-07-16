@@ -1,0 +1,173 @@
+name: Brassdeep CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Xvfb / zip tools
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            xvfb unzip curl zip
+
+      - name: Validate content
+        run: python tools/validate_content.py
+
+      - name: Content reachability
+        run: python tools/content_reachability.py
+
+      - name: Focus graph audit
+        run: python tools/focus_graph_audit.py
+
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools/bin
+            ~/.local/share/godot/export_templates
+          key: godot-4.7.1-stable-linux-templates-v3
+
+      - name: Install Godot 4.7.1
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p tools/bin
+          curl -fsSL -o /tmp/godot.zip \
+            https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          unzip -o /tmp/godot.zip -d /tmp
+          mv /tmp/Godot_v4.7.1-stable_linux.x86_64 tools/bin/godot
+          chmod +x tools/bin/godot
+          curl -fsSL -o /tmp/templates.tpz \
+            https://github.com/godotengine/godot-builds/releases/download/4.7.1-stable/Godot_v4.7.1-stable_export_templates.tpz
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.7.1.stable"
+          unzip -o /tmp/templates.tpz -d /tmp/templates
+          cp -a /tmp/templates/templates/* "$HOME/.local/share/godot/export_templates/4.7.1.stable/"
+
+      - name: Import project
+        run: |
+          mkdir -p build/reports
+          tools/bin/godot --headless --path game --import 2>&1 | tee build/reports/godot_import.log
+          tools/bin/godot --headless --path game --quit-after 1 2>&1 | tee -a build/reports/godot_import.log
+
+      - name: Simulation tests
+        run: tools/bin/godot --headless --path game --script res://tests/run_headless_tests.gd 2>&1 | tee build/reports/unit_tests.log
+
+      - name: Stability tests
+        run: tools/bin/godot --headless --path game --script res://tests/run_stability_tests.gd 2>&1 | tee build/reports/stability_tests.log
+
+      - name: Dungeon seed connectivity
+        run: tools/bin/godot --headless --path game --script res://tests/run_dungeon_seeds.gd 2>&1 | tee build/reports/dungeon_seeds.log
+
+      - name: Presentation E2E
+        run: tools/bin/godot --headless --path game --script res://tests/run_presentation_e2e.gd 2>&1 | tee build/reports/presentation_e2e.log
+
+      - name: Export Windows build
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/build" "$GITHUB_WORKSPACE/build/reports"
+          tools/bin/godot --headless --path game --export-release "Windows Desktop" \
+            "$GITHUB_WORKSPACE/build/Brassdeep.exe" 2>&1 | tee build/reports/export.log
+          test -f build/Brassdeep.exe
+          test -f build/Brassdeep.pck
+          test -f build/Brassdeep.console.exe
+          cd build && zip -r Brassdeep-windows.zip Brassdeep.exe Brassdeep.pck Brassdeep.console.exe
+
+      - name: Screenshot capture
+        run: |
+          mkdir -p build/reports/screenshots
+          xvfb-run -a -s "-screen 0 1280x720x24" \
+            env BRASSDEEP_CAPTURE=1 \
+            tools/bin/godot --path game --resolution 1280x720 --script res://tests/run_presentation_e2e.gd \
+            2>&1 | tee build/reports/screenshot_run.log
+          USER_SHOTS="$HOME/.local/share/godot/app_userdata/Brassdeep/screenshots"
+          if [ -d "$USER_SHOTS" ]; then cp -a "$USER_SHOTS/." build/reports/screenshots/; fi
+          test -n "$(ls -A build/reports/screenshots 2>/dev/null)" || {
+            echo "No screenshots captured" >&2
+            exit 1
+          }
+          ls -la build/reports/screenshots
+
+      - name: Upload Windows ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: Brassdeep-windows
+          path: build/Brassdeep-windows.zip
+
+      - name: Upload verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Brassdeep-verification-reports
+          path: |
+            build/reports/
+            build/reports/screenshots/
+
+  windows-smoke:
+    needs: test-and-export
+    runs-on: windows-latest
+    steps:
+      - name: Download Windows ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: Brassdeep-windows
+          path: smoke
+
+      - name: Launch exported Windows build (--smoke-test)
+        shell: pwsh
+        run: |
+          Expand-Archive -Force smoke/Brassdeep-windows.zip -DestinationPath smoke/out
+          $exe = Get-ChildItem -Path smoke/out -Recurse -Filter "Brassdeep.console.exe" | Select-Object -First 1
+          if (-not $exe) {
+            $exe = Get-ChildItem -Path smoke/out -Recurse -Filter "Brassdeep.exe" | Select-Object -First 1
+          }
+          $pck = Get-ChildItem -Path smoke/out -Recurse -Filter "Brassdeep.pck" | Select-Object -First 1
+          if (-not $exe -or -not $pck) { throw "Missing Brassdeep executable or PCK" }
+          Write-Host "Launching $($exe.FullName)"
+          $psi = New-Object System.Diagnostics.ProcessStartInfo
+          $psi.FileName = $exe.FullName
+          $psi.Arguments = "-- --smoke-test --instant-anims"
+          $psi.WorkingDirectory = $exe.DirectoryName
+          $psi.RedirectStandardOutput = $true
+          $psi.RedirectStandardError = $true
+          $psi.UseShellExecute = $false
+          $psi.CreateNoWindow = $true
+          $proc = New-Object System.Diagnostics.Process
+          $proc.StartInfo = $psi
+          [void]$proc.Start()
+          $stdout = $proc.StandardOutput.ReadToEnd()
+          $stderr = $proc.StandardError.ReadToEnd()
+          if (-not $proc.WaitForExit(180000)) {
+            $proc.Kill()
+            throw "Smoke test timed out after 180s"
+          }
+          $log = @($stdout, $stderr) -join "`n"
+          New-Item -ItemType Directory -Force -Path build/reports | Out-Null
+          Set-Content -Path build/reports/windows_smoke_launch.log -Value $log
+          Write-Host $log
+          if ($log -match "SCRIPT ERROR|FATAL|Failed to load|Cannot open|AUTOMATION_RESULT: FAIL") {
+            throw "Fatal patterns in smoke log"
+          }
+          if ($log -notmatch "AUTOMATION_RESULT: PASS") {
+            throw "Smoke test did not report AUTOMATION_RESULT: PASS (exit $($proc.ExitCode))"
+          }
+          if ($proc.ExitCode -ne 0) {
+            throw "Smoke test exit code $($proc.ExitCode)"
+          }
+          Write-Host "Windows smoke launch OK"
+
+      - name: Upload Windows smoke log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Brassdeep-windows-smoke-log
+          path: build/reports/windows_smoke_launch.log

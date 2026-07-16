@@ -1,0 +1,22 @@
+{
+  "id": "recipe_rifle",
+  "name": "Assemble Rifle",
+  "station": "workbench",
+  "skill_required": "skill_engineering",
+  "skill_rank": 2,
+  "ingredients": [
+    {
+      "item_id": "item_scrap",
+      "count": 2
+    },
+    {
+      "item_id": "item_wire",
+      "count": 2
+    },
+    {
+      "item_id": "item_oil_can",
+      "count": 1
+    }
+  ],
+  "result_id": "item_rifle"
+}
