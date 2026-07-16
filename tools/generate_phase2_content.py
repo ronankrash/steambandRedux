@@ -1593,7 +1593,7 @@ MONSTERS: list[dict[str, Any]] = [
         "xp": 24,
         "is_elite": False,
         "is_boss": False,
-        "theme_tags": ["occult"],
+        "theme_tags": ["foundry", "occult"],
     },
     {
         "id": "mon_repair_drone",
@@ -1613,7 +1613,7 @@ MONSTERS: list[dict[str, Any]] = [
         "xp": 16,
         "is_elite": False,
         "is_boss": False,
-        "theme_tags": ["machine"],
+        "theme_tags": ["foundry", "machine"],
     },
     {
         "id": "mon_bell_summoner",
@@ -1688,6 +1688,7 @@ MERCHANTS: list[dict[str, Any]] = [
             {"item_id": "item_coal", "count": 6, "price": 3},
             {"item_id": "item_work_gloves", "count": 1, "price": 8},
             {"item_id": "item_soft_shoes", "count": 1, "price": 10},
+            {"item_id": "item_leather", "count": 4, "price": 5},
         ],
         "buy_rate": 0.4,
         "sell_rate": 1.0,
@@ -1703,6 +1704,7 @@ MERCHANTS: list[dict[str, Any]] = [
             {"item_id": "item_rifle_ammo", "count": 12, "price": 18},
             {"item_id": "item_brass_helm", "count": 1, "price": 20},
             {"item_id": "item_iron_boots", "count": 1, "price": 18},
+            {"item_id": "item_engineer_goggles", "count": 1, "price": 16},
         ],
         "buy_rate": 0.35,
         "sell_rate": 1.15,

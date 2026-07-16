@@ -31,6 +31,11 @@
       "item_id": "item_iron_boots",
       "count": 1,
       "price": 18
+    },
+    {
+      "item_id": "item_engineer_goggles",
+      "count": 1,
+      "price": 16
     }
   ],
   "buy_rate": 0.35,
