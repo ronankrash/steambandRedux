@@ -5,11 +5,28 @@ const HIT_BASE := 50
 
 
 static func melee_hit_chance(attacker: SimActor, defender: SimActor) -> int:
-	return clampi(attacker.total_melee_accuracy() - defender.total_defense() + HIT_BASE, 5, 95)
+	var chance := attacker.total_melee_accuracy() - defender.total_defense() + HIT_BASE
+	if defender.status_effects.has("fear"):
+		chance += 10
+	if attacker.status_effects.has("stimulated"):
+		chance += 8
+	return clampi(chance, 5, 95)
 
 
 static func ranged_hit_chance(attacker: SimActor, defender: SimActor) -> int:
-	return clampi(attacker.total_ranged_accuracy() - defender.total_defense() + HIT_BASE, 5, 95)
+	var chance := attacker.total_ranged_accuracy() - defender.total_defense() + HIT_BASE
+	if attacker.has_ability("steady_aim"):
+		chance += 5
+	if defender.status_effects.has("concealed"):
+		chance -= 15
+	return clampi(chance, 5, 95)
+
+
+static func _crit_chance(attacker: SimActor) -> int:
+	var c := 5 + attacker.skill_bonus("crit_chance") + attacker.ability_bonus("crit_chance")
+	if attacker.has_ability("crit_chance"):
+		c += 5
+	return clampi(c, 0, 40)
 
 
 static func resolve_melee(rng: BrassRng, attacker: SimActor, defender: SimActor) -> Dictionary:
@@ -17,8 +34,16 @@ static func resolve_melee(rng: BrassRng, attacker: SimActor, defender: SimActor)
 	var roll := rng.randi_range(1, 100)
 	var hit := roll <= chance
 	var damage := 0
+	var critical := false
 	if hit:
 		damage = maxi(1, attacker.total_melee_damage() - int(defender.total_defense() / 2))
+		if attacker.has_ability("power_strike"):
+			damage += 2
+		if rng.randi_range(1, 100) <= _crit_chance(attacker):
+			critical = true
+			damage = int(ceil(damage * 1.5))
+		if defender.status_effects.has("slow"):
+			damage += 1
 		defender.hp -= damage
 		if defender.hp <= 0:
 			defender.hp = 0
@@ -26,6 +51,7 @@ static func resolve_melee(rng: BrassRng, attacker: SimActor, defender: SimActor)
 	return {
 		"type": "melee",
 		"hit": hit,
+		"critical": critical,
 		"roll": roll,
 		"chance": chance,
 		"damage": damage,
@@ -40,8 +66,12 @@ static func resolve_ranged(rng: BrassRng, attacker: SimActor, defender: SimActor
 	var roll := rng.randi_range(1, 100)
 	var hit := roll <= chance
 	var damage := 0
+	var critical := false
 	if hit:
 		damage = maxi(1, attacker.total_ranged_damage() - int(defender.total_defense() / 2))
+		if rng.randi_range(1, 100) <= _crit_chance(attacker):
+			critical = true
+			damage = int(ceil(damage * 1.5))
 		defender.hp -= damage
 		if defender.hp <= 0:
 			defender.hp = 0
@@ -49,6 +79,7 @@ static func resolve_ranged(rng: BrassRng, attacker: SimActor, defender: SimActor
 	return {
 		"type": "ranged",
 		"hit": hit,
+		"critical": critical,
 		"roll": roll,
 		"chance": chance,
 		"damage": damage,
@@ -59,7 +90,6 @@ static func resolve_ranged(rng: BrassRng, attacker: SimActor, defender: SimActor
 
 
 static func has_line_of_sight(world: SimWorld, from: GridPos, to: GridPos) -> bool:
-	# Bresenham through walkable/transparent tiles; destination may be occupied.
 	var x0 := from.x
 	var y0 := from.y
 	var x1 := to.x
