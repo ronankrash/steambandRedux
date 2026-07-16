@@ -1,1 +1,19 @@
-{"id":"item_brass_plate","name":"Brass Plate","description":"Oxidized breastplate.","equip_slot":"armor","damage":0,"accuracy":0,"defense":2,"range_tiles":0,"max_stack":1,"allowed_affixes":["affix_reinforced"]}
+{
+  "id": "item_brass_plate",
+  "name": "Brass Plate",
+  "description": "Oxidized breastplate over leather backing.",
+  "equip_slot": "body",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 3,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 5,
+  "value": 25,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_reinforced",
+    "affix_riveted"
+  ],
+  "is_ammo": false
+}

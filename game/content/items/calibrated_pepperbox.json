@@ -1,1 +1,17 @@
-{"id":"item_calibrated_pepperbox","name":"Calibrated Pepperbox","description":"Engineer-tuned firearm.","equip_slot":"weapon","damage":4,"accuracy":3,"defense":0,"range_tiles":6,"max_stack":1,"allowed_affixes":[]}
+{
+  "id": "item_calibrated_pepperbox",
+  "name": "Calibrated Pepperbox",
+  "description": "Engineer-tuned firearm with tighter grouping.",
+  "equip_slot": "ranged",
+  "damage": 4,
+  "accuracy": 3,
+  "defense": 0,
+  "range_tiles": 6,
+  "max_stack": 1,
+  "weight": 2,
+  "value": 35,
+  "category": "firearm",
+  "ammo_type": "ball",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

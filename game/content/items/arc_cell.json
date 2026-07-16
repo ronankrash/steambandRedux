@@ -1,0 +1,17 @@
+{
+  "id": "item_arc_cell",
+  "name": "Arc Cell",
+  "description": "Crystalline capacitor for arc pistols.",
+  "equip_slot": "ammo",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 12,
+  "weight": 0,
+  "value": 5,
+  "category": "ammo",
+  "is_ammo": true,
+  "ammo_for": "arc",
+  "allowed_affixes": []
+}

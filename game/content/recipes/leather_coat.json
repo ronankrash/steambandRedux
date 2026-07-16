@@ -1,0 +1,18 @@
+{
+  "id": "recipe_leather_coat",
+  "name": "Stitch Leather Coat",
+  "station": "workbench",
+  "skill_required": "skill_smithing",
+  "skill_rank": 1,
+  "ingredients": [
+    {
+      "item_id": "item_leather",
+      "count": 3
+    },
+    {
+      "item_id": "item_oil_can",
+      "count": 1
+    }
+  ],
+  "result_id": "item_leather_coat"
+}

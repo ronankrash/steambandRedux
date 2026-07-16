@@ -1,0 +1,17 @@
+{
+  "id": "item_antidote_vial",
+  "name": "Antidote Vial",
+  "description": "Neutralizes common tunnel venoms.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 6,
+  "weight": 0,
+  "value": 8,
+  "category": "consumable",
+  "use_effect": "cure_poison",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

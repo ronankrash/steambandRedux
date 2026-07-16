@@ -1,0 +1,24 @@
+{
+  "id": "mon_acid_sprayer",
+  "name": "Acid Sprayer",
+  "description": "Rusted boiler on legs that vents corrosive spray.",
+  "hp": 14,
+  "melee_accuracy": 30,
+  "melee_damage": 1,
+  "ranged_accuracy": 46,
+  "ranged_damage": 3,
+  "defense": 1,
+  "behavior": "poison_spitter",
+  "vision": 6,
+  "hear_radius": 4,
+  "abilities": [
+    "poison_spit"
+  ],
+  "drop_item_id": "item_sulfur",
+  "xp": 22,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry"
+  ]
+}

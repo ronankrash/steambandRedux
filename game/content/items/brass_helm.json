@@ -1,0 +1,19 @@
+{
+  "id": "item_brass_helm",
+  "name": "Brass Helm",
+  "description": "Riveted helmet with narrow visor slit.",
+  "equip_slot": "head",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 2,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 3,
+  "value": 15,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_reinforced",
+    "affix_riveted"
+  ],
+  "is_ammo": false
+}

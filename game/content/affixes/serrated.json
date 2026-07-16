@@ -1,0 +1,8 @@
+{
+  "id": "affix_serrated",
+  "name_prefix": "Serrated",
+  "description": "Tearing edge.",
+  "damage": 1,
+  "accuracy": 2,
+  "defense": 0
+}

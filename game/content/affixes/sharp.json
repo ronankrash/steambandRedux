@@ -1,0 +1,8 @@
+{
+  "id": "affix_sharp",
+  "name_prefix": "Sharp",
+  "description": "Keen edge.",
+  "damage": 2,
+  "accuracy": 1,
+  "defense": 0
+}

@@ -1,0 +1,20 @@
+{
+  "id": "item_arc_pistol",
+  "name": "Arc Pistol",
+  "description": "Occult-charged sidearm firing crackling arc cells.",
+  "equip_slot": "ranged",
+  "damage": 3,
+  "accuracy": 2,
+  "defense": 0,
+  "range_tiles": 6,
+  "max_stack": 1,
+  "weight": 2,
+  "value": 40,
+  "category": "firearm",
+  "ammo_type": "arc",
+  "allowed_affixes": [
+    "affix_occultbound",
+    "affix_steamcharged"
+  ],
+  "is_ammo": false
+}

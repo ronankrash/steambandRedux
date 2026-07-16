@@ -1,0 +1,17 @@
+{
+  "id": "item_combat_stim",
+  "name": "Combat Stim",
+  "description": "Adrenal injection boosting accuracy briefly.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 4,
+  "weight": 0,
+  "value": 12,
+  "category": "consumable",
+  "use_effect": "stim_accuracy_6",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

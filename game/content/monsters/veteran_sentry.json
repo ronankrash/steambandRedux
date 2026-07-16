@@ -1,0 +1,26 @@
+{
+  "id": "mon_veteran_sentry",
+  "name": "Veteran Sentry",
+  "description": "Battle-scarred elite automaton with reinforced plating.",
+  "hp": 20,
+  "melee_accuracy": 48,
+  "melee_damage": 4,
+  "ranged_accuracy": 55,
+  "ranged_damage": 4,
+  "defense": 3,
+  "behavior": "elite",
+  "vision": 8,
+  "hear_radius": 6,
+  "abilities": [
+    "melee",
+    "ranged"
+  ],
+  "drop_item_id": "item_rifle_ammo",
+  "xp": 45,
+  "is_elite": true,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry",
+    "machine"
+  ]
+}

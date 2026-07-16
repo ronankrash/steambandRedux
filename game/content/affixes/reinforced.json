@@ -1,1 +1,8 @@
-{"id":"affix_reinforced","name_prefix":"Reinforced","description":"Extra plating.","damage":0,"accuracy":0,"defense":2}
+{
+  "id": "affix_reinforced",
+  "name_prefix": "Reinforced",
+  "description": "Extra plating.",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 2
+}

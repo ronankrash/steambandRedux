@@ -1,0 +1,20 @@
+{
+  "id": "item_rifle",
+  "name": "Brass Rifle",
+  "description": "Long-barrel rifle accurate at tunnel range.",
+  "equip_slot": "ranged",
+  "damage": 4,
+  "accuracy": 3,
+  "defense": 0,
+  "range_tiles": 8,
+  "max_stack": 1,
+  "weight": 4,
+  "value": 35,
+  "category": "firearm",
+  "ammo_type": "rifle",
+  "allowed_affixes": [
+    "affix_accurate",
+    "affix_calibrated"
+  ],
+  "is_ammo": false
+}

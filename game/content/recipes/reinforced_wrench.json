@@ -1,1 +1,19 @@
-{"id":"recipe_reinforced_wrench","name":"Reinforce Wrench","engineering_required":2,"ingredients":[{"item_id":"item_wrench","count":1},{"item_id":"item_scrap","count":2}],"result_id":"item_reinforced_wrench"}
+{
+  "id": "recipe_reinforced_wrench",
+  "name": "Reinforce Wrench",
+  "station": "forge",
+  "skill_required": "skill_smithing",
+  "skill_rank": 1,
+  "engineering_required": 2,
+  "ingredients": [
+    {
+      "item_id": "item_wrench",
+      "count": 1
+    },
+    {
+      "item_id": "item_scrap",
+      "count": 2
+    }
+  ],
+  "result_id": "item_reinforced_wrench"
+}

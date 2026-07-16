@@ -1,1 +1,39 @@
-{"id":"class_adventurer","name":"Adventurer","description":"Generalist explorer of the deep.","hp_bonus":2,"melee_accuracy":4,"melee_damage":1,"ranged_accuracy":2,"ranged_damage":0,"defense":1,"engineering":0}
+{
+  "id": "class_adventurer",
+  "name": "Adventurer",
+  "description": "Generalist explorer of the deep with modest bonuses everywhere.",
+  "hp_bonus": 2,
+  "melee_accuracy": 4,
+  "melee_damage": 1,
+  "ranged_accuracy": 2,
+  "ranged_damage": 0,
+  "defense": 1,
+  "engineering": 0,
+  "marksmanship": 1,
+  "smithing": 0,
+  "medicine": 1,
+  "stealth": 1,
+  "occult": 0,
+  "skill_affinities": {},
+  "starting_items": [
+    {
+      "item_id": "item_wrench",
+      "count": 1
+    },
+    {
+      "item_id": "item_pepperbox",
+      "count": 1
+    },
+    {
+      "item_id": "item_ball_ammo",
+      "count": 12
+    }
+  ],
+  "starting_skills": {
+    "skill_melee": 1,
+    "skill_marksmanship": 1
+  },
+  "passives": [
+    "passive_lucky_break"
+  ]
+}

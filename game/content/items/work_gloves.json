@@ -1,0 +1,18 @@
+{
+  "id": "item_work_gloves",
+  "name": "Work Gloves",
+  "description": "Thick gloves that improve grip on tools.",
+  "equip_slot": "hands",
+  "damage": 0,
+  "accuracy": 1,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 1,
+  "value": 6,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_padded"
+  ],
+  "is_ammo": false
+}

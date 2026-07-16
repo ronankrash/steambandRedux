@@ -1,0 +1,20 @@
+{
+  "id": "item_cutlass",
+  "name": "Officer's Cutlass",
+  "description": "Curved naval blade favored by brassdeep officers.",
+  "equip_slot": "mainhand",
+  "damage": 3,
+  "accuracy": 3,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 2,
+  "value": 18,
+  "category": "weapon",
+  "allowed_affixes": [
+    "affix_sharp",
+    "affix_balanced",
+    "affix_serrated"
+  ],
+  "is_ammo": false
+}

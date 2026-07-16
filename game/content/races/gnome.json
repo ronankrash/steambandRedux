@@ -1,0 +1,41 @@
+{
+  "id": "race_gnome",
+  "name": "Gnome",
+  "description": "Inventive tinkerers with medical training; poor melee brawlers.",
+  "base_hp": 17,
+  "melee_accuracy": 42,
+  "melee_damage": 0,
+  "ranged_accuracy": 46,
+  "ranged_damage": 1,
+  "defense": 0,
+  "engineering": 3,
+  "marksmanship": 1,
+  "smithing": 1,
+  "medicine": 3,
+  "stealth": 1,
+  "occult": 1,
+  "resistances": {
+    "poison": 0,
+    "fear": 5,
+    "steam": 0
+  },
+  "skill_affinities": {
+    "skill_engineering": 0.8,
+    "skill_medicine": 0.75,
+    "skill_melee": 1.35
+  },
+  "starting_items": [
+    {
+      "item_id": "item_healing_salve",
+      "count": 2
+    },
+    {
+      "item_id": "item_gears",
+      "count": 2
+    }
+  ],
+  "forbidden_slots": [],
+  "passives": [
+    "passive_tinker"
+  ]
+}

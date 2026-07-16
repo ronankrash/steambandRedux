@@ -1,0 +1,20 @@
+{
+  "id": "item_carbine",
+  "name": "Scout Carbine",
+  "description": "Light carbine for mobile marksmen.",
+  "equip_slot": "ranged",
+  "damage": 3,
+  "accuracy": 2,
+  "defense": 0,
+  "range_tiles": 7,
+  "max_stack": 1,
+  "weight": 3,
+  "value": 28,
+  "category": "firearm",
+  "ammo_type": "rifle",
+  "allowed_affixes": [
+    "affix_balanced",
+    "affix_quickdraw"
+  ],
+  "is_ammo": false
+}

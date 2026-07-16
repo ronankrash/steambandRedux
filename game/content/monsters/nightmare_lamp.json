@@ -1,0 +1,24 @@
+{
+  "id": "mon_nightmare_lamp",
+  "name": "Nightmare Lamp",
+  "description": "Flickering occult lantern that projects waking terror.",
+  "hp": 9,
+  "melee_accuracy": 30,
+  "melee_damage": 1,
+  "ranged_accuracy": 44,
+  "ranged_damage": 1,
+  "defense": 0,
+  "behavior": "fearer",
+  "vision": 8,
+  "hear_radius": 2,
+  "abilities": [
+    "ranged"
+  ],
+  "drop_item_id": "item_crystal",
+  "xp": 24,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "occult"
+  ]
+}

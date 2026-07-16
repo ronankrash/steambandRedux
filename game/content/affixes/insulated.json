@@ -1,0 +1,8 @@
+{
+  "id": "affix_insulated",
+  "name_prefix": "Insulated",
+  "description": "Resists steam burns.",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 1
+}

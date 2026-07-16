@@ -1,0 +1,24 @@
+{
+  "id": "mon_brass_golem",
+  "name": "Brass Golem",
+  "description": "Slow plated construct that holds choke points.",
+  "hp": 22,
+  "melee_accuracy": 42,
+  "melee_damage": 4,
+  "ranged_accuracy": 0,
+  "ranged_damage": 0,
+  "defense": 4,
+  "behavior": "defensive",
+  "vision": 5,
+  "hear_radius": 4,
+  "abilities": [
+    "melee"
+  ],
+  "drop_item_id": "item_brass_ingot",
+  "xp": 35,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "foundry"
+  ]
+}

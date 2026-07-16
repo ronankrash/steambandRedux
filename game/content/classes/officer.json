@@ -1,0 +1,41 @@
+{
+  "id": "class_officer",
+  "name": "Officer",
+  "description": "Disciplined commander with defensive training and rallying presence.",
+  "hp_bonus": 4,
+  "melee_accuracy": 3,
+  "melee_damage": 2,
+  "ranged_accuracy": 3,
+  "ranged_damage": 1,
+  "defense": 3,
+  "engineering": 0,
+  "marksmanship": 2,
+  "smithing": 0,
+  "medicine": 1,
+  "stealth": 0,
+  "occult": 0,
+  "skill_affinities": {
+    "skill_defense": 0.85
+  },
+  "starting_items": [
+    {
+      "item_id": "item_cutlass",
+      "count": 1
+    },
+    {
+      "item_id": "item_brass_plate",
+      "count": 1
+    },
+    {
+      "item_id": "item_brass_helm",
+      "count": 1
+    }
+  ],
+  "starting_skills": {
+    "skill_defense": 2,
+    "skill_melee": 1
+  },
+  "passives": [
+    "passive_rally"
+  ]
+}

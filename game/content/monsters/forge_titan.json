@@ -1,0 +1,27 @@
+{
+  "id": "mon_forge_titan",
+  "name": "Forge Titan",
+  "description": "Colossal boiler-golem that rules the deepest foundry.",
+  "hp": 80,
+  "melee_accuracy": 55,
+  "melee_damage": 8,
+  "ranged_accuracy": 50,
+  "ranged_damage": 5,
+  "defense": 6,
+  "behavior": "boss",
+  "vision": 10,
+  "hear_radius": 10,
+  "abilities": [
+    "melee",
+    "steam_burst",
+    "ranged"
+  ],
+  "drop_item_id": "item_steam_axe",
+  "xp": 200,
+  "is_elite": false,
+  "is_boss": true,
+  "theme_tags": [
+    "foundry",
+    "boss"
+  ]
+}

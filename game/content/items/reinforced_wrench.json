@@ -1,1 +1,16 @@
-{"id":"item_reinforced_wrench","name":"Reinforced Wrench","description":"Scrap-forged melee tool.","equip_slot":"weapon","damage":4,"accuracy":2,"defense":0,"range_tiles":0,"max_stack":1,"allowed_affixes":[]}
+{
+  "id": "item_reinforced_wrench",
+  "name": "Reinforced Wrench",
+  "description": "Scrap-forged melee tool with a weighted head.",
+  "equip_slot": "mainhand",
+  "damage": 4,
+  "accuracy": 2,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 4,
+  "value": 16,
+  "category": "weapon",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

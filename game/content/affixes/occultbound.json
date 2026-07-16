@@ -1,0 +1,8 @@
+{
+  "id": "affix_occultbound",
+  "name_prefix": "Occult-Bound",
+  "description": "Whispers along the sight line.",
+  "damage": 1,
+  "accuracy": 2,
+  "defense": 0
+}
