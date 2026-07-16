@@ -23,6 +23,8 @@ var dying: Dictionary = {} # actor_id -> fade 0..1
 
 
 func duration_scale() -> float:
+	if Automation.instant_animations:
+		return 0.01
 	return 0.45 if speed == Speed.FAST else 1.0
 
 
@@ -52,6 +54,12 @@ func bind_sim(sim: GameSim) -> void:
 
 
 func enqueue(event: Dictionary) -> void:
+	if Automation.instant_animations:
+		# Keep sim free; still record flash/death for optional redraw.
+		if world_view:
+			world_view.queue_redraw()
+		_set_lock(false)
+		return
 	_queue.append(event)
 	_set_lock(true)
 	if not _playing:

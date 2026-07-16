@@ -94,9 +94,14 @@ static func generate_level(rng: BrassRng, depth: int, theme_id: String, width: i
 		extract = GridPos.new(end.x, end.y)
 		world.set_tile(extract.x, extract.y, SimWorld.TILE_EXTRACT)
 
+	# Ensure critical objectives remain reachable for play.
+	var start_pos := GridPos.new(start.x, start.y)
+	var goal := stairs_down if stairs_down != null else extract
+	_repair_playable_paths(world, start_pos, goal)
+
 	return {
 		"world": world,
-		"player_start": GridPos.new(start.x, start.y),
+		"player_start": start_pos,
 		"spawn_rooms": rooms,
 		"stairs_down": stairs_down,
 		"stairs_up": stairs_up,
@@ -186,6 +191,124 @@ static func _find_floor_near(world: SimWorld, center: Vector2i, rng: BrassRng) -
 	if candidates.is_empty():
 		return Vector2i(-1, -1)
 	return candidates[rng.randi_range(0, candidates.size() - 1)]
+
+
+static func _passable_for_play(world: SimWorld, x: int, y: int, allow_locked_gates: bool = false) -> bool:
+	var t := world.get_tile(x, y)
+	# Closed doors open on bump; destructibles smash on bump.
+	if world.is_walkable(x, y) or t == SimWorld.TILE_DOOR_CLOSED or t == SimWorld.TILE_DESTRUCTIBLE:
+		return true
+	if allow_locked_gates and t == SimWorld.TILE_GATE_LOCKED:
+		return true
+	return false
+
+
+static func _connected_for_play(world: SimWorld, start: GridPos, goal: GridPos, allow_locked_gates: bool = false) -> bool:
+	if start == null or goal == null:
+		return false
+	var seen: Dictionary = {}
+	var q: Array = [start]
+	seen["%d,%d" % [start.x, start.y]] = true
+	while not q.is_empty():
+		var p: GridPos = q.pop_front()
+		if p.equals(goal):
+			return true
+		for n in GridPos.neighbors8():
+			var nx := p.x + n.x
+			var ny := p.y + n.y
+			var k := "%d,%d" % [nx, ny]
+			if seen.has(k):
+				continue
+			if _passable_for_play(world, nx, ny, allow_locked_gates) or (nx == goal.x and ny == goal.y):
+				seen[k] = true
+				q.append(GridPos.new(nx, ny))
+	return false
+
+
+static func _unlock_all_gates(world: SimWorld) -> void:
+	for y in range(world.height):
+		for x in range(world.width):
+			if world.get_tile(x, y) == SimWorld.TILE_GATE_LOCKED:
+				world.set_tile(x, y, SimWorld.TILE_DOOR_CLOSED)
+
+
+static func _carve_access(world: SimWorld, a: GridPos, b: GridPos) -> void:
+	## Force a walkable manhattan spine between two points.
+	if a == null or b == null:
+		return
+	var x := a.x
+	var y := a.y
+	while x != b.x:
+		_force_floorish(world, x, y)
+		x += 1 if b.x > x else -1
+	while y != b.y:
+		_force_floorish(world, x, y)
+		y += 1 if b.y > y else -1
+	_force_floorish(world, b.x, b.y)
+
+
+static func _force_floorish(world: SimWorld, x: int, y: int) -> void:
+	if not world.in_bounds(x, y):
+		return
+	var t := world.get_tile(x, y)
+	# Preserve stairs / extract / interactive stations; clear hard blockers.
+	if t in [
+		SimWorld.TILE_STAIRS_UP, SimWorld.TILE_STAIRS_DOWN, SimWorld.TILE_EXTRACT,
+		SimWorld.TILE_CONTAINER, SimWorld.TILE_LEVER, SimWorld.TILE_WORKBENCH,
+		SimWorld.TILE_FORGE, SimWorld.TILE_ALCHEMY, SimWorld.TILE_HAZARD
+	]:
+		return
+	if t in [SimWorld.TILE_WALL, SimWorld.TILE_GATE_LOCKED, SimWorld.TILE_DOOR_CLOSED, SimWorld.TILE_DESTRUCTIBLE]:
+		world.set_tile(x, y, SimWorld.TILE_FLOOR)
+
+
+static func _ensure_goal(world: SimWorld, start: GridPos, goal: GridPos) -> void:
+	if goal == null:
+		return
+	if _connected_for_play(world, start, goal, false):
+		return
+	# If a lever can unlock gates and is reachable, allow gated routes.
+	var lever := _find_tile(world, SimWorld.TILE_LEVER)
+	if lever != null and _connected_for_play(world, start, lever, false):
+		if _connected_for_play(world, start, goal, true):
+			return
+	_unlock_all_gates(world)
+	if _connected_for_play(world, start, goal, false):
+		return
+	_carve_access(world, start, goal)
+
+
+static func _repair_playable_paths(world: SimWorld, start: GridPos, goal: GridPos) -> void:
+	_ensure_goal(world, start, goal)
+	var container := _find_tile(world, SimWorld.TILE_CONTAINER)
+	if container != null:
+		_ensure_goal(world, start, container)
+	if _has_tile(world, SimWorld.TILE_GATE_LOCKED):
+		var lever := _find_tile(world, SimWorld.TILE_LEVER)
+		if lever == null:
+			_unlock_all_gates(world)
+		else:
+			_ensure_goal(world, start, lever)
+			# If lever remains unreachable after carve, drop gates.
+			if not _connected_for_play(world, start, lever, false):
+				_unlock_all_gates(world)
+	# Final guarantee for primary objective.
+	_ensure_goal(world, start, goal)
+
+
+static func _has_tile(world: SimWorld, tile: int) -> bool:
+	for i in range(world.tiles.size()):
+		if world.tiles[i] == tile:
+			return true
+	return false
+
+
+static func _find_tile(world: SimWorld, tile: int) -> GridPos:
+	for y in range(world.height):
+		for x in range(world.width):
+			if world.get_tile(x, y) == tile:
+				return GridPos.new(x, y)
+	return null
 
 
 ## Compatibility for Phase 1 tests

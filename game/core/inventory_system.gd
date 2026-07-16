@@ -116,26 +116,29 @@ static func unequip(actor: SimActor, slot: String) -> Dictionary:
 static func use_item(actor: SimActor, item: SimItem) -> Dictionary:
 	if item == null:
 		return {"ok": false, "reason": "missing"}
+	var med := int(actor.skill_ranks.get("skill_medicine", 0))
 	match item.use_effect:
-		"heal_8", "heal":
-			actor.hp = mini(actor.max_hp, actor.hp + 8 + int(actor.skill_ranks.get("skill_medicine", 0)))
+		"heal_8", "heal", "heal_5_oil":
+			var amount := 8 if item.use_effect != "heal_5_oil" else 5
+			actor.hp = mini(actor.max_hp, actor.hp + amount + med)
 		"heal_16":
-			actor.hp = mini(actor.max_hp, actor.hp + 16 + int(actor.skill_ranks.get("skill_medicine", 0)) * 2)
-		"antidote":
+			actor.hp = mini(actor.max_hp, actor.hp + 16 + med * 2)
+		"heal_3_slow":
+			actor.hp = mini(actor.max_hp, actor.hp + 3 + med)
+		"antidote", "cure_poison":
 			actor.status_effects.erase("poison")
-		"stim":
+		"stim", "stim_accuracy_6":
 			actor.add_status("stimulated", 5)
-			actor.melee_accuracy += 0 # handled via status in combat later
 		"ration":
 			actor.hp = mini(actor.max_hp, actor.hp + 4)
-		"smoke":
+		"smoke", "smoke_cloud":
 			actor.add_status("concealed", 3)
 		"repair":
 			actor.hp = mini(actor.max_hp, actor.hp + 6)
+		"":
+			return {"ok": false, "reason": "unusable"}
 		_:
-			if item.use_effect == "":
-				return {"ok": false, "reason": "unusable"}
-			actor.hp = mini(actor.max_hp, actor.hp + 5)
+			return {"ok": false, "reason": "unknown_effect", "effect": item.use_effect}
 	remove_item_count(actor, item.def_id, 1)
 	return {"ok": true, "effect": item.use_effect}
 

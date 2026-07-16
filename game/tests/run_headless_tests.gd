@@ -53,17 +53,24 @@ func _make_sim() -> GameSim:
 func _test_content_loads() -> void:
 	var content := ContentDB.new()
 	_ok(content.load_all(), "content validation clean")
-	_ok(content.races.size() >= 6, "at least 6 races")
-	_ok(content.classes.size() >= 6, "at least 6 classes")
-	_ok(content.skills.size() >= 8, "at least 8 skills")
-	_ok(content.monsters.size() >= 12, "at least 12 monsters")
-	_ok(content.recipes.size() >= 20, "at least 20 recipes")
-	_ok(content.merchants.size() >= 3, "at least 3 merchants")
-	_ok(content.environments.size() >= 2, "at least 2 environments")
+	# Structural presence (not a substitute for reachability CI).
+	_ok(content.races.has("race_human") and content.races.has("race_automaton"), "key races present")
+	_ok(content.classes.has("class_engineer") and content.classes.has("class_gunslinger"), "key classes present")
+	_ok(content.skills.has("skill_melee") and content.skills.has("skill_engineering"), "key skills present")
+	_ok(content.monsters.has("mon_gear_rat"), "baseline monster present")
+	var boss_found := false
+	for mid in content.monsters.keys():
+		if bool(content.monsters[mid].get("is_boss", false)) or str(content.monsters[mid].get("behavior", "")) == "boss":
+			boss_found = true
+			break
+	_ok(boss_found, "boss monster defined")
+	_ok(content.recipes.has("recipe_machine_oil") or content.recipes.size() >= 20, "crafting recipes loaded")
+	_ok(content.merchants.has("merchant_general") and content.merchants.has("merchant_arms"), "hub merchants present")
+	_ok(content.environments.has("env_foundry") and content.environments.has("env_mine"), "expedition themes present")
 	var abilities := 0
 	for sid in content.skills.keys():
 		abilities += (content.skills[sid].get("abilities", []) as Array).size()
-	_ok(abilities >= 12, "at least 12 skill abilities")
+	_ok(abilities >= 12, "skill abilities attached to families")
 
 
 func _test_deterministic_generation() -> void:

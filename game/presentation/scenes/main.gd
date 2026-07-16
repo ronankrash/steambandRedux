@@ -33,6 +33,7 @@ var class_ids: Array[String] = []
 
 
 func _ready() -> void:
+	Automation.parse_cmdline()
 	if not has_node("AnimSequencer"):
 		sequencer = AnimSequencer.new()
 		sequencer.name = "AnimSequencer"
@@ -46,6 +47,25 @@ func _ready() -> void:
 	_apply_ui_settings()
 	_show_title()
 	_refresh_prompts()
+	if Automation.smoke_test or Automation.e2e_test:
+		call_deferred("_run_automation")
+
+
+func _run_automation() -> void:
+	Automation.instant_animations = true
+	if sequencer:
+		sequencer.speed = AnimSequencer.Speed.FAST
+	var driver := AutomationDriver.new(self)
+	driver.finished.connect(_on_automation_finished)
+	if Automation.smoke_test and not Automation.e2e_test:
+		await driver.run_smoke_flow()
+	else:
+		await driver.run_full_flow()
+
+
+func _on_automation_finished(ok: bool, message: String) -> void:
+	print("AUTOMATION_RESULT: ", "PASS" if ok else "FAIL", " — ", message)
+	get_tree().quit(0 if ok else 1)
 
 
 func _cache_content_ids() -> void:
@@ -691,6 +711,7 @@ func _show_dead() -> void:
 		{"id": "title", "label": "Title"},
 	]
 	_rebuild_menu()
+	_refresh_prompts()
 
 
 func _show_context_prompt() -> void:
@@ -725,13 +746,23 @@ func _refresh_status() -> void:
 	var ranged: SimItem = p.get_ranged_weapon()
 	var ammo := p.find_ammo()
 	var ammo_n := ammo.stack if ammo else 0
-	var statuses := ",".join(p.status_effects.keys()) if not p.status_effects.is_empty() else "-"
+	var status_labels: Array[String] = []
+	for key in p.status_effects.keys():
+		var sid := str(key)
+		if sid.begins_with("abilstat_"):
+			continue
+		status_labels.append(sid.replace("_", " "))
+	var statuses := ", ".join(status_labels) if not status_labels.is_empty() else "-"
+	var quick_name := "-"
+	if p.quick_item_id != "":
+		var qdef: Dictionary = GameServices.content.get_item(p.quick_item_id)
+		quick_name = str(qdef.get("name", p.quick_item_id)) if not qdef.is_empty() else p.quick_item_id
 	hud_label.text = "Main:%s | Range:%s r%d ammo:%d | Quick:%s | Gold:%d | %s" % [
 		p.get_equipped("mainhand").name if p.get_equipped("mainhand") else "-",
 		ranged.name if ranged else "-",
 		p.weapon_range(),
 		ammo_n,
-		p.quick_item_id if p.quick_item_id != "" else "-",
+		quick_name,
 		p.gold,
 		statuses,
 	]

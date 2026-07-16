@@ -22,7 +22,7 @@ Evidence base: `reference/steamband/lib/help/*.txt`, `reference/steamband/lib/ed
 | Quests / objectives | sparse | Limited | Low | 4 | Missing | — |
 | Status effects | spells/melee | Poison/fear/steam | High | 2 | Partial — poison, fear, steam, conceal, stim | Original |
 | Saving | `save.c` | Persist runs | High | 2 | **Changed** — JSON schema v2 + v1 migration | Do not reuse binary |
-| QoL / controller | SteambandRedux controller | Ally mappings | High | 2 | Partial — full pad path + UI scale/text/anim | Original |
+| QoL / controller | SteambandRedux controller | Ally mappings | High | 2 | Partial — pad path + E2E/focus audit; Ally hardware pending | Original |
 
 ## Intentionally changed
 
