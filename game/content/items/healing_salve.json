@@ -1,0 +1,17 @@
+{
+  "id": "item_healing_salve",
+  "name": "Healing Salve",
+  "description": "Herbal poultice that closes wounds quickly.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 8,
+  "weight": 0,
+  "value": 6,
+  "category": "consumable",
+  "use_effect": "heal_8",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

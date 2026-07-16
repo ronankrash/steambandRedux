@@ -1,0 +1,31 @@
+{
+  "id": "skill_stealth",
+  "name": "Stealth",
+  "description": "Silent movement and ambush techniques.",
+  "family": "support",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "stealth_step",
+      "name": "Stealth Step",
+      "description": "Move quietly past distant sentries.",
+      "rank_required": 2,
+      "effects": {
+        "stealth": 2,
+        "noise_reduction": 1
+      }
+    },
+    {
+      "id": "shadow_strike",
+      "name": "Shadow Strike",
+      "description": "Ambush attacks deal bonus damage.",
+      "rank_required": 4,
+      "effects": {
+        "ambush_damage": 3,
+        "stealth": 1
+      }
+    }
+  ]
+}

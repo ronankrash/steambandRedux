@@ -1,0 +1,19 @@
+{
+  "id": "item_steam_treads",
+  "name": "Steam Treads",
+  "description": "Mechanized treads that vent heat with each step.",
+  "equip_slot": "feet",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 1,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 3,
+  "value": 20,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_steamcharged",
+    "affix_insulated"
+  ],
+  "is_ammo": false
+}

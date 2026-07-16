@@ -1,1 +1,37 @@
-{"id":"race_automaton","name":"Automaton","description":"Clockwork body; resilient, less flexible.","base_hp":26,"melee_accuracy":48,"melee_damage":3,"ranged_accuracy":42,"ranged_damage":2,"defense":2,"engineering":2}
+{
+  "id": "race_automaton",
+  "name": "Automaton",
+  "description": "Clockwork body; resilient plating and innate engineering, but poor occult attunement.",
+  "base_hp": 26,
+  "melee_accuracy": 48,
+  "melee_damage": 3,
+  "ranged_accuracy": 42,
+  "ranged_damage": 2,
+  "defense": 2,
+  "engineering": 3,
+  "marksmanship": 0,
+  "smithing": 2,
+  "medicine": 0,
+  "stealth": -1,
+  "occult": -2,
+  "resistances": {
+    "poison": 50,
+    "fear": 25,
+    "steam": 10
+  },
+  "skill_affinities": {
+    "skill_engineering": 0.75,
+    "skill_smithing": 0.85,
+    "skill_occult": 1.4
+  },
+  "starting_items": [
+    {
+      "item_id": "item_machine_oil",
+      "count": 1
+    }
+  ],
+  "forbidden_slots": [],
+  "passives": [
+    "passive_oil_blood"
+  ]
+}

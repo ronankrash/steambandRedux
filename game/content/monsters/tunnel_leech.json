@@ -1,0 +1,24 @@
+{
+  "id": "mon_tunnel_leech",
+  "name": "Tunnel Leech",
+  "description": "Cowardly parasite that flees after a single bite.",
+  "hp": 6,
+  "melee_accuracy": 38,
+  "melee_damage": 1,
+  "ranged_accuracy": 0,
+  "ranged_damage": 0,
+  "defense": 0,
+  "behavior": "flee",
+  "vision": 5,
+  "hear_radius": 5,
+  "abilities": [
+    "melee"
+  ],
+  "drop_item_id": "item_herbs",
+  "xp": 8,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "mine"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "item_sulfur",
+  "name": "Sulfur",
+  "description": "Yellow crystals used in powder and smoke devices.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 15,
+  "weight": 0,
+  "value": 3,
+  "category": "material",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

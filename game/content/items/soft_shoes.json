@@ -1,0 +1,18 @@
+{
+  "id": "item_soft_shoes",
+  "name": "Soft Shoes",
+  "description": "Felt-soled shoes for silent footfalls.",
+  "equip_slot": "feet",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 1,
+  "value": 8,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_padded"
+  ],
+  "is_ammo": false
+}

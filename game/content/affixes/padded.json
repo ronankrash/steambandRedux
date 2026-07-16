@@ -1,0 +1,8 @@
+{
+  "id": "affix_padded",
+  "name_prefix": "Padded",
+  "description": "Soft lining absorbs blows.",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 1
+}

@@ -1,0 +1,39 @@
+{
+  "id": "merchant_healer",
+  "name": "Field Medic",
+  "inventory": [
+    {
+      "item_id": "item_healing_salve",
+      "count": 4,
+      "price": 8
+    },
+    {
+      "item_id": "item_machine_oil",
+      "count": 3,
+      "price": 6
+    },
+    {
+      "item_id": "item_antidote_vial",
+      "count": 3,
+      "price": 10
+    },
+    {
+      "item_id": "item_combat_stim",
+      "count": 2,
+      "price": 14
+    },
+    {
+      "item_id": "item_herbs",
+      "count": 6,
+      "price": 4
+    },
+    {
+      "item_id": "item_filter_mask",
+      "count": 1,
+      "price": 15
+    }
+  ],
+  "buy_rate": 0.45,
+  "sell_rate": 0.95,
+  "restock_on_depth": false
+}

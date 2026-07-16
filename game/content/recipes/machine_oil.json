@@ -1,0 +1,18 @@
+{
+  "id": "recipe_machine_oil",
+  "name": "Refine Machine Oil",
+  "station": "alchemy",
+  "skill_required": "skill_engineering",
+  "skill_rank": 1,
+  "ingredients": [
+    {
+      "item_id": "item_oil_can",
+      "count": 1
+    },
+    {
+      "item_id": "item_herbs",
+      "count": 1
+    }
+  ],
+  "result_id": "item_machine_oil"
+}

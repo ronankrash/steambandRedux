@@ -1,0 +1,25 @@
+{
+  "id": "mon_bell_summoner",
+  "name": "Bell Summoner",
+  "description": "Cultist automaton that rings a brass bell to call allies.",
+  "hp": 13,
+  "melee_accuracy": 36,
+  "melee_damage": 2,
+  "ranged_accuracy": 0,
+  "ranged_damage": 0,
+  "defense": 1,
+  "behavior": "summoner",
+  "vision": 7,
+  "hear_radius": 8,
+  "abilities": [
+    "melee"
+  ],
+  "drop_item_id": "item_wire",
+  "xp": 26,
+  "is_elite": false,
+  "is_boss": false,
+  "theme_tags": [
+    "occult",
+    "foundry"
+  ]
+}

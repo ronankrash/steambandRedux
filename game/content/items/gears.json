@@ -1,0 +1,16 @@
+{
+  "id": "item_gears",
+  "name": "Clockwork Gears",
+  "description": "Assorted pinions and mainsprings.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 15,
+  "weight": 1,
+  "value": 4,
+  "category": "material",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

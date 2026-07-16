@@ -1,1 +1,30 @@
-{"id":"skill_defense","name":"Defense","description":"Armor use and damage mitigation."}
+{
+  "id": "skill_defense",
+  "name": "Defense",
+  "description": "Armor use, blocking, and damage mitigation.",
+  "family": "combat",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "defensive_stance",
+      "name": "Defensive Stance",
+      "description": "Brace to reduce incoming damage.",
+      "rank_required": 2,
+      "effects": {
+        "defense": 3,
+        "block_chance": 10
+      }
+    },
+    {
+      "id": "fear_resist",
+      "name": "Iron Nerves",
+      "description": "Resist fear and panic effects.",
+      "rank_required": 3,
+      "effects": {
+        "fear_resist": 25
+      }
+    }
+  ]
+}

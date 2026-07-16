@@ -1,0 +1,8 @@
+{
+  "id": "affix_calibrated",
+  "name_prefix": "Calibrated",
+  "description": "Precision-machined components.",
+  "damage": 0,
+  "accuracy": 4,
+  "defense": 0
+}

@@ -1,1 +1,17 @@
-{"id":"item_machine_oil","name":"Machine Oil","description":"Restorative oil for flesh and gears.","equip_slot":"none","max_stack":10,"damage":0,"accuracy":0,"defense":0,"range_tiles":0,"allowed_affixes":[]}
+{
+  "id": "item_machine_oil",
+  "name": "Machine Oil",
+  "description": "Restorative oil for flesh and gears alike.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 10,
+  "weight": 0,
+  "value": 5,
+  "category": "consumable",
+  "use_effect": "heal_5_oil",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

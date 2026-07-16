@@ -1,1 +1,31 @@
-{"id":"skill_engineering","name":"Engineering","description":"Crafting and device operation."}
+{
+  "id": "skill_engineering",
+  "name": "Engineering",
+  "description": "Device operation, repairs, and steam tinkering.",
+  "family": "craft",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "mechanical_repair",
+      "name": "Mechanical Repair",
+      "description": "Restore durability to gear and automata.",
+      "rank_required": 2,
+      "effects": {
+        "repair_amount": 5,
+        "engineering": 1
+      }
+    },
+    {
+      "id": "steam_tinker",
+      "name": "Steam Tinker",
+      "description": "Boost device output at the cost of heat.",
+      "rank_required": 4,
+      "effects": {
+        "device_power": 2,
+        "overheat_risk": true
+      }
+    }
+  ]
+}

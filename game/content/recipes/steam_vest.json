@@ -1,0 +1,22 @@
+{
+  "id": "recipe_steam_vest",
+  "name": "Insulate Steam Vest",
+  "station": "workbench",
+  "skill_required": "skill_engineering",
+  "skill_rank": 2,
+  "ingredients": [
+    {
+      "item_id": "item_leather",
+      "count": 2
+    },
+    {
+      "item_id": "item_gears",
+      "count": 1
+    },
+    {
+      "item_id": "item_oil_can",
+      "count": 1
+    }
+  ],
+  "result_id": "item_steam_vest"
+}

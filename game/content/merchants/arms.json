@@ -1,0 +1,39 @@
+{
+  "id": "merchant_arms",
+  "name": "Arms Dealer",
+  "inventory": [
+    {
+      "item_id": "item_pepperbox",
+      "count": 1,
+      "price": 25
+    },
+    {
+      "item_id": "item_cutlass",
+      "count": 1,
+      "price": 22
+    },
+    {
+      "item_id": "item_ball_ammo",
+      "count": 24,
+      "price": 20
+    },
+    {
+      "item_id": "item_rifle_ammo",
+      "count": 12,
+      "price": 18
+    },
+    {
+      "item_id": "item_brass_helm",
+      "count": 1,
+      "price": 20
+    },
+    {
+      "item_id": "item_iron_boots",
+      "count": 1,
+      "price": 18
+    }
+  ],
+  "buy_rate": 0.35,
+  "sell_rate": 1.15,
+  "restock_on_depth": true
+}

@@ -1,0 +1,39 @@
+{
+  "id": "merchant_general",
+  "name": "General Trader",
+  "inventory": [
+    {
+      "item_id": "item_field_ration",
+      "count": 5,
+      "price": 4
+    },
+    {
+      "item_id": "item_scrap",
+      "count": 10,
+      "price": 3
+    },
+    {
+      "item_id": "item_oil_can",
+      "count": 3,
+      "price": 5
+    },
+    {
+      "item_id": "item_coal",
+      "count": 6,
+      "price": 3
+    },
+    {
+      "item_id": "item_work_gloves",
+      "count": 1,
+      "price": 8
+    },
+    {
+      "item_id": "item_soft_shoes",
+      "count": 1,
+      "price": 10
+    }
+  ],
+  "buy_rate": 0.4,
+  "sell_rate": 1.0,
+  "restock_on_depth": true
+}

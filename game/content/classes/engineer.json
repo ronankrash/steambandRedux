@@ -1,1 +1,42 @@
-{"id":"class_engineer","name":"Engineer","description":"Tinker and craftsman of brass devices.","hp_bonus":0,"melee_accuracy":0,"melee_damage":0,"ranged_accuracy":4,"ranged_damage":1,"defense":0,"engineering":3}
+{
+  "id": "class_engineer",
+  "name": "Engineer",
+  "description": "Tinker and craftsman of brass devices; excels at repairs and fabrication.",
+  "hp_bonus": 0,
+  "melee_accuracy": 0,
+  "melee_damage": 0,
+  "ranged_accuracy": 4,
+  "ranged_damage": 1,
+  "defense": 0,
+  "engineering": 4,
+  "marksmanship": 1,
+  "smithing": 2,
+  "medicine": 0,
+  "stealth": 0,
+  "occult": 0,
+  "skill_affinities": {
+    "skill_engineering": 0.8,
+    "skill_smithing": 0.9
+  },
+  "starting_items": [
+    {
+      "item_id": "item_wrench",
+      "count": 1
+    },
+    {
+      "item_id": "item_scrap",
+      "count": 5
+    },
+    {
+      "item_id": "item_gears",
+      "count": 2
+    }
+  ],
+  "starting_skills": {
+    "skill_engineering": 2,
+    "skill_smithing": 1
+  },
+  "passives": [
+    "passive_field_repair"
+  ]
+}

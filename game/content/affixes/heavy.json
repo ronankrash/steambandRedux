@@ -1,0 +1,8 @@
+{
+  "id": "affix_heavy",
+  "name_prefix": "Heavy",
+  "description": "Weighted strikes.",
+  "damage": 2,
+  "accuracy": -1,
+  "defense": 0
+}

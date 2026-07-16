@@ -1,0 +1,19 @@
+{
+  "id": "item_steam_axe",
+  "name": "Steam Axe",
+  "description": "Piston-assisted axe that vents scalding steam on impact.",
+  "equip_slot": "mainhand",
+  "damage": 4,
+  "accuracy": 2,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 4,
+  "value": 28,
+  "category": "weapon",
+  "allowed_affixes": [
+    "affix_steamcharged",
+    "affix_heavy"
+  ],
+  "is_ammo": false
+}

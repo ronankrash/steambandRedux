@@ -1,0 +1,19 @@
+{
+  "id": "item_warhammer",
+  "name": "Forge Warhammer",
+  "description": "Two-handed striking tool that dents plate armor.",
+  "equip_slot": "mainhand",
+  "damage": 5,
+  "accuracy": 1,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 5,
+  "value": 22,
+  "category": "weapon",
+  "allowed_affixes": [
+    "affix_heavy",
+    "affix_reinforced"
+  ],
+  "is_ammo": false
+}

@@ -1,0 +1,17 @@
+{
+  "id": "env_mine",
+  "name": "Collapsed Mine",
+  "description": "Timbered tunnels, cave-ins, and flooded shafts.",
+  "palette": {
+    "floor": "#2a2e32",
+    "wall": "#4a5058",
+    "accent": "#6a7a88",
+    "fog": "#1a1e22"
+  },
+  "hazard_chance": 0.12,
+  "monster_tags": [
+    "mine",
+    "machine"
+  ],
+  "ambient": "drip_echo"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "skill_occult",
+  "name": "Occult",
+  "description": "Forbidden rites, fear manipulation, and arc discharge.",
+  "family": "arcane",
+  "max_rank": 5,
+  "base_cost": 1,
+  "cost_growth": 1,
+  "abilities": [
+    {
+      "id": "ward_whisper",
+      "name": "Ward Whisper",
+      "description": "Brief ward against steam and poison.",
+      "rank_required": 2,
+      "effects": {
+        "poison_resist": 15,
+        "steam_resist": 10
+      }
+    }
+  ]
+}

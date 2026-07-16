@@ -1,0 +1,37 @@
+{
+  "id": "race_dwarf",
+  "name": "Dwarf",
+  "description": "Stocky forge-born miners with heavy armor affinity and stubborn constitution.",
+  "base_hp": 24,
+  "melee_accuracy": 52,
+  "melee_damage": 3,
+  "ranged_accuracy": 40,
+  "ranged_damage": 1,
+  "defense": 3,
+  "engineering": 1,
+  "marksmanship": 0,
+  "smithing": 3,
+  "medicine": 0,
+  "stealth": -2,
+  "occult": 0,
+  "resistances": {
+    "poison": 10,
+    "fear": 15,
+    "steam": 5
+  },
+  "skill_affinities": {
+    "skill_smithing": 0.7,
+    "skill_defense": 0.8,
+    "skill_stealth": 1.3
+  },
+  "starting_items": [
+    {
+      "item_id": "item_coal",
+      "count": 3
+    }
+  ],
+  "forbidden_slots": [],
+  "passives": [
+    "passive_stonehide"
+  ]
+}

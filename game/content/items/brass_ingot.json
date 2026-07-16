@@ -1,0 +1,16 @@
+{
+  "id": "item_brass_ingot",
+  "name": "Brass Ingot",
+  "description": "Refined brass stock for plating and fittings.",
+  "equip_slot": "none",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 0,
+  "range_tiles": 0,
+  "max_stack": 10,
+  "weight": 2,
+  "value": 6,
+  "category": "material",
+  "allowed_affixes": [],
+  "is_ammo": false
+}

@@ -1,0 +1,8 @@
+{
+  "id": "affix_poisoned",
+  "name_prefix": "Poisoned",
+  "description": "Coated with tunnel venom.",
+  "damage": 1,
+  "accuracy": 0,
+  "defense": 0
+}

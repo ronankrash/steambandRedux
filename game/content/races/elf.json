@@ -1,0 +1,41 @@
+{
+  "id": "race_elf",
+  "name": "Elf",
+  "description": "Keen-eyed marksmen and silent scouts; fragile but precise at range.",
+  "base_hp": 18,
+  "melee_accuracy": 48,
+  "melee_damage": 1,
+  "ranged_accuracy": 58,
+  "ranged_damage": 2,
+  "defense": 0,
+  "engineering": 0,
+  "marksmanship": 3,
+  "smithing": 0,
+  "medicine": 1,
+  "stealth": 3,
+  "occult": 1,
+  "resistances": {
+    "poison": 5,
+    "fear": 10,
+    "steam": 0
+  },
+  "skill_affinities": {
+    "skill_marksmanship": 0.75,
+    "skill_stealth": 0.8,
+    "skill_smithing": 1.25
+  },
+  "starting_items": [
+    {
+      "item_id": "item_carbine",
+      "count": 1
+    },
+    {
+      "item_id": "item_rifle_ammo",
+      "count": 12
+    }
+  ],
+  "forbidden_slots": [],
+  "passives": [
+    "passive_keen_senses"
+  ]
+}

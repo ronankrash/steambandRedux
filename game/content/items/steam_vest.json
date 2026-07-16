@@ -1,0 +1,19 @@
+{
+  "id": "item_steam_vest",
+  "name": "Steam Vest",
+  "description": "Insulated vest with pressure-release valves.",
+  "equip_slot": "body",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 2,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 3,
+  "value": 18,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_insulated",
+    "affix_steamcharged"
+  ],
+  "is_ammo": false
+}

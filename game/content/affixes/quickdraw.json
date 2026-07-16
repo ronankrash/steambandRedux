@@ -1,0 +1,8 @@
+{
+  "id": "affix_quickdraw",
+  "name_prefix": "Quickdraw",
+  "description": "Fast presentation.",
+  "damage": 0,
+  "accuracy": 2,
+  "defense": 0
+}

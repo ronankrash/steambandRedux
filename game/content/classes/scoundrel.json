@@ -1,0 +1,42 @@
+{
+  "id": "class_scoundrel",
+  "name": "Scoundrel",
+  "description": "Back-alley operative favoring stealth, poisons, and opportunistic strikes.",
+  "hp_bonus": 0,
+  "melee_accuracy": 5,
+  "melee_damage": 2,
+  "ranged_accuracy": 2,
+  "ranged_damage": 0,
+  "defense": 0,
+  "engineering": 0,
+  "marksmanship": 1,
+  "smithing": 0,
+  "medicine": 0,
+  "stealth": 4,
+  "occult": 1,
+  "skill_affinities": {
+    "skill_stealth": 0.75,
+    "skill_melee": 0.9
+  },
+  "starting_items": [
+    {
+      "item_id": "item_bayonet",
+      "count": 1
+    },
+    {
+      "item_id": "item_smoke_bomb",
+      "count": 2
+    },
+    {
+      "item_id": "item_leather_coat",
+      "count": 1
+    }
+  ],
+  "starting_skills": {
+    "skill_stealth": 2,
+    "skill_melee": 1
+  },
+  "passives": [
+    "passive_backstab"
+  ]
+}

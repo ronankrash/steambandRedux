@@ -1,0 +1,18 @@
+{
+  "id": "item_iron_boots",
+  "name": "Iron Boots",
+  "description": "Heavy boots that protect against crushing debris.",
+  "equip_slot": "feet",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 2,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 3,
+  "value": 14,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_reinforced"
+  ],
+  "is_ammo": false
+}

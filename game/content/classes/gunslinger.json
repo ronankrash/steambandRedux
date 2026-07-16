@@ -1,0 +1,44 @@
+{
+  "id": "class_gunslinger",
+  "name": "Gunslinger",
+  "description": "Marksman specializing in firearms, quick reloads, and crit shots.",
+  "hp_bonus": 0,
+  "melee_accuracy": 2,
+  "melee_damage": 0,
+  "ranged_accuracy": 8,
+  "ranged_damage": 3,
+  "defense": 0,
+  "engineering": 0,
+  "marksmanship": 4,
+  "smithing": 0,
+  "medicine": 0,
+  "stealth": 1,
+  "occult": 0,
+  "skill_affinities": {
+    "skill_marksmanship": 0.75
+  },
+  "starting_items": [
+    {
+      "item_id": "item_pepperbox",
+      "count": 1
+    },
+    {
+      "item_id": "item_rifle",
+      "count": 1
+    },
+    {
+      "item_id": "item_ball_ammo",
+      "count": 18
+    },
+    {
+      "item_id": "item_rifle_ammo",
+      "count": 12
+    }
+  ],
+  "starting_skills": {
+    "skill_marksmanship": 3
+  },
+  "passives": [
+    "passive_quickdraw"
+  ]
+}

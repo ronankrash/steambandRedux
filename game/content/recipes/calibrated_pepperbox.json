@@ -1,1 +1,23 @@
-{"id":"recipe_calibrated_pepperbox","name":"Calibrate Pepperbox","engineering_required":3,"ingredients":[{"item_id":"item_pepperbox","count":1},{"item_id":"item_scrap","count":1},{"item_id":"item_machine_oil","count":1}],"result_id":"item_calibrated_pepperbox"}
+{
+  "id": "recipe_calibrated_pepperbox",
+  "name": "Calibrate Pepperbox",
+  "station": "workbench",
+  "skill_required": "skill_engineering",
+  "skill_rank": 2,
+  "engineering_required": 3,
+  "ingredients": [
+    {
+      "item_id": "item_pepperbox",
+      "count": 1
+    },
+    {
+      "item_id": "item_scrap",
+      "count": 1
+    },
+    {
+      "item_id": "item_machine_oil",
+      "count": 1
+    }
+  ],
+  "result_id": "item_calibrated_pepperbox"
+}

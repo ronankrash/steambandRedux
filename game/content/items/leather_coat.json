@@ -1,0 +1,19 @@
+{
+  "id": "item_leather_coat",
+  "name": "Leather Coat",
+  "description": "Oil-treated long coat that muffles movement.",
+  "equip_slot": "body",
+  "damage": 0,
+  "accuracy": 0,
+  "defense": 1,
+  "range_tiles": 0,
+  "max_stack": 1,
+  "weight": 2,
+  "value": 12,
+  "category": "armor",
+  "allowed_affixes": [
+    "affix_padded",
+    "affix_insulated"
+  ],
+  "is_ammo": false
+}
